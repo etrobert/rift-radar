@@ -75,19 +75,11 @@ func getAllyTeam(match Match) (Team, error) {
 }
 
 func main() {
-	account, err := FetchAccount("Crapow", "EUW")
-
-	if err != nil {
-		log.Fatal("Error fetching account:", err)
-	}
+	account := Must2(FetchAccount)("Crapow", "EUW")
 
 	fmt.Printf("%+v\n", account)
 
-	matchIds, err := FetchMatches(account.PUUID, 100)
-
-	if err != nil {
-		log.Fatal("Error fetching matches:", err)
-	}
+	matchIds := Must2(FetchMatches)(account.PUUID, 100)
 
 	fmt.Printf("%+v\n", matchIds)
 

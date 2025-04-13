@@ -17,3 +17,13 @@ func Must[T, U any](fn func(T) (U, error)) func(T) U {
 		return result
 	}
 }
+
+func Must2[A, B, R any](fn func(A, B) (R, error)) func(A, B) R {
+	return func(a A, b B) R {
+		result, err := fn(a, b)
+		if err != nil {
+			panic(err)
+		}
+		return result
+	}
+}
