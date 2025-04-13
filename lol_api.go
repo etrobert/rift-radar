@@ -12,6 +12,23 @@ var baseUrl = "https://europe.api.riotgames.com/"
 
 var client = &http.Client{}
 
+func getCachedMatch(matchId string) ([]byte, error) {
+	path := fmt.Sprintf("cache/matches/%s.json", matchId)
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return nil, fmt.Errorf("error reading cache file: %v", err)
+	}
+
+	return data, nil
+}
+
+func saveMatchToCache(matchId string, data []byte) error {
+	os.MkdirAll("cache/matches", 0755)
+
+	path := fmt.Sprintf("cache/matches/%s.json", matchId)
+	return os.WriteFile(path, data, 0644)
+}
+
 func makeRequest(client *http.Client, url string) ([]byte, error) {
 	var apiKey = os.Getenv("RIOT_API_KEY")
 
@@ -72,7 +89,12 @@ func FetchMatches(puuid string) ([]string, error) {
 	return matches, nil
 }
 
-func FetchMatch(matchId string) (*Match, error) {
+func getMatchData(matchId string) ([]byte, error) {
+	cachedMatch, err := getCachedMatch(matchId)
+	if err == nil {
+		return cachedMatch, nil
+	}
+
 	url := "lol/match/v5/matches/" + matchId
 
 	body, err := makeRequest(client, url)
@@ -81,9 +103,17 @@ func FetchMatch(matchId string) (*Match, error) {
 		return nil, err
 	}
 
+	saveMatchToCache(matchId, body)
+
+	return body, nil
+}
+
+func FetchMatch(matchId string) (*Match, error) {
+	data, err := getMatchData(matchId)
+
 	// Unmarshal the JSON response into the Match struct
 	var match Match
-	err = json.Unmarshal(body, &match)
+	err = json.Unmarshal(data, &match)
 	if err != nil {
 		return nil, fmt.Errorf("error unmarshalling match data: %v", err)
 	}
