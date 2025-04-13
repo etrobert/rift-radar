@@ -13,9 +13,11 @@ func init() {
 	}
 }
 
+var riotIDGameName = "Crapow"
+
 func getAllyTeam(match *Match) (Team, error) {
 	ally, err := Find(match.Info.Participants, func(p Participant) bool {
-		return p.RiotIDGameName == "Crapow"
+		return p.RiotIDGameName == riotIDGameName
 	})
 
 	if err != nil {
@@ -32,7 +34,7 @@ func isWinningTeam(team Team) bool {
 }
 
 func main() {
-	account := Must2(FetchAccount)("Crapow", "EUW")
+	account := Must2(FetchAccount)(riotIDGameName, "EUW")
 
 	matchIds := Must2(FetchMatches)(account.PUUID, 100)
 
