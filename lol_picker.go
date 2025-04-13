@@ -13,24 +13,17 @@ func init() {
 	}
 }
 
-func getAllyTeamId(match *Match) (int, error) {
-	for _, participant := range match.Info.Participants {
-		if participant.RiotIDGameName == "Crapow" {
-			return participant.TeamID, nil
-		}
-	}
-	return 0, fmt.Errorf("player not found in match")
-}
-
 func getAllyTeam(match *Match) (Team, error) {
-	allyTeamId, err := getAllyTeamId(match)
+	ally, err := Find(match.Info.Participants, func(p Participant) bool {
+		return p.RiotIDGameName == "Crapow"
+	})
 
 	if err != nil {
 		log.Fatal("Error getting ally team ID:", err)
 	}
 
 	for _, team := range match.Info.Teams {
-		if team.TeamID == allyTeamId {
+		if team.TeamID == ally.TeamID {
 			return team, nil
 		}
 	}

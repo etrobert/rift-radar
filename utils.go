@@ -1,5 +1,9 @@
 package main
 
+import (
+	"fmt"
+)
+
 func Map[T, U any](slice []T, fn func(T) U) []U {
 	result := make([]U, len(slice))
 	for i, v := range slice {
@@ -40,4 +44,14 @@ func Count[T any](slice []T, predicate func(T) bool) int {
 
 func Identity[T any](t T) T {
 	return t
+}
+
+func Find[T any](slice []T, predicate func(T) bool) (T, error) {
+	for _, v := range slice {
+		if predicate(v) {
+			return v, nil
+		}
+	}
+	var zero T
+	return zero, fmt.Errorf("not found")
 }
