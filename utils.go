@@ -12,6 +12,18 @@ func Map[T, U any](slice []T, fn func(T) U) []U {
 	return result
 }
 
+func ErrorMap[T, U any](slice []T, fn func(T) (U, error)) ([]U, error) {
+	result := make([]U, len(slice))
+	for i, v := range slice {
+		res, err := fn(v)
+		if err != nil {
+			return nil, err
+		}
+		result[i] = res
+	}
+	return result, nil
+}
+
 func Must[T, U any](fn func(T) (U, error)) func(T) U {
 	return func(t T) U {
 		result, err := fn(t)
