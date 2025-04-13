@@ -74,6 +74,24 @@ func getAllyTeam(match Match) (Team, error) {
 	return Team{}, fmt.Errorf("team not found")
 }
 
+func Map[T, U any](slice []T, fn func(T) U) []U {
+	result := make([]U, len(slice))
+	for i, v := range slice {
+		result[i] = fn(v)
+	}
+	return result
+}
+
+func Must[T, U any](fn func(T) (U, error)) func(T) U {
+	return func(t T) U {
+		result, err := fn(t)
+		if err != nil {
+			panic(err)
+		}
+		return result
+	}
+}
+
 func main() {
 	account, err := FetchAccount("Crapow", "EUW")
 
@@ -91,23 +109,11 @@ func main() {
 
 	fmt.Printf("%+v\n", matchIds)
 
-	var matches = make([]*Match, len(matchIds))
-
-	for i, matchID := range matchIds {
-		match, err := FetchMatch(matchID)
-		if err != nil {
-			log.Fatal("Error fetching match:", err)
-		}
-		matches[i] = match
-	}
+	matches := Map(matchIds, Must(FetchMatch))
 
 	match := matches[0]
 
-	allyTeam, err := getAllyTeam(*match)
-
-	if err != nil {
-		log.Fatal("Error getting ally team:", err)
-	}
+	allyTeam := Must(getAllyTeam)(*match)
 
 	fmt.Printf("%+v\n", allyTeam.Win)
 }
