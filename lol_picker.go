@@ -61,8 +61,18 @@ func getWinrate(riotIDGameName string) (int, error) {
 	return Count(allyTeams, isWinningTeam), nil
 }
 
-func main() {
-	wins := Must(getWinrate)("Crapow")
+func printWinrate(riotIDGameName string) {
+	wins, err := getWinrate(riotIDGameName)
 
-	fmt.Printf("%+v%%\n", wins)
+	if err != nil {
+		log.Fatal("Error getting winrate:", err)
+	}
+
+	fmt.Printf("Winrate for %s: %d%%\n", riotIDGameName, wins)
+}
+
+func main() {
+	printWinrate("Crapow")
+	printWinrate("Beigeres")
+	printWinrate("titius33")
 }
