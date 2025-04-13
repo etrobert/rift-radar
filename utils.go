@@ -27,3 +27,17 @@ func Must2[A, B, R any](fn func(A, B) (R, error)) func(A, B) R {
 		return result
 	}
 }
+
+func Count[T any](slice []T, predicate func(T) bool) int {
+	count := 0
+	for _, v := range slice {
+		if predicate(v) {
+			count++
+		}
+	}
+	return count
+}
+
+func Identity[T any](t T) T {
+	return t
+}

@@ -49,7 +49,7 @@ func parseMatch(match *Match) (map[int]TeamInfo, error) {
 	return teams, nil
 }
 
-func getAllyTeamId(match Match) (int, error) {
+func getAllyTeamId(match *Match) (int, error) {
 	for _, participant := range match.Info.Participants {
 		if participant.RiotIDGameName == "Crapow" {
 			return participant.TeamID, nil
@@ -58,7 +58,7 @@ func getAllyTeamId(match Match) (int, error) {
 	return 0, fmt.Errorf("player not found in match")
 }
 
-func getAllyTeam(match Match) (Team, error) {
+func getAllyTeam(match *Match) (Team, error) {
 	allyTeamId, err := getAllyTeamId(match)
 
 	if err != nil {
@@ -74,6 +74,10 @@ func getAllyTeam(match Match) (Team, error) {
 	return Team{}, fmt.Errorf("team not found")
 }
 
+func isWinningTeam(team Team) bool {
+	return team.Win
+}
+
 func main() {
 	account := Must2(FetchAccount)("Crapow", "EUW")
 
@@ -85,9 +89,9 @@ func main() {
 
 	matches := Map(matchIds, Must(FetchMatch))
 
-	match := matches[0]
+	allyTeams := Map(matches, Must(getAllyTeam))
 
-	allyTeam := Must(getAllyTeam)(*match)
+	wins := Count(Map(allyTeams, isWinningTeam), Identity)
 
-	fmt.Printf("%+v\n", allyTeam.Win)
+	fmt.Printf("%+v\n", wins)
 }
