@@ -22,13 +22,9 @@ func getAllyTeam(match *Match) (Team, error) {
 		log.Fatal("Error getting ally team ID:", err)
 	}
 
-	for _, team := range match.Info.Teams {
-		if team.TeamID == ally.TeamID {
-			return team, nil
-		}
-	}
-
-	return Team{}, fmt.Errorf("team not found")
+	return Find(match.Info.Teams, func(team Team) bool {
+		return team.TeamID == ally.TeamID
+	})
 }
 
 func isWinningTeam(team Team) bool {
