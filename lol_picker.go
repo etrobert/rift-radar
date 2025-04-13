@@ -13,11 +13,15 @@ func init() {
 	}
 }
 
+type Participant struct {
+	ChampionName   string
+	RiotIDGameName string
+}
+
 type TeamInfo struct {
-	TeamID    int
-	Win       bool
-	Champions []string
-	Players   []string // Store player names for reference
+	TeamID       int
+	Win          bool
+	Participants []Participant
 }
 
 func parseMatch(match *Match) (map[int]TeamInfo, error) {
@@ -25,17 +29,19 @@ func parseMatch(match *Match) (map[int]TeamInfo, error) {
 
 	for _, team := range match.Info.Teams {
 		teams[team.TeamID] = TeamInfo{
-			TeamID:    team.TeamID,
-			Win:       team.Win,
-			Champions: []string{},
-			Players:   []string{},
+			TeamID:       team.TeamID,
+			Win:          team.Win,
+			Participants: []Participant{},
 		}
 	}
 
 	for _, participant := range match.Info.Participants {
 		team := teams[participant.TeamID]
 
-		team.Champions = append(team.Champions, participant.ChampionName)
+		team.Participants = append(team.Participants, Participant{
+			ChampionName:   participant.ChampionName,
+			RiotIDGameName: participant.RiotIDGameName,
+		})
 
 		teams[participant.TeamID] = team
 	}
