@@ -71,3 +71,48 @@ func FetchMatches(puuid string) ([]string, error) {
 
 	return matches, nil
 }
+
+type TeamInfo struct {
+	TeamID    int
+	Win       bool
+	Champions []string
+	Players   []string // Store player names for reference
+}
+
+func FetchMatch(matchId string) (map[int]TeamInfo, error) {
+	url := "lol/match/v5/matches/" + matchId
+
+	body, err := makeRequest(client, url)
+
+	if err != nil {
+		return nil, err
+	}
+
+	// Unmarshal the JSON response into the Match struct
+	var match Match
+	err = json.Unmarshal(body, &match)
+	if err != nil {
+		return nil, fmt.Errorf("error unmarshalling match data: %v", err)
+	}
+
+	teams := make(map[int]TeamInfo)
+
+	for _, team := range match.Info.Teams {
+		teams[team.TeamID] = TeamInfo{
+			TeamID:    team.TeamID,
+			Win:       team.Win,
+			Champions: []string{},
+			Players:   []string{},
+		}
+	}
+
+	for _, participant := range match.Info.Participants {
+		team := teams[participant.TeamID]
+
+		team.Champions = append(team.Champions, participant.ChampionName)
+
+		teams[participant.TeamID] = team
+	}
+
+	return teams, nil
+}

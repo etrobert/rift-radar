@@ -6,12 +6,6 @@ import (
 	"log"
 )
 
-type Account struct {
-	PUUID    string `json:"puuid"`
-	GameName string `json:"gameName"`
-	TagLine  string `json:"tagLine"`
-}
-
 func init() {
 	err := godotenv.Load()
 	if err != nil {
@@ -31,4 +25,8 @@ func main() {
 	matches, err := FetchMatches(account.PUUID)
 
 	fmt.Printf("%+v\n", matches)
+
+	teams, err := FetchMatch(matches[0])
+
+	fmt.Printf("%+v\n", teams)
 }
