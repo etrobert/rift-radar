@@ -16,6 +16,8 @@ type Account struct {
 	TagLine  string `json:"tagLine"`
 }
 
+var baseUrl = "https://europe.api.riotgames.com/"
+
 func main() {
 	// Load .env file
 	err := godotenv.Load()
@@ -25,7 +27,7 @@ func main() {
 
 	apiKey := os.Getenv("RIOT_API_KEY")
 
-	summonerURL := "https://europe.api.riotgames.com/riot/account/v1/accounts/by-riot-id/Crapow/EUW"
+	summonerURL := baseUrl + "riot/account/v1/accounts/by-riot-id/Crapow/EUW"
 
 	// Create a request with Riot API key header
 	req, _ := http.NewRequest("GET", summonerURL, nil)
