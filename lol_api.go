@@ -72,8 +72,8 @@ func FetchAccount(gameName, tagLine string) (Account, error) {
 	return account, nil
 }
 
-func FetchMatches(puuid string) ([]string, error) {
-	url := "lol/match/v5/matches/by-puuid/" + puuid + "/ids"
+func FetchMatches(puuid string, count int) ([]string, error) {
+	url := "lol/match/v5/matches/by-puuid/" + puuid + "/ids?count=" + fmt.Sprint(count)
 
 	body, err := makeRequest(client, url)
 

@@ -58,7 +58,7 @@ func main() {
 
 	fmt.Printf("%+v\n", account)
 
-	matches, err := FetchMatches(account.PUUID)
+	matches, err := FetchMatches(account.PUUID, 100)
 
 	if err != nil {
 		log.Fatal("Error fetching matches:", err)
