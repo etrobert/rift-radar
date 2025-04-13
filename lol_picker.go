@@ -66,17 +66,16 @@ func main() {
 
 	fmt.Printf("%+v\n", matches)
 
-	match, err := FetchMatch(matches[0])
+	for _, matchID := range matches {
+		match, err := FetchMatch(matchID)
+		if err != nil {
+			log.Fatal("Error fetching match:", err)
+		}
+		teams, err := parseMatch(match)
+		if err != nil {
+			log.Fatal("Error parsing match:", err)
+		}
 
-	if err != nil {
-		log.Fatal("Error fetching match:", err)
+		fmt.Printf("%+v\n", teams)
 	}
-
-	teams, err := parseMatch(match)
-
-	if err != nil {
-		log.Fatal("Error parsing match:", err)
-	}
-
-	fmt.Printf("%+v\n", teams)
 }
