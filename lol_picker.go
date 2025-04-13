@@ -49,6 +49,31 @@ func parseMatch(match *Match) (map[int]TeamInfo, error) {
 	return teams, nil
 }
 
+func getAllyTeamId(match Match) (int, error) {
+	for _, participant := range match.Info.Participants {
+		if participant.RiotIDGameName == "Crapow" {
+			return participant.TeamID, nil
+		}
+	}
+	return 0, fmt.Errorf("player not found in match")
+}
+
+func getAllyTeam(match Match) (Team, error) {
+	allyTeamId, err := getAllyTeamId(match)
+
+	if err != nil {
+		log.Fatal("Error getting ally team ID:", err)
+	}
+
+	for _, team := range match.Info.Teams {
+		if team.TeamID == allyTeamId {
+			return team, nil
+		}
+	}
+
+	return Team{}, fmt.Errorf("team not found")
+}
+
 func main() {
 	account, err := FetchAccount("Crapow", "EUW")
 
@@ -58,24 +83,31 @@ func main() {
 
 	fmt.Printf("%+v\n", account)
 
-	matches, err := FetchMatches(account.PUUID, 100)
+	matchIds, err := FetchMatches(account.PUUID, 100)
 
 	if err != nil {
 		log.Fatal("Error fetching matches:", err)
 	}
 
-	fmt.Printf("%+v\n", matches)
+	fmt.Printf("%+v\n", matchIds)
 
-	for _, matchID := range matches {
+	var matches = make([]*Match, len(matchIds))
+
+	for i, matchID := range matchIds {
 		match, err := FetchMatch(matchID)
 		if err != nil {
 			log.Fatal("Error fetching match:", err)
 		}
-		teams, err := parseMatch(match)
-		if err != nil {
-			log.Fatal("Error parsing match:", err)
-		}
-
-		fmt.Printf("%+v\n", teams)
+		matches[i] = match
 	}
+
+	match := matches[0]
+
+	allyTeam, err := getAllyTeam(*match)
+
+	if err != nil {
+		log.Fatal("Error getting ally team:", err)
+	}
+
+	fmt.Printf("%+v\n", allyTeam.Win)
 }

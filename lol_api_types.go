@@ -6,6 +6,60 @@ type Account struct {
 	TagLine  string `json:"tagLine"`
 }
 
+type Team struct {
+	Bans []struct {
+		ChampionID int `json:"championId"`
+		PickTurn   int `json:"pickTurn"`
+	} `json:"bans"`
+	Feats struct {
+		EpicMonsterKill struct {
+			FeatState int `json:"featState"`
+		} `json:"EPIC_MONSTER_KILL"`
+		FirstBlood struct {
+			FeatState int `json:"featState"`
+		} `json:"FIRST_BLOOD"`
+		FirstTurret struct {
+			FeatState int `json:"featState"`
+		} `json:"FIRST_TURRET"`
+	} `json:"feats"`
+	Objectives struct {
+		Atakhan struct {
+			First bool `json:"first"`
+			Kills int  `json:"kills"`
+		} `json:"atakhan"`
+		Baron struct {
+			First bool `json:"first"`
+			Kills int  `json:"kills"`
+		} `json:"baron"`
+		Champion struct {
+			First bool `json:"first"`
+			Kills int  `json:"kills"`
+		} `json:"champion"`
+		Dragon struct {
+			First bool `json:"first"`
+			Kills int  `json:"kills"`
+		} `json:"dragon"`
+		Horde struct {
+			First bool `json:"first"`
+			Kills int  `json:"kills"`
+		} `json:"horde"`
+		Inhibitor struct {
+			First bool `json:"first"`
+			Kills int  `json:"kills"`
+		} `json:"inhibitor"`
+		RiftHerald struct {
+			First bool `json:"first"`
+			Kills int  `json:"kills"`
+		} `json:"riftHerald"`
+		Tower struct {
+			First bool `json:"first"`
+			Kills int  `json:"kills"`
+		} `json:"tower"`
+	} `json:"objectives"`
+	TeamID int  `json:"teamId"`
+	Win    bool `json:"win"`
+}
+
 type Match struct {
 	Metadata struct {
 		DataVersion  string   `json:"dataVersion"`
@@ -1490,61 +1544,9 @@ type Match struct {
 				WardsGuarded                              int     `json:"wardsGuarded"`
 			} `json:"challenges,omitempty"`
 		} `json:"participants"`
-		PlatformID string `json:"platformId"`
-		QueueID    int    `json:"queueId"`
-		Teams      []struct {
-			Bans []struct {
-				ChampionID int `json:"championId"`
-				PickTurn   int `json:"pickTurn"`
-			} `json:"bans"`
-			Feats struct {
-				EpicMonsterKill struct {
-					FeatState int `json:"featState"`
-				} `json:"EPIC_MONSTER_KILL"`
-				FirstBlood struct {
-					FeatState int `json:"featState"`
-				} `json:"FIRST_BLOOD"`
-				FirstTurret struct {
-					FeatState int `json:"featState"`
-				} `json:"FIRST_TURRET"`
-			} `json:"feats"`
-			Objectives struct {
-				Atakhan struct {
-					First bool `json:"first"`
-					Kills int  `json:"kills"`
-				} `json:"atakhan"`
-				Baron struct {
-					First bool `json:"first"`
-					Kills int  `json:"kills"`
-				} `json:"baron"`
-				Champion struct {
-					First bool `json:"first"`
-					Kills int  `json:"kills"`
-				} `json:"champion"`
-				Dragon struct {
-					First bool `json:"first"`
-					Kills int  `json:"kills"`
-				} `json:"dragon"`
-				Horde struct {
-					First bool `json:"first"`
-					Kills int  `json:"kills"`
-				} `json:"horde"`
-				Inhibitor struct {
-					First bool `json:"first"`
-					Kills int  `json:"kills"`
-				} `json:"inhibitor"`
-				RiftHerald struct {
-					First bool `json:"first"`
-					Kills int  `json:"kills"`
-				} `json:"riftHerald"`
-				Tower struct {
-					First bool `json:"first"`
-					Kills int  `json:"kills"`
-				} `json:"tower"`
-			} `json:"objectives"`
-			TeamID int  `json:"teamId"`
-			Win    bool `json:"win"`
-		} `json:"teams"`
+		PlatformID     string `json:"platformId"`
+		QueueID        int    `json:"queueId"`
+		Teams          []Team `json:"teams"`
 		TournamentCode string `json:"tournamentCode"`
 	} `json:"info"`
 }
