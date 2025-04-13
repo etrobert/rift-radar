@@ -53,4 +53,28 @@ func main() {
 	}
 
 	fmt.Printf("%+v\n", account)
+
+	matchesURL := baseUrl + "lol/match/v5/matches/by-puuid/" + account.PUUID + "/ids"
+
+	req, _ = http.NewRequest("GET", matchesURL, nil)
+	req.Header.Add("X-Riot-Token", apiKey)
+
+	resp, err = client.Do(req)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	body, err = io.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatal("Error reading response:", err)
+	}
+
+	var matches []string
+	if err := json.Unmarshal(body, &matches); err != nil {
+		log.Fatal("Error decoding JSON:", err)
+	}
+
+	fmt.Printf("%+v\n", matches)
+
 }
