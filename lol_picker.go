@@ -13,20 +13,20 @@ func init() {
 	}
 }
 
-var riotIDGameName = "Crapow"
+func getAllyTeam(riotIDGameName string) func(match *Match) (Team, error) {
+	return func(match *Match) (Team, error) {
+		ally, err := Find(match.Info.Participants, func(p Participant) bool {
+			return p.RiotIDGameName == riotIDGameName
+		})
 
-func getAllyTeam(match *Match) (Team, error) {
-	ally, err := Find(match.Info.Participants, func(p Participant) bool {
-		return p.RiotIDGameName == riotIDGameName
-	})
+		if err != nil {
+			log.Fatal("Error getting ally team ID:", err)
+		}
 
-	if err != nil {
-		log.Fatal("Error getting ally team ID:", err)
+		return Find(match.Info.Teams, func(team Team) bool {
+			return team.TeamID == ally.TeamID
+		})
 	}
-
-	return Find(match.Info.Teams, func(team Team) bool {
-		return team.TeamID == ally.TeamID
-	})
 }
 
 func isWinningTeam(team Team) bool {
@@ -52,7 +52,7 @@ func getWinrate(riotIDGameName string) (int, error) {
 		return 0, err
 	}
 
-	allyTeams, err := ErrorMap(matches, getAllyTeam)
+	allyTeams, err := ErrorMap(matches, getAllyTeam(riotIDGameName))
 
 	if err != nil {
 		return 0, err
@@ -62,7 +62,7 @@ func getWinrate(riotIDGameName string) (int, error) {
 }
 
 func main() {
-	wins := Must(getWinrate)(riotIDGameName)
+	wins := Must(getWinrate)("Crapow")
 
 	fmt.Printf("%+v%%\n", wins)
 }
