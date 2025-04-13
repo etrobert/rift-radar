@@ -13,42 +13,6 @@ func init() {
 	}
 }
 
-type Participant struct {
-	ChampionName   string
-	RiotIDGameName string
-}
-
-type TeamInfo struct {
-	TeamID       int
-	Win          bool
-	Participants []Participant
-}
-
-func parseMatch(match *Match) (map[int]TeamInfo, error) {
-	teams := make(map[int]TeamInfo)
-
-	for _, team := range match.Info.Teams {
-		teams[team.TeamID] = TeamInfo{
-			TeamID:       team.TeamID,
-			Win:          team.Win,
-			Participants: []Participant{},
-		}
-	}
-
-	for _, participant := range match.Info.Participants {
-		team := teams[participant.TeamID]
-
-		team.Participants = append(team.Participants, Participant{
-			ChampionName:   participant.ChampionName,
-			RiotIDGameName: participant.RiotIDGameName,
-		})
-
-		teams[participant.TeamID] = team
-	}
-
-	return teams, nil
-}
-
 func getAllyTeamId(match *Match) (int, error) {
 	for _, participant := range match.Info.Participants {
 		if participant.RiotIDGameName == "Crapow" {
