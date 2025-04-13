@@ -33,20 +33,30 @@ func isWinningTeam(team Team) bool {
 	return team.Win
 }
 
-func getWinrate(riotIDGameName string) (int, error) {
+func getHundredGames(riotIDGameName string) ([]*Match, error) {
 	account, err := FetchAccount(riotIDGameName, "EUW")
 
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 
 	matchIds, err := FetchMatches(account.PUUID, 100)
 
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 
 	matches, err := ErrorMap(matchIds, FetchMatch)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return matches, nil
+}
+
+func getWinrate(riotIDGameName string) (int, error) {
+	matches, err := getHundredGames(riotIDGameName)
 
 	if err != nil {
 		return 0, err
