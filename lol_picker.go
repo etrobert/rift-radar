@@ -34,11 +34,7 @@ func isWinningTeam(team Team) bool {
 func main() {
 	account := Must2(FetchAccount)("Crapow", "EUW")
 
-	fmt.Printf("%+v\n", account)
-
 	matchIds := Must2(FetchMatches)(account.PUUID, 100)
-
-	fmt.Printf("%+v\n", matchIds)
 
 	matches := Map(matchIds, Must(FetchMatch))
 
@@ -46,5 +42,5 @@ func main() {
 
 	wins := Count(Map(allyTeams, isWinningTeam), Identity)
 
-	fmt.Printf("%+v\n", wins)
+	fmt.Printf("%+v%%\n", wins)
 }
