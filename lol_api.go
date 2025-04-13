@@ -12,27 +12,36 @@ var baseUrl = "https://europe.api.riotgames.com/"
 
 var client = &http.Client{}
 
-func FetchAccount(gameName, tagLine string) (Account, error) {
-	summonerURL := baseUrl + "riot/account/v1/accounts/by-riot-id/Crapow/EUW"
-
+func makeRequest(client *http.Client, url string) ([]byte, error) {
 	var apiKey = os.Getenv("RIOT_API_KEY")
 
+	final_url := baseUrl + url
+
 	// Create a request with Riot API key header
-	req, _ := http.NewRequest("GET", summonerURL, nil)
+	req, _ := http.NewRequest("GET", final_url, nil)
 	req.Header.Add("X-Riot-Token", apiKey)
-
 	resp, err := client.Do(req)
-
 	if err != nil {
-		return Account{}, err
+		return nil, err
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return Account{}, fmt.Errorf("error: %s", resp.Status)
+		return nil, fmt.Errorf("error: %s", resp.Status)
 	}
 
 	// Read the response body
 	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	return body, nil
+}
+
+func FetchAccount(gameName, tagLine string) (Account, error) {
+	url := "riot/account/v1/accounts/by-riot-id/" + gameName + "/" + tagLine
+	body, err := makeRequest(client, url)
+
 	if err != nil {
 		return Account{}, err
 	}
@@ -47,19 +56,10 @@ func FetchAccount(gameName, tagLine string) (Account, error) {
 }
 
 func FetchMatches(puuid string) ([]string, error) {
-	matchesURL := baseUrl + "lol/match/v5/matches/by-puuid/" + puuid + "/ids"
+	url := "lol/match/v5/matches/by-puuid/" + puuid + "/ids"
 
-	var apiKey = os.Getenv("RIOT_API_KEY")
-	req, _ := http.NewRequest("GET", matchesURL, nil)
-	req.Header.Add("X-Riot-Token", apiKey)
+	body, err := makeRequest(client, url)
 
-	resp, err := client.Do(req)
-
-	if err != nil {
-		return nil, err
-	}
-
-	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
