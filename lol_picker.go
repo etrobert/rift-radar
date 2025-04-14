@@ -2,8 +2,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/joho/godotenv"
 	"log"
+	"sort"
+
+	"github.com/joho/godotenv"
 )
 
 func init() {
@@ -13,11 +15,15 @@ func init() {
 	}
 }
 
+func getAlly(match *Match, riotIDGameName string) (Participant, error) {
+	return Find(match.Info.Participants, func(p Participant) bool {
+		return p.RiotIDGameName == riotIDGameName
+	})
+}
+
 func getAllyTeam(riotIDGameName string) func(match *Match) (Team, error) {
 	return func(match *Match) (Team, error) {
-		ally, err := Find(match.Info.Participants, func(p Participant) bool {
-			return p.RiotIDGameName == riotIDGameName
-		})
+		ally, err := getAlly(match, riotIDGameName)
 
 		if err != nil {
 			log.Fatal("Error getting ally team ID:", err)
@@ -71,6 +77,50 @@ func getWinrate(riotIDGameName string) (int, error) {
 	return Count(allyTeams, isWinningTeam), nil
 }
 
+func getEnemies(riotIDGameName string) (map[string]int, error) {
+	matches, err := getHundredGames(riotIDGameName)
+
+	if err != nil {
+		return nil, err
+	}
+
+	enemies := make(map[string]int)
+
+	for _, match := range matches {
+		allyTeam, err := getAllyTeam(riotIDGameName)(match)
+
+		if err != nil {
+			return nil, err
+		}
+
+		firstEnemy, err := Find(match.Info.Participants, func(p Participant) bool {
+			return p.TeamID != allyTeam.TeamID
+		})
+
+		if err != nil {
+			return nil, err
+		}
+
+		enemyTeamID := firstEnemy.TeamID
+
+		enemyTeam, err := Find(match.Info.Teams, func(t Team) bool {
+			return t.TeamID == enemyTeamID
+		})
+
+		if !enemyTeam.Win {
+			continue
+		}
+
+		for _, enemy := range match.Info.Participants {
+			if enemy.TeamID == enemyTeamID {
+				enemies[enemy.ChampionName]++
+			}
+		}
+	}
+
+	return enemies, nil
+}
+
 func printWinrate(riotIDGameName string) {
 	wins, err := getWinrate(riotIDGameName)
 
@@ -82,7 +132,16 @@ func printWinrate(riotIDGameName string) {
 }
 
 func main() {
-	printWinrate("Crapow")
-	printWinrate("Beigeres")
-	printWinrate("titius33")
+	fmt.Printf("Enemies:\n")
+	enemies, err := getEnemies("Crapow")
+	if err != nil {
+		log.Fatal("Error getting enemies:", err)
+	}
+	for enemy, count := range enemies {
+		fmt.Printf("%s: %d\n", enemy, count)
+	}
+
+	// printWinrate("Crapow")
+	// printWinrate("Beigeres")
+	// printWinrate("titius33")
 }
