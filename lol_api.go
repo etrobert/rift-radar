@@ -110,6 +110,9 @@ func getMatchData(matchId string) ([]byte, error) {
 
 func FetchMatch(matchId string) (*Match, error) {
 	data, err := getMatchData(matchId)
+	if err != nil {
+		return nil, err
+	}
 
 	// Unmarshal the JSON response into the Match struct
 	var match Match
