@@ -38,8 +38,8 @@ func isWinningTeam(team Team) bool {
 	return team.Win
 }
 
-func getHundredGames(riotIDGameName string) ([]*Match, error) {
-	account, err := FetchAccount(riotIDGameName, "EUW")
+func getHundredGames(riotIDGameName, tagLine string) ([]*Match, error) {
+	account, err := FetchAccount(riotIDGameName, tagLine)
 
 	if err != nil {
 		return nil, err
@@ -60,8 +60,8 @@ func getHundredGames(riotIDGameName string) ([]*Match, error) {
 	return matches, nil
 }
 
-func getWinrate(riotIDGameName string) (int, error) {
-	matches, err := getHundredGames(riotIDGameName)
+func getWinrate(riotIDGameName, tagLine string) (int, error) {
+	matches, err := getHundredGames(riotIDGameName, tagLine)
 
 	if err != nil {
 		return 0, err
@@ -76,8 +76,8 @@ func getWinrate(riotIDGameName string) (int, error) {
 	return Count(allyTeams, isWinningTeam), nil
 }
 
-func getEnemies(riotIDGameName string) (map[string]int, error) {
-	matches, err := getHundredGames(riotIDGameName)
+func getEnemies(riotIDGameName, tagLine string) (map[string]int, error) {
+	matches, err := getHundredGames(riotIDGameName, tagLine)
 
 	if err != nil {
 		return nil, err
@@ -120,8 +120,8 @@ func getEnemies(riotIDGameName string) (map[string]int, error) {
 	return enemies, nil
 }
 
-func printWinrate(riotIDGameName string) {
-	wins, err := getWinrate(riotIDGameName)
+func printWinrate(riotIDGameName, tagLine string) {
+	wins, err := getWinrate(riotIDGameName, tagLine)
 
 	if err != nil {
 		log.Fatal("Error getting winrate:", err)
@@ -132,7 +132,7 @@ func printWinrate(riotIDGameName string) {
 
 func main() {
 	fmt.Printf("Enemies:\n")
-	enemies, err := getEnemies("Crapow")
+	enemies, err := getEnemies("Crapow", "EUW")
 	if err != nil {
 		log.Fatal("Error getting enemies:", err)
 	}
