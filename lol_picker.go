@@ -38,14 +38,14 @@ func isWinningTeam(team Team) bool {
 	return team.Win
 }
 
-func getHundredGames(riotIDGameName, tagLine string) ([]*Match, error) {
+func getHundredGames(riotIDGameName, tagLine string, queueType QueueType) ([]*Match, error) {
 	account, err := FetchAccount(riotIDGameName, tagLine)
 
 	if err != nil {
 		return nil, err
 	}
 
-	matchIds, err := FetchMatches(account.PUUID, 100)
+	matchIds, err := FetchMatches(account.PUUID, 100, queueType)
 
 	if err != nil {
 		return nil, err
@@ -61,7 +61,7 @@ func getHundredGames(riotIDGameName, tagLine string) ([]*Match, error) {
 }
 
 func getWinrate(riotIDGameName, tagLine string) (int, error) {
-	matches, err := getHundredGames(riotIDGameName, tagLine)
+	matches, err := getHundredGames(riotIDGameName, tagLine, QueueRankedSolo)
 
 	if err != nil {
 		return 0, err
@@ -76,8 +76,8 @@ func getWinrate(riotIDGameName, tagLine string) (int, error) {
 	return Count(allyTeams, isWinningTeam), nil
 }
 
-func getEnemies(riotIDGameName, tagLine string) (map[string]int, error) {
-	matches, err := getHundredGames(riotIDGameName, tagLine)
+func getEnemies(riotIDGameName, tagLine string, queueType QueueType) (map[string]int, error) {
+	matches, err := getHundredGames(riotIDGameName, tagLine, queueType)
 
 	if err != nil {
 		return nil, err
@@ -131,13 +131,30 @@ func printWinrate(riotIDGameName, tagLine string) {
 }
 
 func main() {
-	fmt.Printf("Enemies:\n")
-	enemies, err := getEnemies("Crapow", "EUW")
+	// fmt.Printf("Enemies:\n")
+	// enemies, err := getEnemies("Crapow", "EUW", QueueRankedSolo)
+	// if err != nil {
+	// 	log.Fatal("Error getting enemies:", err)
+	// }
+	// for enemy, count := range enemies {
+	// 	fmt.Printf("%s: %d\n", enemy, count)
+	// }
+
+	riotIDGameName := "titius33"
+	matches, err := getHundredGames(riotIDGameName, "EUW", QueueAll)
+
 	if err != nil {
-		log.Fatal("Error getting enemies:", err)
+		log.Fatal("Error getting matches:", err)
 	}
-	for enemy, count := range enemies {
-		fmt.Printf("%s: %d\n", enemy, count)
+
+	for _, match := range matches {
+		ally, err := getAlly(match, riotIDGameName)
+
+		if err != nil {
+			log.Fatal("Error getting ally:", err)
+		}
+
+		fmt.Printf("Champion: %s\n", ally.ChampionName)
 	}
 
 	// printWinrate("Crapow")

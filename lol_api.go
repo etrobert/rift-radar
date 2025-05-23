@@ -55,6 +55,14 @@ func makeRequest(client *http.Client, url string) ([]byte, error) {
 	return body, nil
 }
 
+type QueueType int
+
+const (
+	QueueAll        QueueType = -1
+	QueueRankedSolo QueueType = 420
+	QueueARAM       QueueType = 450
+)
+
 func FetchAccount(gameName, tagLine string) (Account, error) {
 	url := "riot/account/v1/accounts/by-riot-id/" + gameName + "/" + tagLine
 	body, err := makeRequest(client, url)
@@ -72,8 +80,12 @@ func FetchAccount(gameName, tagLine string) (Account, error) {
 	return account, nil
 }
 
-func FetchMatches(puuid string, count int) ([]string, error) {
+func FetchMatches(puuid string, count int, queueType QueueType) ([]string, error) {
 	url := "lol/match/v5/matches/by-puuid/" + puuid + "/ids?count=" + fmt.Sprint(count)
+
+	if queueType != QueueAll {
+		url += "&queue=" + fmt.Sprint(queueType)
+	}
 
 	body, err := makeRequest(client, url)
 
