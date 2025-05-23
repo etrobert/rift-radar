@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"sort"
 
 	"github.com/joho/godotenv"
 )
@@ -147,14 +148,34 @@ func main() {
 		log.Fatal("Error getting matches:", err)
 	}
 
+	matchesByChampion := make(map[string][]*Match)
+	winsByChampion := make(map[string]int)
+
 	for _, match := range matches {
-		ally, err := getAlly(match, riotIDGameName)
+		ally := Must2(getAlly)(match, riotIDGameName)
+		allyTeam := Must(getAllyTeam(riotIDGameName))(match)
 
-		if err != nil {
-			log.Fatal("Error getting ally:", err)
+		matchesByChampion[ally.ChampionName] = append(matchesByChampion[ally.ChampionName], match)
+		if allyTeam.Win {
+			winsByChampion[ally.ChampionName]++
 		}
+	}
 
-		fmt.Printf("Champion: %s\n", ally.ChampionName)
+	keys := make([]string, 0, len(matchesByChampion))
+	for champion := range matchesByChampion {
+		keys = append(keys, champion)
+	}
+
+	sort.Slice(keys, func(i, j int) bool {
+		return len(matchesByChampion[keys[i]]) > len(matchesByChampion[keys[j]])
+	})
+
+	for _, champion := range keys {
+		fmt.Printf("%13s %2d / %-2d\n",
+			champion,
+			winsByChampion[champion],
+			len(matchesByChampion[champion]),
+		)
 	}
 
 	// printWinrate("Crapow")
