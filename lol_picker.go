@@ -39,14 +39,14 @@ func isWinningTeam(team Team) bool {
 	return team.Win
 }
 
-func getHundredGames(riotIDGameName, tagLine string, queueType QueueType) ([]*Match, error) {
+func getNGames(riotIDGameName, tagLine string, n int, queueType QueueType) ([]*Match, error) {
 	account, err := FetchAccount(riotIDGameName, tagLine)
 
 	if err != nil {
 		return nil, err
 	}
 
-	matchIds, err := FetchMatches(account.PUUID, 100, queueType)
+	matchIds, err := FetchMatches(account.PUUID, n, queueType)
 
 	if err != nil {
 		return nil, err
@@ -62,7 +62,7 @@ func getHundredGames(riotIDGameName, tagLine string, queueType QueueType) ([]*Ma
 }
 
 func getWinrate(riotIDGameName, tagLine string) (int, error) {
-	matches, err := getHundredGames(riotIDGameName, tagLine, QueueRankedSolo)
+	matches, err := getNGames(riotIDGameName, tagLine, 100, QueueRankedSolo)
 
 	if err != nil {
 		return 0, err
@@ -78,7 +78,7 @@ func getWinrate(riotIDGameName, tagLine string) (int, error) {
 }
 
 func getEnemies(riotIDGameName, tagLine string, queueType QueueType) (map[string]int, error) {
-	matches, err := getHundredGames(riotIDGameName, tagLine, queueType)
+	matches, err := getNGames(riotIDGameName, tagLine, 100, queueType)
 
 	if err != nil {
 		return nil, err
@@ -142,7 +142,7 @@ func main() {
 	// }
 
 	riotIDGameName := "titius33"
-	matches, err := getHundredGames(riotIDGameName, "EUW", QueueAll)
+	matches, err := getNGames(riotIDGameName, "EUW", 100, QueueAll)
 
 	if err != nil {
 		log.Fatal("Error getting matches:", err)
