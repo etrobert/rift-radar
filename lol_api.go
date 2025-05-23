@@ -80,8 +80,8 @@ func FetchAccount(gameName, tagLine string) (Account, error) {
 	return account, nil
 }
 
-func FetchMatches(puuid string, count int, queueType QueueType) ([]string, error) {
-	url := "lol/match/v5/matches/by-puuid/" + puuid + "/ids?count=" + fmt.Sprint(count)
+func FetchMatches(puuid string, start int, count int, queueType QueueType) ([]string, error) {
+	url := "lol/match/v5/matches/by-puuid/" + puuid + "/ids?count=" + fmt.Sprint(count) + "&start=" + fmt.Sprint(start)
 
 	if queueType != QueueAll {
 		url += "&queue=" + fmt.Sprint(queueType)

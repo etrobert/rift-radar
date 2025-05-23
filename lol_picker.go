@@ -46,16 +46,26 @@ func getNGames(riotIDGameName, tagLine string, n int, queueType QueueType) ([]*M
 		return nil, err
 	}
 
-	matchIds, err := FetchMatches(account.PUUID, n, queueType)
+	matches := make([]*Match, 0, n)
+	start := 0
 
-	if err != nil {
-		return nil, err
-	}
+	for n > 0 {
+		matchIds, err := FetchMatches(account.PUUID, start, min(n, 100), queueType)
 
-	matches, err := ErrorMap(matchIds, FetchMatch)
+		if err != nil {
+			return nil, err
+		}
 
-	if err != nil {
-		return nil, err
+		batchMatches, err := ErrorMap(matchIds, FetchMatch)
+
+		if err != nil {
+			return nil, err
+		}
+
+		matches = append(matches, batchMatches...)
+
+		n -= 100
+		start += 100
 	}
 
 	return matches, nil
@@ -142,7 +152,7 @@ func main() {
 	// }
 
 	riotIDGameName := "titius33"
-	matches, err := getNGames(riotIDGameName, "EUW", 100, QueueAll)
+	matches, err := getNGames(riotIDGameName, "EUW", 200, QueueRankedSolo)
 
 	if err != nil {
 		log.Fatal("Error getting matches:", err)
