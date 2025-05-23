@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"log"
-	"sort"
 
 	"github.com/joho/godotenv"
 )
