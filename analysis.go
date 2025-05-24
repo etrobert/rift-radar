@@ -60,11 +60,15 @@ func getNGames(gameName, tagLine string, n int, queueType QueueType) ([]*Match, 
 	return matches, nil
 }
 
-func getWinrate(gameName, tagLine string) (int, error) {
-	matches, err := getNGames(gameName, tagLine, 100, QueueRankedSolo)
+func getWinrate(gameName, tagLine string, queueType QueueType) (int, error) {
+	matches, err := getNGames(gameName, tagLine, 100, queueType)
 
 	if err != nil {
 		return 0, err
+	}
+
+	if len(matches) == 0 {
+		return 0, nil
 	}
 
 	allyTeams, err := ErrorMap(matches, getAllyTeam(gameName))
@@ -73,7 +77,8 @@ func getWinrate(gameName, tagLine string) (int, error) {
 		return 0, err
 	}
 
-	return Count(allyTeams, isWinningTeam), nil
+	wins := Count(allyTeams, isWinningTeam)
+	return (wins * 100) / len(matches), nil
 }
 
 func getEnemies(gameName, tagLine string, queueType QueueType) (map[string]int, error) {

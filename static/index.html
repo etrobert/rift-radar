@@ -119,7 +119,9 @@
         try {
           // Fetch both APIs concurrently
           const [winrateResponse, championResponse] = await Promise.all([
-            fetch(`/api/winrate?gameName=${gameName}&tagLine=${tagLine}`),
+            fetch(
+              `/api/winrate?gameName=${gameName}&tagLine=${tagLine}&queueType=${queueType}`,
+            ),
             fetch(
               `/api/winrateByChampion?gameName=${gameName}&tagLine=${tagLine}&queueType=${queueType}`,
             ),

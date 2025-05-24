@@ -28,13 +28,24 @@ func loggingMiddleware(next http.Handler) http.Handler {
 func winrateHandler(w http.ResponseWriter, r *http.Request) {
 	gameName := r.URL.Query().Get("gameName")
 	tagLine := r.URL.Query().Get("tagLine")
+	queueTypeStr := r.URL.Query().Get("queueType")
+
+	var queueType QueueType = QueueAll
+	if queueTypeStr != "" {
+		queueTypeInt, err := strconv.Atoi(queueTypeStr)
+		if err != nil {
+			http.Error(w, fmt.Sprintf("Invalid queueType: %v", err), http.StatusBadRequest)
+			return
+		}
+		queueType = QueueType(queueTypeInt)
+	}
 
 	if gameName == "" || tagLine == "" {
 		http.Error(w, "Missing gameName or tagLine", http.StatusBadRequest)
 		return
 	}
 
-	wins, err := getWinrate(gameName, tagLine)
+	wins, err := getWinrate(gameName, tagLine, queueType)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Error getting winrate: %v", err), http.StatusInternalServerError)
 		return
