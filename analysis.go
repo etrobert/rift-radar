@@ -117,7 +117,7 @@ func getWinrateByEnemyChampion(gameName string, matches []*Match) ([]ResultPerEn
 
 	results := make([]ResultPerEnemy, 0, len(games))
 
-	for championName, _ := range games {
+	for championName := range games {
 		results = append(results, ResultPerEnemy{
 			ChampionName: championName,
 			Wins:         wins[championName],
