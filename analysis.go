@@ -60,8 +60,8 @@ func getNGames(gameName, tagLine string, n int, queueType QueueType) ([]*Match, 
 	return matches, nil
 }
 
-func getWinrate(gameName, tagLine string, queueType QueueType) (int, error) {
-	matches, err := getNGames(gameName, tagLine, 100, queueType)
+func getWinrate(gameName, tagLine string, queueType QueueType, games int) (int, error) {
+	matches, err := getNGames(gameName, tagLine, games, queueType)
 
 	if err != nil {
 		return 0, err
@@ -131,8 +131,8 @@ type ResultsPerChampion struct {
 	Games        int
 }
 
-func getWinrateByChampion(gameName, tagLine string, queueType QueueType) ([]ResultsPerChampion, error) {
-	matches, err := getNGames(gameName, tagLine, 200, queueType)
+func getWinrateByChampion(gameName, tagLine string, queueType QueueType, games int) ([]ResultsPerChampion, error) {
+	matches, err := getNGames(gameName, tagLine, games, queueType)
 
 	if err != nil {
 		return nil, err
