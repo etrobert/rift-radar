@@ -65,13 +65,19 @@ func statsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	winrate, err := getWinrate(gameName, tagLine, queueType, games)
+	matches, err := getNGames(gameName, tagLine, games, queueType)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Error fetching matches: %v", err), http.StatusInternalServerError)
+		return
+	}
+
+	winrate, err := getWinrate(gameName, matches)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Error getting winrate: %v", err), http.StatusInternalServerError)
 		return
 	}
 
-	championWinrates, err := getWinrateByChampion(gameName, tagLine, queueType, games)
+	championWinrates, err := getWinrateByChampion(gameName, matches)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Error getting champion winrates: %v", err), http.StatusInternalServerError)
 		return
