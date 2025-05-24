@@ -142,21 +142,17 @@ func printWinrate(riotIDGameName, tagLine string) {
 	fmt.Printf("Winrate for %s: %d%%\n", riotIDGameName, wins)
 }
 
-func main() {
-	// fmt.Printf("Enemies:\n")
-	// enemies, err := getEnemies("Crapow", "EUW", QueueRankedSolo)
-	// if err != nil {
-	// 	log.Fatal("Error getting enemies:", err)
-	// }
-	// for enemy, count := range enemies {
-	// 	fmt.Printf("%s: %d\n", enemy, count)
-	// }
+type ResultsPerChampion struct {
+	ChampionName string
+	Wins         int
+	Games        int
+}
 
-	riotIDGameName := "titius33"
-	matches, err := getNGames(riotIDGameName, "EUW", 200, QueueRankedSolo)
+func getWinrateByChampion(riotIDGameName, tagLine string, queueType QueueType) ([]ResultsPerChampion, error) {
+	matches, err := getNGames(riotIDGameName, tagLine, 200, queueType)
 
 	if err != nil {
-		log.Fatal("Error getting matches:", err)
+		return nil, err
 	}
 
 	matchesByChampion := make(map[string][]*Match)
@@ -172,24 +168,32 @@ func main() {
 		}
 	}
 
-	keys := make([]string, 0, len(matchesByChampion))
-	for champion := range matchesByChampion {
-		keys = append(keys, champion)
+	results := make([]ResultsPerChampion, 0, len(matchesByChampion))
+	for championName := range matchesByChampion {
+		results = append(results, ResultsPerChampion{
+			ChampionName: championName,
+			Wins:         winsByChampion[championName],
+			Games:        len(matchesByChampion[championName]),
+		})
 	}
 
-	sort.Slice(keys, func(i, j int) bool {
-		return len(matchesByChampion[keys[i]]) > len(matchesByChampion[keys[j]])
+	sort.Slice(results, func(i, j int) bool {
+		return results[i].Games > results[j].Games
 	})
 
-	for _, champion := range keys {
-		fmt.Printf("%13s %2d / %-2d\n",
-			champion,
-			winsByChampion[champion],
-			len(matchesByChampion[champion]),
-		)
+	return results, nil
+}
+
+func main() {
+	results, err := getWinrateByChampion("Beigeres", "EUW", QueueRankedSolo)
+
+	if err != nil {
+		log.Fatal("Error getting winrate by champion:", err)
 	}
 
-	// printWinrate("Crapow")
-	// printWinrate("Beigeres")
-	// printWinrate("titius33")
+	for _, result := range results {
+		fmt.Printf("%13s: %2d / %-2d %.2f%%\n",
+			result.ChampionName, result.Wins, result.Games,
+			float64(result.Wins)/float64(result.Games)*100)
+	}
 }
