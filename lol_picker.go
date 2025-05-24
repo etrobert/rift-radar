@@ -13,6 +13,7 @@ func init() {
 	if err != nil {
 		log.Printf("Warning: Error loading .env file: %v", err)
 	}
+	initRedis()
 }
 
 func getAlly(match *Match, riotIDGameName string) (Participant, error) {

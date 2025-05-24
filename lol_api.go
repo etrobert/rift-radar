@@ -6,6 +6,8 @@ import (
 	"io"
 	"net/http"
 	"os"
+
+	"github.com/redis/go-redis/v9"
 )
 
 var baseUrl = "https://europe.api.riotgames.com/"
@@ -88,6 +90,10 @@ func getMatchData(matchId string) ([]byte, error) {
 	cachedMatch, err := getCachedMatch(matchId)
 	if err == nil {
 		return cachedMatch, nil
+	}
+
+	if err != redis.Nil {
+		return nil, fmt.Errorf("error fetching cached match: %v", err)
 	}
 
 	url := "lol/match/v5/matches/" + matchId
