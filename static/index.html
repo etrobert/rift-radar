@@ -151,6 +151,11 @@
             `/api/stats?gameName=${gameName}&tagLine=${tagLine}&queueType=${queueType}&games=${games}`,
           );
 
+          if (response.status !== 200) {
+            const text = await response.text();
+            throw new Error(response.statusText + " | " + text);
+          }
+
           const data = await response.json();
 
           let html = `
