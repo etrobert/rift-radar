@@ -26,8 +26,9 @@ func loggingMiddleware(next http.Handler) http.Handler {
 }
 
 type StatsResponse struct {
-	Winrate           int                   `json:"winrate"`
+	Winrate          int                  `json:"winrate"`
 	ChampionWinrates []ResultsPerChampion `json:"championWinrates"`
+	EnemyWinrates    []ResultPerEnemy     `json:"enemyWinrates"`
 }
 
 func statsHandler(w http.ResponseWriter, r *http.Request) {
@@ -83,9 +84,16 @@ func statsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	enemyWinrates, err := getWinrateByEnemyChampion(gameName, matches)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Error getting enemy champion winrates: %v", err), http.StatusInternalServerError)
+		return
+	}
+
 	response := StatsResponse{
-		Winrate:           winrate,
+		Winrate:          winrate,
 		ChampionWinrates: championWinrates,
+		EnemyWinrates:    enemyWinrates,
 	}
 
 	json.NewEncoder(w).Encode(response)

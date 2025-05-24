@@ -24,6 +24,20 @@ func getAllyTeam(gameName string) func(match *Match) (Team, error) {
 	}
 }
 
+func getEnemyTeam(gameName string) func(match *Match) (Team, error) {
+	return func(match *Match) (Team, error) {
+		ally, err := getAlly(match, gameName)
+
+		if err != nil {
+			return Team{}, err
+		}
+
+		return Find(match.Info.Teams, func(team Team) bool {
+			return team.TeamID != ally.TeamID
+		})
+	}
+}
+
 func isWinningTeam(team Team) bool {
 	return team.Win
 }
@@ -74,48 +88,48 @@ func getWinrate(gameName string, matches []*Match) (int, error) {
 	return (wins * 100) / len(matches), nil
 }
 
-func getEnemies(gameName, tagLine string, queueType QueueType) (map[string]int, error) {
-	matches, err := getNGames(gameName, tagLine, 100, queueType)
+type ResultPerEnemy struct {
+	ChampionName string
+	Wins         int
+	Games        int
+}
 
-	if err != nil {
-		return nil, err
-	}
-
-	enemies := make(map[string]int)
+func getWinrateByEnemyChampion(gameName string, matches []*Match) ([]ResultPerEnemy, error) {
+	wins := make(map[string]int)
+	games := make(map[string]int)
 
 	for _, match := range matches {
-		allyTeam, err := getAllyTeam(gameName)(match)
+		enemyTeam, err := getEnemyTeam(gameName)(match)
 
 		if err != nil {
 			return nil, err
-		}
-
-		firstEnemy, err := Find(match.Info.Participants, func(p Participant) bool {
-			return p.TeamID != allyTeam.TeamID
-		})
-
-		if err != nil {
-			return nil, err
-		}
-
-		enemyTeamID := firstEnemy.TeamID
-
-		enemyTeam, err := Find(match.Info.Teams, func(t Team) bool {
-			return t.TeamID == enemyTeamID
-		})
-
-		if !enemyTeam.Win {
-			continue
 		}
 
 		for _, enemy := range match.Info.Participants {
-			if enemy.TeamID == enemyTeamID {
-				enemies[enemy.ChampionName]++
+			if enemy.TeamID == enemyTeam.TeamID {
+				games[enemy.ChampionName]++
+				if !enemy.Win {
+					wins[enemy.ChampionName]++
+				}
 			}
 		}
 	}
 
-	return enemies, nil
+	results := make([]ResultPerEnemy, 0, len(games))
+
+	for championName, _ := range games {
+		results = append(results, ResultPerEnemy{
+			ChampionName: championName,
+			Wins:         wins[championName],
+			Games:        games[championName],
+		})
+	}
+
+	sort.Slice(results, func(i, j int) bool {
+		return results[i].Games > results[j].Games
+	})
+
+	return results, nil
 }
 
 type ResultsPerChampion struct {
@@ -153,4 +167,3 @@ func getWinrateByChampion(gameName string, matches []*Match) ([]ResultsPerChampi
 
 	return results, nil
 }
-
