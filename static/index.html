@@ -127,27 +127,21 @@
         document.getElementById("results").innerHTML = "<p>Loading...</p>";
 
         try {
-          // Fetch both APIs concurrently
-          const [winrateResponse, championResponse] = await Promise.all([
-            fetch(
-              `/api/winrate?gameName=${gameName}&tagLine=${tagLine}&queueType=${queueType}&games=${games}`,
-            ),
-            fetch(
-              `/api/winrateByChampion?gameName=${gameName}&tagLine=${tagLine}&queueType=${queueType}&games=${games}`,
-            ),
-          ]);
+          // Fetch combined stats from single endpoint
+          const response = await fetch(
+            `/api/stats?gameName=${gameName}&tagLine=${tagLine}&queueType=${queueType}&games=${games}`,
+          );
 
-          const winrateData = await winrateResponse.json();
-          const championData = await championResponse.json();
+          const data = await response.json();
 
           let html = `
             <h3>Overall Winrate</h3>
-            <p>${winrateData.winrate}%</p>
+            <p>${data.winrate}%</p>
             
             <h3>Champion Winrates</h3>
           `;
 
-          championData.forEach((champion) => {
+          data.championWinrates.forEach((champion) => {
             const winrate = ((champion.Wins / champion.Games) * 100).toFixed(1);
             html += `
               <div class="champion">

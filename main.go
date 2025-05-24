@@ -25,7 +25,12 @@ func loggingMiddleware(next http.Handler) http.Handler {
 	})
 }
 
-func winrateHandler(w http.ResponseWriter, r *http.Request) {
+type StatsResponse struct {
+	Winrate           int                   `json:"winrate"`
+	ChampionWinrates []ResultsPerChampion `json:"championWinrates"`
+}
+
+func statsHandler(w http.ResponseWriter, r *http.Request) {
 	gameName := r.URL.Query().Get("gameName")
 	tagLine := r.URL.Query().Get("tagLine")
 	queueTypeStr := r.URL.Query().Get("queueType")
@@ -60,67 +65,31 @@ func winrateHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	wins, err := getWinrate(gameName, tagLine, queueType, games)
+	winrate, err := getWinrate(gameName, tagLine, queueType, games)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Error getting winrate: %v", err), http.StatusInternalServerError)
 		return
 	}
 
-	response := map[string]int{"winrate": wins}
-	json.NewEncoder(w).Encode(response)
-}
-
-func winrateByChampionHandler(w http.ResponseWriter, r *http.Request) {
-	gameName := r.URL.Query().Get("gameName")
-	tagLine := r.URL.Query().Get("tagLine")
-	queueTypeStr := r.URL.Query().Get("queueType")
-	gamesStr := r.URL.Query().Get("games")
-
-	var queueType QueueType = QueueAll
-	if queueTypeStr != "" {
-		queueTypeInt, err := strconv.Atoi(queueTypeStr)
-		if err != nil {
-			http.Error(w, fmt.Sprintf("Invalid queueType: %v", err), http.StatusBadRequest)
-			return
-		}
-		queueType = QueueType(queueTypeInt)
-	}
-
-	games := 100
-	if gamesStr != "" {
-		gamesInt, err := strconv.Atoi(gamesStr)
-		if err != nil {
-			http.Error(w, fmt.Sprintf("Invalid games: %v", err), http.StatusBadRequest)
-			return
-		}
-		if gamesInt < 1 || gamesInt > 1000 {
-			http.Error(w, "games must be between 1 and 1000", http.StatusBadRequest)
-			return
-		}
-		games = gamesInt
-	}
-
-	if gameName == "" || tagLine == "" {
-		http.Error(w, "Missing gameName or tagLine", http.StatusBadRequest)
-		return
-	}
-
-	results, err := getWinrateByChampion(gameName, tagLine, queueType, games)
-
+	championWinrates, err := getWinrateByChampion(gameName, tagLine, queueType, games)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Error getting winrate by champion: %v", err), http.StatusInternalServerError)
+		http.Error(w, fmt.Sprintf("Error getting champion winrates: %v", err), http.StatusInternalServerError)
 		return
 	}
 
-	json.NewEncoder(w).Encode(results)
+	response := StatsResponse{
+		Winrate:           winrate,
+		ChampionWinrates: championWinrates,
+	}
+
+	json.NewEncoder(w).Encode(response)
 }
 
 func main() {
 	mux := http.NewServeMux()
 
 	// API endpoints
-	mux.HandleFunc("/api/winrate", winrateHandler)
-	mux.HandleFunc("/api/winrateByChampion", winrateByChampionHandler)
+	mux.HandleFunc("/api/stats", statsHandler)
 
 	// Serve static files from ./static directory
 	fs := http.FileServer(http.Dir("./static/"))
