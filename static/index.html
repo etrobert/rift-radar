@@ -40,6 +40,15 @@
         padding: 10px;
         background: #f5f5f5;
         border-radius: 5px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .champion-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 4px;
+        flex-shrink: 0;
       }
       .stats-columns {
         display: grid;
@@ -171,8 +180,13 @@
             const winrate = ((champion.Wins / champion.Games) * 100).toFixed(1);
             html += `
                 <div class="champion">
-                  <strong>${champion.ChampionName}</strong>: 
-                  ${champion.Wins}/${champion.Games} (${winrate}%)
+                  <img src="https://ddragon.leagueoflegends.com/cdn/14.24.1/img/champion/${champion.ChampionName}.png" 
+                       alt="${champion.ChampionName}" class="champion-icon" 
+                       onerror="this.style.display='none'">
+                  <div>
+                    <strong>${champion.ChampionName}</strong>: 
+                    ${champion.Wins}/${champion.Games} (${winrate}%)
+                  </div>
                 </div>
             `;
           });
@@ -187,8 +201,13 @@
             const winrate = ((result.Wins / result.Games) * 100).toFixed(1);
             html += `
                 <div class="champion">
-                  <strong>vs ${result.ChampionName}</strong>: 
-                  ${result.Wins}/${result.Games} wins (${winrate}%)
+                  <img src="https://ddragon.leagueoflegends.com/cdn/14.24.1/img/champion/${result.ChampionName}.png" 
+                       alt="${result.ChampionName}" class="champion-icon" 
+                       onerror="this.style.display='none'">
+                  <div>
+                    <strong>vs ${result.ChampionName}</strong>: 
+                    ${result.Wins}/${result.Games} wins (${winrate}%)
+                  </div>
                 </div>
             `;
           });
