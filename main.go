@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/joho/godotenv"
 )
@@ -43,9 +44,40 @@ func winrateHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(response)
 }
 
+func winrateByChampionHandler(w http.ResponseWriter, r *http.Request) {
+	riotIDGameName := r.URL.Query().Get("riotIDGameName")
+	tagLine := r.URL.Query().Get("tagLine")
+	queueTypeStr := r.URL.Query().Get("queueType")
+
+	var queueType QueueType = QueueAll
+	if queueTypeStr != "" {
+		queueTypeInt, err := strconv.Atoi(queueTypeStr)
+		if err != nil {
+			http.Error(w, fmt.Sprintf("Invalid queueType: %v", err), http.StatusBadRequest)
+			return
+		}
+		queueType = QueueType(queueTypeInt)
+	}
+
+	if riotIDGameName == "" || tagLine == "" {
+		http.Error(w, "Missing riotIDGameName or tagLine", http.StatusBadRequest)
+		return
+	}
+
+	results, err := getWinrateByChampion(riotIDGameName, tagLine, queueType)
+
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Error getting winrate by champion: %v", err), http.StatusInternalServerError)
+		return
+	}
+
+	json.NewEncoder(w).Encode(results)
+}
+
 func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/winrate", winrateHandler)
+	mux.HandleFunc("/winrateByChampion", winrateByChampionHandler)
 
 	loggedMux := loggingMiddleware(mux)
 
