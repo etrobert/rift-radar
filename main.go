@@ -1,8 +1,10 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
+	"net/http"
 
 	"github.com/joho/godotenv"
 )
@@ -15,26 +17,38 @@ func init() {
 	initRedis()
 }
 
-func printWinrate(riotIDGameName, tagLine string) {
-	wins, err := getWinrate(riotIDGameName, tagLine)
+func loggingMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		log.Printf("%s %s %s", r.Method, r.URL.String(), r.RemoteAddr)
+		next.ServeHTTP(w, r)
+	})
+}
 
-	if err != nil {
-		log.Fatal("Error getting winrate:", err)
+func winrateHandler(w http.ResponseWriter, r *http.Request) {
+	riotIDGameName := r.URL.Query().Get("riotIDGameName")
+	tagLine := r.URL.Query().Get("tagLine")
+
+	if riotIDGameName == "" || tagLine == "" {
+		http.Error(w, "Missing riotIDGameName or tagLine", http.StatusBadRequest)
+		return
 	}
 
-	fmt.Printf("Winrate for %s: %d%%\n", riotIDGameName, wins)
+	wins, err := getWinrate(riotIDGameName, tagLine)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Error getting winrate: %v", err), http.StatusInternalServerError)
+		return
+	}
+
+	response := map[string]int{"winrate": wins}
+	json.NewEncoder(w).Encode(response)
 }
 
 func main() {
-	results, err := getWinrateByChampion("Beigeres", "EUW", QueueRankedSolo)
+	mux := http.NewServeMux()
+	mux.HandleFunc("/winrate", winrateHandler)
 
-	if err != nil {
-		log.Fatal("Error getting winrate by champion:", err)
-	}
+	loggedMux := loggingMiddleware(mux)
 
-	for _, result := range results {
-		fmt.Printf("%13s: %2d / %-2d %.2f%%\n",
-			result.ChampionName, result.Wins, result.Games,
-			float64(result.Wins)/float64(result.Games)*100)
-	}
+	log.Printf("Server starting on port 8080")
+	log.Fatal(http.ListenAndServe(":8080", loggedMux))
 }
