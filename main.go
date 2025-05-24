@@ -26,15 +26,15 @@ func loggingMiddleware(next http.Handler) http.Handler {
 }
 
 func winrateHandler(w http.ResponseWriter, r *http.Request) {
-	riotIDGameName := r.URL.Query().Get("riotIDGameName")
+	gameName := r.URL.Query().Get("gameName")
 	tagLine := r.URL.Query().Get("tagLine")
 
-	if riotIDGameName == "" || tagLine == "" {
-		http.Error(w, "Missing riotIDGameName or tagLine", http.StatusBadRequest)
+	if gameName == "" || tagLine == "" {
+		http.Error(w, "Missing gameName or tagLine", http.StatusBadRequest)
 		return
 	}
 
-	wins, err := getWinrate(riotIDGameName, tagLine)
+	wins, err := getWinrate(gameName, tagLine)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Error getting winrate: %v", err), http.StatusInternalServerError)
 		return
@@ -45,7 +45,7 @@ func winrateHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func winrateByChampionHandler(w http.ResponseWriter, r *http.Request) {
-	riotIDGameName := r.URL.Query().Get("riotIDGameName")
+	gameName := r.URL.Query().Get("gameName")
 	tagLine := r.URL.Query().Get("tagLine")
 	queueTypeStr := r.URL.Query().Get("queueType")
 
@@ -59,12 +59,12 @@ func winrateByChampionHandler(w http.ResponseWriter, r *http.Request) {
 		queueType = QueueType(queueTypeInt)
 	}
 
-	if riotIDGameName == "" || tagLine == "" {
-		http.Error(w, "Missing riotIDGameName or tagLine", http.StatusBadRequest)
+	if gameName == "" || tagLine == "" {
+		http.Error(w, "Missing gameName or tagLine", http.StatusBadRequest)
 		return
 	}
 
-	results, err := getWinrateByChampion(riotIDGameName, tagLine, queueType)
+	results, err := getWinrateByChampion(gameName, tagLine, queueType)
 
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Error getting winrate by champion: %v", err), http.StatusInternalServerError)
@@ -76,8 +76,14 @@ func winrateByChampionHandler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	mux := http.NewServeMux()
-	mux.HandleFunc("/winrate", winrateHandler)
-	mux.HandleFunc("/winrateByChampion", winrateByChampionHandler)
+
+	// API endpoints
+	mux.HandleFunc("/api/winrate", winrateHandler)
+	mux.HandleFunc("/api/winrateByChampion", winrateByChampionHandler)
+
+	// Serve static files from ./static directory
+	fs := http.FileServer(http.Dir("./static/"))
+	mux.Handle("/", fs)
 
 	loggedMux := loggingMiddleware(mux)
 

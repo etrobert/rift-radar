@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rift Radar</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      form {
+        display: flex;
+        gap: 15px;
+        align-items: flex-end;
+      }
+      label {
+        display: block;
+        margin-bottom: 5px;
+      }
+      input,
+      select,
+      button {
+        padding: 8px;
+      }
+      button {
+        background: #0066cc;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 4px;
+      }
+      button:hover {
+        background: #0052a3;
+      }
+      .champion {
+        margin: 5px 0;
+        padding: 10px;
+        background: #f5f5f5;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Rift Radar - League of Legends Stats</h1>
+
+    <form onsubmit="getAllStats(event)">
+      <div>
+        <label>Game Name:</label>
+        <input type="text" id="gameName" placeholder="e.g. titius33" required />
+      </div>
+
+      <div>
+        <label>Tag Line:</label>
+        <input type="text" id="tagLine" placeholder="e.g. EUW" required />
+      </div>
+
+      <div>
+        <label>Queue Type:</label>
+        <select id="queueType">
+          <option value="-1">All Queues</option>
+          <option value="420">Ranked Solo/Duo</option>
+          <option value="440">Ranked Flex 5v5</option>
+          <option value="400">Normal Draft</option>
+          <option value="430">Normal Blind</option>
+          <option value="450">ARAM</option>
+        </select>
+      </div>
+
+      <button type="submit">Get Stats</button>
+    </form>
+
+    <div id="results"></div>
+
+    <script>
+      function loadFromURL() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const gameName = urlParams.get("gameName");
+        const tagLine = urlParams.get("tagLine");
+        const queueType = urlParams.get("queueType");
+
+        if (gameName) document.getElementById("gameName").value = gameName;
+        if (tagLine) document.getElementById("tagLine").value = tagLine;
+        if (queueType) document.getElementById("queueType").value = queueType;
+
+        if (gameName && tagLine) getAllStats();
+      }
+
+      // Update URL when form changes
+      function updateURL() {
+        const gameName = document.getElementById("gameName").value;
+        const tagLine = document.getElementById("tagLine").value;
+        const queueType = document.getElementById("queueType").value;
+
+        if (gameName && tagLine) {
+          const params = new URLSearchParams();
+          params.set("gameName", gameName);
+          params.set("tagLine", tagLine);
+          if (queueType !== "-1") params.set("queueType", queueType);
+
+          const newURL = `${window.location.pathname}?${params.toString()}`;
+          window.history.pushState({}, "", newURL);
+        }
+      }
+
+      async function getAllStats(event) {
+        if (event) event.preventDefault();
+
+        const gameName = document.getElementById("gameName").value;
+        const tagLine = document.getElementById("tagLine").value;
+        const queueType = document.getElementById("queueType").value;
+
+        updateURL();
+
+        document.getElementById("results").innerHTML = "<p>Loading...</p>";
+
+        try {
+          // Fetch both APIs concurrently
+          const [winrateResponse, championResponse] = await Promise.all([
+            fetch(`/api/winrate?gameName=${gameName}&tagLine=${tagLine}`),
+            fetch(
+              `/api/winrateByChampion?gameName=${gameName}&tagLine=${tagLine}&queueType=${queueType}`,
+            ),
+          ]);
+
+          const winrateData = await winrateResponse.json();
+          const championData = await championResponse.json();
+
+          let html = `
+            <h3>Overall Winrate</h3>
+            <p>${winrateData.winrate}%</p>
+            
+            <h3>Champion Winrates</h3>
+          `;
+
+          championData.forEach((champion) => {
+            const winrate = ((champion.Wins / champion.Games) * 100).toFixed(1);
+            html += `
+              <div class="champion">
+                <strong>${champion.ChampionName}</strong>: 
+                ${champion.Wins}/${champion.Games} (${winrate}%)
+              </div>
+            `;
+          });
+
+          document.getElementById("results").innerHTML = html;
+        } catch (error) {
+          document.getElementById("results").innerHTML =
+            `<p>Error: ${error.message}</p>`;
+        }
+      }
+
+      // Load data when page loads
+      window.addEventListener("load", loadFromURL);
+    </script>
+  </body>
+</html>

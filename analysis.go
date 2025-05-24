@@ -4,15 +4,15 @@ import (
 	"sort"
 )
 
-func getAlly(match *Match, riotIDGameName string) (Participant, error) {
+func getAlly(match *Match, gameName string) (Participant, error) {
 	return Find(match.Info.Participants, func(p Participant) bool {
-		return p.RiotIDGameName == riotIDGameName
+		return p.RiotIDGameName == gameName
 	})
 }
 
-func getAllyTeam(riotIDGameName string) func(match *Match) (Team, error) {
+func getAllyTeam(gameName string) func(match *Match) (Team, error) {
 	return func(match *Match) (Team, error) {
-		ally, err := getAlly(match, riotIDGameName)
+		ally, err := getAlly(match, gameName)
 
 		if err != nil {
 			return Team{}, err
@@ -28,8 +28,8 @@ func isWinningTeam(team Team) bool {
 	return team.Win
 }
 
-func getNGames(riotIDGameName, tagLine string, n int, queueType QueueType) ([]*Match, error) {
-	account, err := FetchAccount(riotIDGameName, tagLine)
+func getNGames(gameName, tagLine string, n int, queueType QueueType) ([]*Match, error) {
+	account, err := FetchAccount(gameName, tagLine)
 
 	if err != nil {
 		return nil, err
@@ -60,14 +60,14 @@ func getNGames(riotIDGameName, tagLine string, n int, queueType QueueType) ([]*M
 	return matches, nil
 }
 
-func getWinrate(riotIDGameName, tagLine string) (int, error) {
-	matches, err := getNGames(riotIDGameName, tagLine, 100, QueueRankedSolo)
+func getWinrate(gameName, tagLine string) (int, error) {
+	matches, err := getNGames(gameName, tagLine, 100, QueueRankedSolo)
 
 	if err != nil {
 		return 0, err
 	}
 
-	allyTeams, err := ErrorMap(matches, getAllyTeam(riotIDGameName))
+	allyTeams, err := ErrorMap(matches, getAllyTeam(gameName))
 
 	if err != nil {
 		return 0, err
@@ -76,8 +76,8 @@ func getWinrate(riotIDGameName, tagLine string) (int, error) {
 	return Count(allyTeams, isWinningTeam), nil
 }
 
-func getEnemies(riotIDGameName, tagLine string, queueType QueueType) (map[string]int, error) {
-	matches, err := getNGames(riotIDGameName, tagLine, 100, queueType)
+func getEnemies(gameName, tagLine string, queueType QueueType) (map[string]int, error) {
+	matches, err := getNGames(gameName, tagLine, 100, queueType)
 
 	if err != nil {
 		return nil, err
@@ -86,7 +86,7 @@ func getEnemies(riotIDGameName, tagLine string, queueType QueueType) (map[string
 	enemies := make(map[string]int)
 
 	for _, match := range matches {
-		allyTeam, err := getAllyTeam(riotIDGameName)(match)
+		allyTeam, err := getAllyTeam(gameName)(match)
 
 		if err != nil {
 			return nil, err
@@ -126,8 +126,8 @@ type ResultsPerChampion struct {
 	Games        int
 }
 
-func getWinrateByChampion(riotIDGameName, tagLine string, queueType QueueType) ([]ResultsPerChampion, error) {
-	matches, err := getNGames(riotIDGameName, tagLine, 200, queueType)
+func getWinrateByChampion(gameName, tagLine string, queueType QueueType) ([]ResultsPerChampion, error) {
+	matches, err := getNGames(gameName, tagLine, 200, queueType)
 
 	if err != nil {
 		return nil, err
@@ -137,8 +137,8 @@ func getWinrateByChampion(riotIDGameName, tagLine string, queueType QueueType) (
 	winsByChampion := make(map[string]int)
 
 	for _, match := range matches {
-		ally := Must2(getAlly)(match, riotIDGameName)
-		allyTeam := Must(getAllyTeam(riotIDGameName))(match)
+		ally := Must2(getAlly)(match, gameName)
+		allyTeam := Must(getAllyTeam(gameName))(match)
 
 		matchesByChampion[ally.ChampionName] = append(matchesByChampion[ally.ChampionName], match)
 		if allyTeam.Win {
