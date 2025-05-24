@@ -13,7 +13,7 @@ var rdb *redis.Client
 
 func initRedis() {
 	rdb = redis.NewClient(&redis.Options{
-		Addr:     os.Getenv("REDIS_URL"),
+		Addr:     os.Getenv("REDISHOST") + ":" + os.Getenv("REDISPORT"),
 		Password: os.Getenv("REDISPASSWORD"),
 		DB:       0,
 	})
