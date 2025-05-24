@@ -4,11 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-lol-picker is a Go application that analyzes League of Legends match data using the Riot Games API. It fetches player statistics, calculates win rates, and provides champion performance analysis.
+rift-radar is a Go application that analyzes League of Legends match data using the Riot Games API. It fetches player statistics, calculates win rates, and provides champion performance analysis.
 
 ## Core Architecture
 
-- **lol_picker.go**: Main application logic with functions for analyzing match data, calculating win rates, and generating champion statistics
+- **main.go**: Main application logic with functions for analyzing match data, calculating win rates, and generating champion statistics
 - **lol_api.go**: Riot Games API client with caching layer using Redis for match data
 - **lol_api_types.go**: Complete type definitions for Riot API responses (Account, Match, Participant, Team structures)
 - **cache.go**: Redis-backed caching system for match data to reduce API calls

@@ -1,4 +1,4 @@
-module github.com/etrobert/lol-picker
+module github.com/etrobert/rift-radar
 
 go 1.24.2
 
