@@ -7,7 +7,8 @@ import (
 
 func getAlly(match *Match, gameName string) (Participant, error) {
 	return Find(match.Info.Participants, func(p Participant) bool {
-		return p.RiotIDGameName == gameName
+		// Old games used SummonerName
+		return p.RiotIDGameName == gameName || p.SummonerName == gameName
 	})
 }
 
