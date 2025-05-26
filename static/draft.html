@@ -3,13 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Rift Radar</title>
+    <title>Rift Radar - Draft</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <h1>Rift Radar</h1>
 
-    <form onsubmit="getAllStats(event)">
+    <form>
       <div>
         <label>Game Name:</label>
         <input type="text" id="gameName" placeholder="e.g. titius33" required />
@@ -36,13 +36,9 @@
         <label>Number of Games:</label>
         <input type="number" id="games" min="1" max="1000" value="100" />
       </div>
-
-      <button type="submit">Get Stats</button>
     </form>
 
-    <div id="results"></div>
-
     <script src="url-utils.js"></script>
-    <script src="script.js"></script>
   </body>
 </html>
+
