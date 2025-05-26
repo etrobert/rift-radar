@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rift Radar - Draft</title>
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="champion-selector.css" />
   </head>
   <body>
     <h1>Rift Radar</h1>
@@ -36,9 +37,36 @@
         <label>Number of Games:</label>
         <input type="number" id="games" min="1" max="1000" value="100" />
       </div>
+
+      <div>
+        <label>Champion:</label>
+        <div class="champion-selector" id="championSelector">
+          <img
+            src="https://ddragon.leagueoflegends.com/cdn/14.24.1/img/champion/Aatrox.png"
+            alt="Select Champion"
+            class="champion-selector-image"
+            id="selectedChampionImage"
+          />
+        </div>
+      </div>
     </form>
 
+    <div class="champion-modal" id="championModal">
+      <div class="champion-modal-content">
+        <div class="champion-modal-header">
+          <input
+            type="text"
+            id="championSearch"
+            placeholder="Search champions..."
+            class="champion-search"
+          />
+          <button class="champion-modal-close" id="closeModal">&times;</button>
+        </div>
+        <div class="champion-grid" id="championGrid"></div>
+      </div>
+    </div>
+
     <script src="url-utils.js"></script>
+    <script src="champion-selector.js"></script>
   </body>
 </html>
-
