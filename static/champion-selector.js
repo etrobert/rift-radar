@@ -85,7 +85,8 @@ function selectChampion(champion) {
 }
 
 function createChampionSelector() {
-  const selector = document.createElement("div");
+  const selector = document.createElement("button");
+  selector.type = "button";
   selector.className = "champion-selector";
   selector.innerHTML = `
     <div class="champion-placeholder">+</div>
