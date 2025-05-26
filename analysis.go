@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"sort"
 )
 
@@ -143,8 +144,16 @@ func getWinrateByChampion(gameName string, matches []*Match) ([]ResultsPerChampi
 	winsByChampion := make(map[string]int)
 
 	for _, match := range matches {
-		ally := Must2(getAlly)(match, gameName)
-		allyTeam := Must(getAllyTeam(gameName))(match)
+		ally, err := getAlly(match, gameName)
+
+		if err != nil {
+			return nil, fmt.Errorf("error getting ally for gameName=%s: %w", gameName, err)
+		}
+
+		allyTeam, err := getAllyTeam(gameName)(match)
+		if err != nil {
+			return nil, fmt.Errorf("error getting ally team for gameName=%s: %w", gameName, err)
+		}
 
 		matchesByChampion[ally.ChampionName] = append(matchesByChampion[ally.ChampionName], match)
 		if allyTeam.Win {
