@@ -23,9 +23,11 @@ async function getAllStats(event) {
 
     const data = await response.json();
 
+    const overallWinrate = ((data.totalWins / data.totalGames) * 100).toFixed(1);
+    
     let html = `
       <h3>Overall Winrate</h3>
-      <p>${data.winrate}%</p>
+      <p>${data.totalWins}/${data.totalGames} (${overallWinrate}%)</p>
       
       <div class="stats-columns">
         <div class="stats-column">

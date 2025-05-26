@@ -76,18 +76,19 @@ func getNGames(gameName, tagLine string, n int, queueType QueueType) ([]*Match, 
 	return matches, nil
 }
 
-func getWinrate(gameName string, matches []*Match) (int, error) {
+func getWinrateStats(gameName string, matches []*Match) (wins int, totalGames int, err error) {
 	if len(matches) == 0 {
-		return 0, nil
+		return 0, 0, nil
 	}
 
 	allyTeams, err := ErrorMap(matches, getAllyTeam(gameName))
 	if err != nil {
-		return 0, err
+		return 0, 0, err
 	}
 
-	wins := Count(allyTeams, isWinningTeam)
-	return (wins * 100) / len(matches), nil
+	wins = Count(allyTeams, isWinningTeam)
+	totalGames = len(matches)
+	return wins, totalGames, nil
 }
 
 type ResultPerEnemy struct {
