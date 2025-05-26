@@ -38,29 +38,37 @@
         <input type="number" id="games" min="1" max="1000" value="100" />
       </div>
 
-      <div>
-        <label>Champion:</label>
-        <div class="champion-selector">
-          <div class="champion-placeholder">+</div>
-          <img
-            src=""
-            alt="Select Champion"
-            class="champion-selector-image"
-            style="display: none"
-          />
-        </div>
-      </div>
+    </form>
 
-      <div>
-        <label>Enemy Champion:</label>
-        <div class="champion-selector">
-          <div class="champion-placeholder">+</div>
-          <img
-            src=""
-            alt="Select Champion"
-            class="champion-selector-image"
-            style="display: none"
-          />
+    <div class="teams-section">
+        <div class="team-container">
+          <h3>Ally Team</h3>
+          <div class="team-champions" data-team="ally">
+            <div class="champion-selector">
+              <div class="champion-placeholder">+</div>
+              <img
+                src=""
+                alt="Select Champion"
+                class="champion-selector-image"
+                style="display: none"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="team-container">
+          <h3>Enemy Team</h3>
+          <div class="team-champions" data-team="enemy">
+            <div class="champion-selector">
+              <div class="champion-placeholder">+</div>
+              <img
+                src=""
+                alt="Select Champion"
+                class="champion-selector-image"
+                style="display: none"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </form>

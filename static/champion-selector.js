@@ -54,7 +54,44 @@ function selectChampion(champion) {
   // Store selected champion data
   currentSelector.setAttribute("data-champion", champion.id);
 
+  // Check if this selector is in a team container and add new empty selector if needed
+  const teamContainer = currentSelector.closest('.team-champions');
+  if (teamContainer) {
+    addNewChampionSelector(teamContainer);
+  }
+
   closeChampionModal();
+}
+
+function createChampionSelector() {
+  const selector = document.createElement("div");
+  selector.className = "champion-selector";
+  selector.innerHTML = `
+    <div class="champion-placeholder">+</div>
+    <img
+      src=""
+      alt="Select Champion"
+      class="champion-selector-image"
+      style="display: none"
+    />
+  `;
+  
+  selector.onclick = () => openChampionModal(selector);
+  return selector;
+}
+
+function addNewChampionSelector(teamContainer) {
+  // Check if there's already an empty selector (one without data-champion)
+  const emptySelector = teamContainer.querySelector('.champion-selector:not([data-champion])');
+  
+  // Count current champions (excluding empty selectors)
+  const selectedChampions = teamContainer.querySelectorAll('.champion-selector[data-champion]').length;
+  
+  // Only add a new selector if there isn't already an empty one and we haven't reached the limit of 5
+  if (!emptySelector && selectedChampions < 5) {
+    const newSelector = createChampionSelector();
+    teamContainer.appendChild(newSelector);
+  }
 }
 
 function openChampionModal(selector) {
