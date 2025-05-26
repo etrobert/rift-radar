@@ -44,9 +44,12 @@ function selectChampion(champion) {
   selectedChampion = champion;
 
   const image = document.getElementById("selectedChampionImage");
+  const placeholder = document.getElementById("championPlaceholder");
 
   image.src = `https://ddragon.leagueoflegends.com/cdn/14.24.1/img/champion/${champion.id}.png`;
   image.alt = champion.name;
+  image.style.display = "block";
+  placeholder.style.display = "none";
 
   closeChampionModal();
 }

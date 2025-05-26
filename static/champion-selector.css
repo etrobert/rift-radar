@@ -18,6 +18,20 @@
   display: block;
 }
 
+.champion-placeholder {
+  width: 48px;
+  height: 48px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #3a3a3a;
+  color: #888;
+  font-size: 24px;
+  text-align: center;
+  border: 1px dashed #555;
+}
+
 .champion-modal {
   display: none;
   position: fixed;
