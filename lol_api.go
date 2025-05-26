@@ -6,6 +6,8 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"strconv"
+	"time"
 
 	"github.com/redis/go-redis/v9"
 )
@@ -15,29 +17,50 @@ var baseUrl = "https://europe.api.riotgames.com/"
 var client = &http.Client{}
 
 func makeRequest(client *http.Client, url string) ([]byte, error) {
-	var apiKey = os.Getenv("RIOT_API_KEY")
+	return makeRequestWithRetry(client, url, 3)
+}
 
+func makeRequestWithRetry(client *http.Client, url string, maxRetries int) ([]byte, error) {
+	var apiKey = os.Getenv("RIOT_API_KEY")
 	final_url := baseUrl + url
 
-	// Create a request with Riot API key header
-	req, _ := http.NewRequest("GET", final_url, nil)
-	req.Header.Add("X-Riot-Token", apiKey)
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
+	for attempt := 0; attempt <= maxRetries; attempt++ {
+		// Create a request with Riot API key header
+		req, _ := http.NewRequest("GET", final_url, nil)
+		req.Header.Add("X-Riot-Token", apiKey)
+		resp, err := client.Do(req)
+		if err != nil {
+			return nil, err
+		}
+		defer resp.Body.Close()
+
+		// Handle rate limiting
+		if resp.StatusCode == 429 {
+			if attempt < maxRetries {
+				retryAfter := resp.Header.Get("Retry-After")
+				if seconds, err := strconv.Atoi(retryAfter); err == nil {
+					fmt.Printf("Rate limited. Waiting %d seconds before retry %d/%d\n", seconds, attempt+1, maxRetries)
+					time.Sleep(time.Duration(seconds) * time.Second)
+					continue
+				}
+			}
+			return nil, fmt.Errorf("rate limited after %d attempts", maxRetries+1)
+		}
+
+		if resp.StatusCode != http.StatusOK {
+			return nil, fmt.Errorf("error: %s", resp.Status)
+		}
+
+		// Read the response body
+		body, err := io.ReadAll(resp.Body)
+		if err != nil {
+			return nil, err
+		}
+
+		return body, nil
 	}
 
-	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("error: %s", resp.Status)
-	}
-
-	// Read the response body
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	return body, nil
+	return nil, fmt.Errorf("max retries exceeded")
 }
 
 type QueueType int
