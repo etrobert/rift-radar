@@ -1,5 +1,5 @@
 let champions = [];
-let selectedChampion = null;
+let currentSelector = null;
 
 async function loadChampions() {
   try {
@@ -41,20 +41,24 @@ function renderChampionGrid(filter = "") {
 }
 
 function selectChampion(champion) {
-  selectedChampion = champion;
+  if (!currentSelector) return;
 
-  const image = document.getElementById("selectedChampionImage");
-  const placeholder = document.getElementById("championPlaceholder");
+  const image = currentSelector.querySelector(".champion-selector-image");
+  const placeholder = currentSelector.querySelector(".champion-placeholder");
 
   image.src = `https://ddragon.leagueoflegends.com/cdn/14.24.1/img/champion/${champion.id}.png`;
   image.alt = champion.name;
   image.style.display = "block";
   placeholder.style.display = "none";
 
+  // Store selected champion data
+  currentSelector.setAttribute("data-champion", champion.id);
+
   closeChampionModal();
 }
 
-function openChampionModal() {
+function openChampionModal(selector) {
+  currentSelector = selector;
   document.getElementById("championModal").style.display = "block";
   document.getElementById("championSearch").focus();
 }
@@ -62,16 +66,20 @@ function openChampionModal() {
 function closeChampionModal() {
   document.getElementById("championModal").style.display = "none";
   document.getElementById("championSearch").value = "";
+  currentSelector = null;
   renderChampionGrid();
 }
 
 function initChampionSelector() {
-  const selector = document.getElementById("championSelector");
+  const selectors = document.querySelectorAll(".champion-selector");
   const modal = document.getElementById("championModal");
   const closeBtn = document.getElementById("closeModal");
   const searchInput = document.getElementById("championSearch");
 
-  selector.onclick = openChampionModal;
+  selectors.forEach(selector => {
+    selector.onclick = () => openChampionModal(selector);
+  });
+
   closeBtn.onclick = closeChampionModal;
 
   modal.onclick = (event) => {
