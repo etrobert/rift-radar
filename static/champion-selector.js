@@ -400,6 +400,16 @@ function generateTagCounterSuggestions(
   );
   if (healingSuggestion) suggestions.push(healingSuggestion);
 
+  const assassinSuggestion = generateCounterSuggestion(
+    enemyChampions,
+    "assassin",
+    2,
+    "Strong against assassins",
+    needsPhysical,
+    needsMagic,
+  );
+  if (assassinSuggestion) suggestions.push(assassinSuggestion);
+
   return suggestions;
 }
 
