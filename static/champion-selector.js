@@ -369,6 +369,48 @@ function updateSuggestions() {
     }
   }
 
+  // Check for high mobility enemies and suggest anti-dash champions
+  let dashCount = 0;
+  enemyChampions.forEach((championId) => {
+    const tags = championTags[championId];
+    if (tags && tags.mobility && tags.mobility.includes("dash")) {
+      dashCount++;
+    }
+  });
+
+  if (dashCount >= 2) {
+    let antiDashChampions = ["Poppy"];
+    let priorityChampions = [];
+    let secondaryChampions = [];
+
+    antiDashChampions.forEach((champ) => {
+      if (!championTags[champ]) return;
+
+      const champDamageTypes = championTags[champ].damageTypes;
+      const fitsTeamNeeds =
+        (!needsPhysical && !needsMagic) ||
+        (needsPhysical && champDamageTypes.includes("physical-damage")) ||
+        (needsMagic && champDamageTypes.includes("magic-damage"));
+
+      if (fitsTeamNeeds) {
+        priorityChampions.push(champ);
+      } else {
+        secondaryChampions.push(champ);
+      }
+    });
+
+    if (priorityChampions.length > 0 || secondaryChampions.length > 0) {
+      suggestions.push({
+        reason: "Strong against dashes",
+        champions: [...priorityChampions, ...secondaryChampions],
+        championPriorities: [
+          ...priorityChampions.map((c) => ({ name: c, priority: true })),
+          ...secondaryChampions.map((c) => ({ name: c, priority: false })),
+        ],
+      });
+    }
+  }
+
   // Check ally team composition and suggest balance
   if (allyChampions.length >= 2) {
     if (hasPhysical && !hasMagic) {
