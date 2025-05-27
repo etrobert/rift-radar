@@ -51,4 +51,10 @@
   display: block;
 }
 
+/* Secondary champion styling */
+.suggested-champion.secondary-champion {
+  opacity: 0.5;
+  filter: grayscale(30%);
+}
+
 
