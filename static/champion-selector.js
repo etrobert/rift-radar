@@ -361,7 +361,7 @@ function updateSuggestions() {
   }
 
   // Check ally team composition and suggest balance
-  if (allyChampions.length >= 2) {
+  if (allyChampions.length >= 3) {
     if (hasPhysical && !hasMagic) {
       suggestions.push({
         reason: "Add magic damage to your team",
