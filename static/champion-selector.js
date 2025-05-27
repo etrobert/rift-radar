@@ -302,7 +302,7 @@ function updateSuggestions() {
 
   // Counter-pick suggestions based on enemy damage composition
   if (
-    enemyChampions.length > 0 &&
+    enemyChampions.length >= 2 &&
     enemyDamageComposition["magic-damage"] &&
     enemyDamageComposition["magic-damage"] > 50
   ) {
@@ -313,7 +313,7 @@ function updateSuggestions() {
   }
 
   if (
-    enemyChampions.length > 0 &&
+    enemyChampions.length >= 2 &&
     enemyDamageComposition["physical-damage"] &&
     enemyDamageComposition["physical-damage"] > 50
   ) {
