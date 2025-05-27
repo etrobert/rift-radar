@@ -349,14 +349,28 @@ function updateSuggestions() {
   // Check for high mobility enemies and suggest anti-dash champions
   let dashCount = 0;
   enemyChampions.forEach((championId) => {
-    const tags = championTags[championId];
-    if (tags && tags.mobility && tags.mobility.includes("dash")) {
+    const champion = championTags[championId];
+    if (champion && champion.tags && champion.tags.includes("dash")) {
       dashCount++;
     }
   });
 
   if (dashCount >= 2) {
     const suggestion = createSuggestion("Strong against dashes", ["Poppy"], needsPhysical, needsMagic);
+    if (suggestion) suggestions.push(suggestion);
+  }
+
+  // Check for healing enemies and suggest antiheal champions
+  let healingCount = 0;
+  enemyChampions.forEach((championId) => {
+    const champion = championTags[championId];
+    if (champion && champion.tags && champion.tags.includes("healing")) {
+      healingCount++;
+    }
+  });
+
+  if (healingCount >= 1) {
+    const suggestion = createSuggestion("Has built-in Grievous Wounds", ["Katarina", "Kled", "Varus", "Singed"], needsPhysical, needsMagic);
     if (suggestion) suggestions.push(suggestion);
   }
 
