@@ -382,7 +382,7 @@ function updateTeamCompositionDisplay(team) {
   const compositionDiv = document.getElementById(`${team}-damage-composition`);
 
   if (champions.length === 0) {
-    compositionDiv.style.display = "none";
+    compositionDiv.innerHTML = '<div class="team-combined-damage-bar empty-bar"></div>';
     return;
   }
 

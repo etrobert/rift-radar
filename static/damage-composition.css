@@ -42,3 +42,8 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.team-combined-damage-bar.empty-bar {
+  background: #1a1a1a;
+  border: 1px dashed #555;
+}
