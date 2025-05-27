@@ -6,6 +6,7 @@
     <title>Rift Radar - Draft</title>
     <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="champion-selector.css" />
+    <link rel="stylesheet" href="suggestions.css" />
   </head>
   <body>
     <h1>Rift Radar</h1>
@@ -71,6 +72,13 @@
           </div>
         </div>
       </div>
+
+      <div class="suggestions-panel">
+        <h3>Pick Suggestions</h3>
+        <div id="suggestions-content">
+          <p>Select enemy champions to see counter-pick suggestions</p>
+        </div>
+      </div>
     </form>
 
     <div class="champion-modal" id="championModal">
@@ -89,6 +97,6 @@
     </div>
 
     <script src="url-utils.js"></script>
-    <script src="champion-selector.js"></script>
+    <script type="module" src="champion-selector.js"></script>
   </body>
 </html>

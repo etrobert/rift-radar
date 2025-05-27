@@ -1,3 +1,5 @@
+import { championTags } from "./champion-tags.js";
+
 let champions = [];
 let currentSelector = null;
 let selectedGridIndex = -1;
@@ -80,6 +82,9 @@ function selectChampion(champion) {
   if (teamContainer) {
     addNewChampionSelector(teamContainer);
   }
+
+  // Update suggestions when a champion is selected
+  updateSuggestions();
 
   closeChampionModal();
 }
@@ -214,6 +219,77 @@ function initChampionSelector() {
   };
 
   loadChampions();
+}
+
+function getEnemyChampions() {
+  const enemyTeam = document.querySelector('[data-team="enemy"]');
+  return Array.from(enemyTeam.querySelectorAll("[data-champion]"))
+    .map((selector) => selector.getAttribute("data-champion"))
+    .filter((champion) => champion !== null);
+}
+
+function getDamageTypes(champions) {
+  const damageTypes = new Set();
+  champions.forEach((championId) => {
+    const tags = championTags[championId];
+    if (tags && tags.damageTypes) {
+      tags.damageTypes.forEach((type) => damageTypes.add(type));
+    }
+  });
+  return damageTypes;
+}
+
+function updateSuggestions() {
+  const enemyChampions = getEnemyChampions();
+
+  const suggestionsContent = document.getElementById("suggestions-content");
+
+  if (enemyChampions.length === 0) {
+    suggestionsContent.innerHTML =
+      "<p>Select enemy champions to see counter-pick suggestions</p>";
+    return;
+  }
+
+  // Get damage types from enemy champions
+  const enemyDamageTypes = getDamageTypes(enemyChampions);
+
+  // Generate suggestions based on enemy damage types
+  let suggestions = [];
+
+  if (enemyDamageTypes.has("magic-damage")) {
+    suggestions.push({
+      reason: "Strong against magic damage",
+      champions: ["Galio", "Kassadin"].filter((champ) => championTags[champ]),
+    });
+  }
+
+  if (enemyDamageTypes.has("physical-damage")) {
+    suggestions.push({
+      reason: "Strong against physical damage",
+      champions: ["Malphite"].filter((champ) => championTags[champ]),
+    });
+  }
+
+  // Display suggestions
+  let html = '<div class="suggestions">';
+  if (suggestions.length > 0) {
+    suggestions.forEach((suggestion) => {
+      if (suggestion.champions.length > 0) {
+        html += `<div class="suggestion-group">
+          <h4>${suggestion.reason}</h4>
+          <div class="suggested-champions">`;
+        suggestion.champions.forEach((championName) => {
+          html += `<span class="suggested-champion">${championName}</span>`;
+        });
+        html += "</div></div>";
+      }
+    });
+  } else {
+    html += "<p>No specific counter-picks available</p>";
+  }
+  html += "</div>";
+
+  suggestionsContent.innerHTML = html;
 }
 
 window.addEventListener("load", initChampionSelector);
