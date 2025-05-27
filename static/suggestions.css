@@ -31,14 +31,22 @@
 }
 
 .suggested-champion {
-  background: #0066cc;
-  color: white;
-  padding: 4px 8px;
+  display: inline-block;
+  padding: 4px;
+  background-color: #2d2d2d;
+  border: 1px solid #444;
   border-radius: 4px;
-  font-size: 12px;
   cursor: pointer;
+  transition: border-color 0.2s;
 }
 
 .suggested-champion:hover {
-  background: #0052a3;
+  border-color: #0066cc;
+}
+
+.suggested-champion-image {
+  width: 48px;
+  height: 48px;
+  border-radius: 4px;
+  display: block;
 }

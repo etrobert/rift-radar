@@ -279,7 +279,10 @@ function updateSuggestions() {
           <h4>${suggestion.reason}</h4>
           <div class="suggested-champions">`;
         suggestion.champions.forEach((championName) => {
-          html += `<span class="suggested-champion">${championName}</span>`;
+          html += `<div class="suggested-champion">
+            <img src="https://ddragon.leagueoflegends.com/cdn/14.24.1/img/champion/${championName}.png" 
+                 alt="${championName}" class="suggested-champion-image">
+          </div>`;
         });
         html += "</div></div>";
       }
