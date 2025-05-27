@@ -103,8 +103,23 @@ function createChampionSelector() {
     />
   `;
 
-  selector.onclick = () => openChampionModal(selector);
+  selector.onclick = () => {
+    // If this selector already has a champion, remove it
+    if (selector.hasAttribute('data-champion')) {
+      removeChampion(selector);
+    } else {
+      openChampionModal(selector);
+    }
+  };
   return selector;
+}
+
+function removeChampion(selector) {
+  // Remove the entire selector from the DOM
+  selector.remove();
+  
+  // Update suggestions after removing a champion
+  updateSuggestions();
 }
 
 function addNewChampionSelector(teamContainer) {
@@ -178,14 +193,15 @@ function selectCurrentGridItem() {
 }
 
 function initChampionSelector() {
-  const selectors = document.querySelectorAll(".champion-selector");
   const modal = document.getElementById("championModal");
   const closeBtn = document.getElementById("closeModal");
   const searchInput = document.getElementById("championSearch");
 
-  selectors.forEach((selector) => {
-    selector.onclick = () => openChampionModal(selector);
-  });
+  // Add initial empty selectors to both teams
+  const allyTeam = document.querySelector('[data-team="ally"]');
+  const enemyTeam = document.querySelector('[data-team="enemy"]');
+  allyTeam.appendChild(createChampionSelector());
+  enemyTeam.appendChild(createChampionSelector());
 
   closeBtn.onclick = closeChampionModal;
 
