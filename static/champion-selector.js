@@ -276,58 +276,71 @@ function getDamageComposition(champions) {
   return composition;
 }
 
-function updateSuggestions() {
-  const enemyChampions = getTeamChampions("enemy");
-  const allyChampions = getTeamChampions("ally");
+function createSuggestion(reason, championList, needsPhysical, needsMagic) {
+  const validChampions = championList.filter((name) => championTags[name]);
+  if (validChampions.length === 0) return null;
 
-  const suggestionsContent = document.getElementById("suggestions-content");
+  const championPriorities = validChampions.map((name) => {
+    const champion = championTags[name];
+    let priority = true;
 
-  // Get damage compositions
-  const enemyDamageComposition = getDamageComposition(enemyChampions);
-  const allyDamageComposition = getDamageComposition(allyChampions);
+    if (needsPhysical && !champion.damageTypes.includes("physical-damage")) {
+      priority = false;
+    } else if (needsMagic && !champion.damageTypes.includes("magic-damage")) {
+      priority = false;
+    }
 
-  // Helper function to create suggestions with priority
-  function createSuggestion(reason, champions, needsPhysical, needsMagic) {
-    let priorityChampions = [];
-    let secondaryChampions = [];
+    return { name, priority };
+  });
 
-    champions.forEach((champ) => {
-      if (!championTags[champ]) return;
+  return {
+    reason,
+    champions: validChampions,
+    championPriorities,
+  };
+}
 
-      const champDamageTypes = championTags[champ].damageTypes;
-      const fitsTeamNeeds =
-        (!needsPhysical && !needsMagic) ||
-        (needsPhysical && champDamageTypes.includes("physical-damage")) ||
-        (needsMagic && champDamageTypes.includes("magic-damage"));
+function generateCounterSuggestion(
+  enemyChampions,
+  tag,
+  minCount,
+  reason,
+  needsPhysical,
+  needsMagic,
+) {
+  let tagCount = 0;
+  enemyChampions.forEach((championId) => {
+    const champion = championTags[championId];
+    if (champion && champion.tags && champion.tags.includes(tag)) {
+      tagCount++;
+    }
+  });
 
-      if (fitsTeamNeeds) {
-        priorityChampions.push(champ);
-      } else {
-        secondaryChampions.push(champ);
-      }
+  if (tagCount >= minCount) {
+    const counterChampions = Object.keys(championTags).filter((champName) => {
+      const champ = championTags[champName];
+      return champ.strongAgainst && champ.strongAgainst.includes(tag);
     });
 
-    if (priorityChampions.length > 0 || secondaryChampions.length > 0) {
-      return {
+    if (counterChampions.length > 0) {
+      return createSuggestion(
         reason,
-        champions: [...priorityChampions, ...secondaryChampions],
-        championPriorities: [
-          ...priorityChampions.map((c) => ({ name: c, priority: true })),
-          ...secondaryChampions.map((c) => ({ name: c, priority: false })),
-        ],
-      };
+        counterChampions,
+        needsPhysical,
+        needsMagic,
+      );
     }
-    return null;
   }
+  return null;
+}
 
-  // Generate suggestions
-  let suggestions = [];
-
-  // Counter-pick suggestions based on enemy damage composition
-  const hasPhysical = allyDamageComposition["physical-damage"] > 0;
-  const hasMagic = allyDamageComposition["magic-damage"] > 0;
-  const needsPhysical = allyChampions.length >= 4 && !hasPhysical;
-  const needsMagic = allyChampions.length >= 4 && !hasMagic;
+function generateDamageSuggestions(
+  enemyDamageComposition,
+  enemyChampions,
+  needsPhysical,
+  needsMagic,
+) {
+  const suggestions = [];
 
   if (
     enemyChampions.length >= 2 &&
@@ -357,39 +370,42 @@ function updateSuggestions() {
     if (suggestion) suggestions.push(suggestion);
   }
 
-  // Generic function to create counter suggestions
-  function createCounterSuggestion(tag, minCount, reason) {
-    let tagCount = 0;
-    enemyChampions.forEach((championId) => {
-      const champion = championTags[championId];
-      if (champion && champion.tags && champion.tags.includes(tag)) {
-        tagCount++;
-      }
-    });
+  return suggestions;
+}
 
-    if (tagCount >= minCount) {
-      const counterChampions = Object.keys(championTags).filter((champName) => {
-        const champ = championTags[champName];
-        return champ.strongAgainst && champ.strongAgainst.includes(tag);
-      });
+function generateTagCounterSuggestions(
+  enemyChampions,
+  needsPhysical,
+  needsMagic,
+) {
+  const suggestions = [];
 
-      if (counterChampions.length > 0) {
-        const suggestion = createSuggestion(
-          reason,
-          counterChampions,
-          needsPhysical,
-          needsMagic,
-        );
-        if (suggestion) suggestions.push(suggestion);
-      }
-    }
-  }
+  const dashSuggestion = generateCounterSuggestion(
+    enemyChampions,
+    "dash",
+    2,
+    "Strong against dashes",
+    needsPhysical,
+    needsMagic,
+  );
+  if (dashSuggestion) suggestions.push(dashSuggestion);
 
-  // Apply counter suggestions
-  createCounterSuggestion("dash", 2, "Strong against dashes");
-  createCounterSuggestion("healing", 1, "Has built-in Grievous Wounds");
+  const healingSuggestion = generateCounterSuggestion(
+    enemyChampions,
+    "healing",
+    1,
+    "Has built-in Grievous Wounds",
+    needsPhysical,
+    needsMagic,
+  );
+  if (healingSuggestion) suggestions.push(healingSuggestion);
 
-  // Check ally team composition and suggest balance
+  return suggestions;
+}
+
+function generateBalanceSuggestions(allyChampions, hasPhysical, hasMagic) {
+  const suggestions = [];
+
   if (allyChampions.length >= 3) {
     if (hasPhysical && !hasMagic) {
       suggestions.push({
@@ -408,7 +424,10 @@ function updateSuggestions() {
     }
   }
 
-  // Display suggestions
+  return suggestions;
+}
+
+function renderSuggestions(suggestions) {
   let html = '<div class="suggestions">';
   if (suggestions.length > 0) {
     suggestions.forEach((suggestion) => {
@@ -418,7 +437,6 @@ function updateSuggestions() {
           <div class="suggested-champions">`;
 
         if (suggestion.championPriorities) {
-          // Use champion priorities to style individual champions
           suggestion.championPriorities.forEach((champ) => {
             const championClass =
               champ.priority === false ? " secondary-champion" : "";
@@ -428,7 +446,6 @@ function updateSuggestions() {
             </div>`;
           });
         } else {
-          // Fallback for suggestions without priorities
           suggestion.champions.forEach((championName) => {
             html += `<div class="suggested-champion">
               <img src="https://ddragon.leagueoflegends.com/cdn/14.24.1/img/champion/${championName}.png" 
@@ -445,7 +462,40 @@ function updateSuggestions() {
   }
   html += "</div>";
 
-  suggestionsContent.innerHTML = html;
+  return html;
+}
+
+function updateSuggestions() {
+  const enemyChampions = getTeamChampions("enemy");
+  const allyChampions = getTeamChampions("ally");
+  const suggestionsContent = document.getElementById("suggestions-content");
+
+  const enemyDamageComposition = getDamageComposition(enemyChampions);
+  const allyDamageComposition = getDamageComposition(allyChampions);
+
+  const hasPhysical = allyDamageComposition["physical-damage"] > 0;
+  const hasMagic = allyDamageComposition["magic-damage"] > 0;
+  const needsPhysical = allyChampions.length >= 4 && !hasPhysical;
+  const needsMagic = allyChampions.length >= 4 && !hasMagic;
+
+  let suggestions = [];
+
+  suggestions.push(
+    ...generateDamageSuggestions(
+      enemyDamageComposition,
+      enemyChampions,
+      needsPhysical,
+      needsMagic,
+    ),
+  );
+  suggestions.push(
+    ...generateTagCounterSuggestions(enemyChampions, needsPhysical, needsMagic),
+  );
+  suggestions.push(
+    ...generateBalanceSuggestions(allyChampions, hasPhysical, hasMagic),
+  );
+
+  suggestionsContent.innerHTML = renderSuggestions(suggestions);
 }
 
 function getTeamChampions(team) {
