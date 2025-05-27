@@ -290,22 +290,22 @@ function updateSuggestions() {
     return;
   }
 
-  // Get damage types from enemy champions
-  const enemyDamageTypes = getDamageTypes(enemyChampions);
+  // Get damage composition
+  const damageComposition = getDamageComposition(enemyChampions);
 
-  // Generate suggestions based on enemy damage types
+  // Generate suggestions based on enemy damage composition
   let suggestions = [];
 
-  if (enemyDamageTypes.has("magic-damage")) {
+  if (damageComposition["magic-damage"] && damageComposition["magic-damage"] > 50) {
     suggestions.push({
-      reason: "Strong against magic damage",
+      reason: "Strong against magic damage (>50%)",
       champions: ["Galio", "Kassadin"].filter((champ) => championTags[champ]),
     });
   }
 
-  if (enemyDamageTypes.has("physical-damage")) {
+  if (damageComposition["physical-damage"] && damageComposition["physical-damage"] > 50) {
     suggestions.push({
-      reason: "Strong against physical damage",
+      reason: "Strong against physical damage (>50%)",
       champions: ["Malphite"].filter((champ) => championTags[champ]),
     });
   }
