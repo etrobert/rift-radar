@@ -290,22 +290,23 @@ function updateSuggestions() {
   function createSuggestion(reason, champions, needsPhysical, needsMagic) {
     let priorityChampions = [];
     let secondaryChampions = [];
-    
-    champions.forEach(champ => {
+
+    champions.forEach((champ) => {
       if (!championTags[champ]) return;
-      
+
       const champDamageTypes = championTags[champ].damageTypes;
-      const fitsTeamNeeds = (!needsPhysical && !needsMagic) || 
-                           (needsPhysical && champDamageTypes.includes("physical-damage")) ||
-                           (needsMagic && champDamageTypes.includes("magic-damage"));
-      
+      const fitsTeamNeeds =
+        (!needsPhysical && !needsMagic) ||
+        (needsPhysical && champDamageTypes.includes("physical-damage")) ||
+        (needsMagic && champDamageTypes.includes("magic-damage"));
+
       if (fitsTeamNeeds) {
         priorityChampions.push(champ);
       } else {
         secondaryChampions.push(champ);
       }
     });
-    
+
     if (priorityChampions.length > 0 || secondaryChampions.length > 0) {
       return {
         reason,
@@ -333,7 +334,12 @@ function updateSuggestions() {
     enemyDamageComposition["magic-damage"] &&
     enemyDamageComposition["magic-damage"] > 50
   ) {
-    const suggestion = createSuggestion("Strong against magic damage (>50%)", ["Galio", "Kassadin"], needsPhysical, needsMagic);
+    const suggestion = createSuggestion(
+      "Strong against magic damage (>50%)",
+      ["Galio", "Kassadin"],
+      needsPhysical,
+      needsMagic,
+    );
     if (suggestion) suggestions.push(suggestion);
   }
 
@@ -342,37 +348,46 @@ function updateSuggestions() {
     enemyDamageComposition["physical-damage"] &&
     enemyDamageComposition["physical-damage"] > 50
   ) {
-    const suggestion = createSuggestion("Strong against physical damage (>50%)", ["Malphite", "Rammus", "MonkeyKing"], needsPhysical, needsMagic);
+    const suggestion = createSuggestion(
+      "Strong against physical damage (>50%)",
+      ["Malphite", "Rammus", "MonkeyKing"],
+      needsPhysical,
+      needsMagic,
+    );
     if (suggestion) suggestions.push(suggestion);
   }
 
-  // Check for high mobility enemies and suggest anti-dash champions
-  let dashCount = 0;
-  enemyChampions.forEach((championId) => {
-    const champion = championTags[championId];
-    if (champion && champion.tags && champion.tags.includes("dash")) {
-      dashCount++;
+  // Generic function to create counter suggestions
+  function createCounterSuggestion(tag, minCount, reason) {
+    let tagCount = 0;
+    enemyChampions.forEach((championId) => {
+      const champion = championTags[championId];
+      if (champion && champion.tags && champion.tags.includes(tag)) {
+        tagCount++;
+      }
+    });
+
+    if (tagCount >= minCount) {
+      const counterChampions = Object.keys(championTags).filter((champName) => {
+        const champ = championTags[champName];
+        return champ.strongAgainst && champ.strongAgainst.includes(tag);
+      });
+
+      if (counterChampions.length > 0) {
+        const suggestion = createSuggestion(
+          reason,
+          counterChampions,
+          needsPhysical,
+          needsMagic,
+        );
+        if (suggestion) suggestions.push(suggestion);
+      }
     }
-  });
-
-  if (dashCount >= 2) {
-    const suggestion = createSuggestion("Strong against dashes", ["Poppy"], needsPhysical, needsMagic);
-    if (suggestion) suggestions.push(suggestion);
   }
 
-  // Check for healing enemies and suggest antiheal champions
-  let healingCount = 0;
-  enemyChampions.forEach((championId) => {
-    const champion = championTags[championId];
-    if (champion && champion.tags && champion.tags.includes("healing")) {
-      healingCount++;
-    }
-  });
-
-  if (healingCount >= 1) {
-    const suggestion = createSuggestion("Has built-in Grievous Wounds", ["Katarina", "Kled", "Varus", "Singed"], needsPhysical, needsMagic);
-    if (suggestion) suggestions.push(suggestion);
-  }
+  // Apply counter suggestions
+  createCounterSuggestion("dash", 2, "Strong against dashes");
+  createCounterSuggestion("healing", 1, "Has built-in Grievous Wounds");
 
   // Check ally team composition and suggest balance
   if (allyChampions.length >= 3) {
