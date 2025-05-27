@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="champion-selector.css" />
     <link rel="stylesheet" href="suggestions.css" />
+    <link rel="stylesheet" href="damage-composition.css" />
   </head>
   <body>
     <h1>Rift Radar</h1>
@@ -46,11 +47,15 @@
           <h3>Ally Team</h3>
           <div class="team-champions" data-team="ally">
           </div>
+          <div class="team-damage-composition" id="ally-damage-composition" style="display: none;">
+          </div>
         </div>
 
         <div class="team-container">
           <h3>Enemy Team</h3>
           <div class="team-champions" data-team="enemy">
+          </div>
+          <div class="team-damage-composition" id="enemy-damage-composition" style="display: none;">
           </div>
         </div>
       </div>

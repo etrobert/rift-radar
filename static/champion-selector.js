@@ -83,8 +83,9 @@ function selectChampion(champion) {
     addNewChampionSelector(teamContainer);
   }
 
-  // Update suggestions when a champion is selected
+  // Update suggestions and team composition when a champion is selected
   updateSuggestions();
+  updateTeamComposition();
 
   closeChampionModal();
 }
@@ -105,7 +106,7 @@ function createChampionSelector() {
 
   selector.onclick = () => {
     // If this selector already has a champion, remove it
-    if (selector.hasAttribute('data-champion')) {
+    if (selector.hasAttribute("data-champion")) {
       removeChampion(selector);
     } else {
       openChampionModal(selector);
@@ -117,9 +118,10 @@ function createChampionSelector() {
 function removeChampion(selector) {
   // Remove the entire selector from the DOM
   selector.remove();
-  
-  // Update suggestions after removing a champion
+
+  // Update suggestions and team composition after removing a champion
   updateSuggestions();
+  updateTeamComposition();
 }
 
 function addNewChampionSelector(teamContainer) {
@@ -237,13 +239,6 @@ function initChampionSelector() {
   loadChampions();
 }
 
-function getEnemyChampions() {
-  const enemyTeam = document.querySelector('[data-team="enemy"]');
-  return Array.from(enemyTeam.querySelectorAll("[data-champion]"))
-    .map((selector) => selector.getAttribute("data-champion"))
-    .filter((champion) => champion !== null);
-}
-
 function getDamageTypes(champions) {
   const damageTypes = new Set();
   champions.forEach((championId) => {
@@ -255,8 +250,37 @@ function getDamageTypes(champions) {
   return damageTypes;
 }
 
+function getDamageComposition(champions) {
+  const damageCount = {
+    "magic-damage": 0,
+    "physical-damage": 0,
+    "true-damage": 0,
+  };
+  let totalSources = 0;
+
+  champions.forEach((championId) => {
+    const tags = championTags[championId];
+    if (tags && tags.damageTypes) {
+      tags.damageTypes.forEach((type) => {
+        damageCount[type]++;
+        totalSources++;
+      });
+    }
+  });
+
+  // Convert to percentages
+  const composition = {};
+  Object.keys(damageCount).forEach((type) => {
+    if (damageCount[type] > 0) {
+      composition[type] = Math.round((damageCount[type] / totalSources) * 100);
+    }
+  });
+
+  return composition;
+}
+
 function updateSuggestions() {
-  const enemyChampions = getEnemyChampions();
+  const enemyChampions = getTeamChampions("enemy");
 
   const suggestionsContent = document.getElementById("suggestions-content");
 
@@ -309,6 +333,61 @@ function updateSuggestions() {
   html += "</div>";
 
   suggestionsContent.innerHTML = html;
+}
+
+function getTeamChampions(team) {
+  const teamContainer = document.querySelector(`[data-team="${team}"]`);
+  return Array.from(teamContainer.querySelectorAll("[data-champion]"))
+    .map((selector) => selector.getAttribute("data-champion"))
+    .filter((champion) => champion !== null);
+}
+
+function updateTeamCompositionDisplay(team) {
+  const champions = getTeamChampions(team);
+  const compositionDiv = document.getElementById(`${team}-damage-composition`);
+
+  if (champions.length === 0) {
+    compositionDiv.style.display = "none";
+    return;
+  }
+
+  const damageComposition = getDamageComposition(champions);
+
+  if (Object.keys(damageComposition).length === 0) {
+    compositionDiv.style.display = "none";
+    return;
+  }
+
+  compositionDiv.style.display = "block";
+
+  let html = '<div class="team-combined-damage-bar">';
+
+  if (damageComposition["magic-damage"]) {
+    html += `<div class="team-damage-segment magic-damage" style="width: ${damageComposition["magic-damage"]}%">
+      <span class="team-damage-segment-label">Magic ${damageComposition["magic-damage"]}%</span>
+    </div>`;
+  }
+
+  if (damageComposition["physical-damage"]) {
+    html += `<div class="team-damage-segment physical-damage" style="width: ${damageComposition["physical-damage"]}%">
+      <span class="team-damage-segment-label">Physical ${damageComposition["physical-damage"]}%</span>
+    </div>`;
+  }
+
+  if (damageComposition["true-damage"]) {
+    html += `<div class="team-damage-segment true-damage" style="width: ${damageComposition["true-damage"]}%">
+      <span class="team-damage-segment-label">True ${damageComposition["true-damage"]}%</span>
+    </div>`;
+  }
+
+  html += "</div>";
+
+  compositionDiv.innerHTML = html;
+}
+
+function updateTeamComposition() {
+  updateTeamCompositionDisplay("ally");
+  updateTeamCompositionDisplay("enemy");
 }
 
 window.addEventListener("load", initChampionSelector);

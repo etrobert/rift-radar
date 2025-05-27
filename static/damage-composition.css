@@ -1,0 +1,44 @@
+/* Team damage composition styles */
+.team-damage-composition {
+  margin-top: 10px;
+}
+
+.team-combined-damage-bar {
+  display: flex;
+  height: 20px;
+  background: #2d2d2d;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid #444;
+}
+
+.team-damage-segment {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  min-width: 0;
+}
+
+.team-damage-segment.magic-damage {
+  background: linear-gradient(90deg, #4a90e2, #357abd);
+}
+
+.team-damage-segment.physical-damage {
+  background: linear-gradient(90deg, #e24a4a, #bd3535);
+}
+
+.team-damage-segment.true-damage {
+  background: linear-gradient(90deg, #8e44ad, #732d91);
+}
+
+.team-damage-segment-label {
+  font-size: 9px;
+  font-weight: bold;
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
