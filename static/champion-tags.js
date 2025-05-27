@@ -24,7 +24,7 @@ export const championTags = {
     damageTypes: ["physical-damage", "true-damage"],
     tags: ["dash"],
   },
-  Cassiopeia: { damageTypes: ["magic-damage"] },
+  Cassiopeia: { damageTypes: ["magic-damage"], strongAgainst: ["dash"] },
   Chogath: { damageTypes: ["magic-damage"] },
   Corki: {
     damageTypes: ["magic-damage", "physical-damage"],
