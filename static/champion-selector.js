@@ -118,15 +118,15 @@ function createChampionSelector() {
 function removeChampion(selector) {
   // Get the team container before removing the selector
   const teamContainer = selector.closest(".team-champions");
-  
+
   // Remove the entire selector from the DOM
   selector.remove();
-  
+
   // Add a new empty selector if needed (since we might be under the 5 limit now)
   if (teamContainer) {
     addNewChampionSelector(teamContainer);
   }
-  
+
   // Update suggestions and team composition after removing a champion
   updateSuggestions();
   updateTeamComposition();
@@ -289,33 +289,60 @@ function getDamageComposition(champions) {
 
 function updateSuggestions() {
   const enemyChampions = getTeamChampions("enemy");
+  const allyChampions = getTeamChampions("ally");
 
   const suggestionsContent = document.getElementById("suggestions-content");
 
-  if (enemyChampions.length === 0) {
-    suggestionsContent.innerHTML =
-      "<p>Select enemy champions to see counter-pick suggestions</p>";
-    return;
-  }
+  // Get damage compositions
+  const enemyDamageComposition = getDamageComposition(enemyChampions);
+  const allyDamageComposition = getDamageComposition(allyChampions);
 
-  // Get damage composition
-  const damageComposition = getDamageComposition(enemyChampions);
-
-  // Generate suggestions based on enemy damage composition
+  // Generate suggestions
   let suggestions = [];
 
-  if (damageComposition["magic-damage"] && damageComposition["magic-damage"] > 50) {
+  // Counter-pick suggestions based on enemy damage composition
+  if (
+    enemyChampions.length > 0 &&
+    enemyDamageComposition["magic-damage"] &&
+    enemyDamageComposition["magic-damage"] > 50
+  ) {
     suggestions.push({
       reason: "Strong against magic damage (>50%)",
       champions: ["Galio", "Kassadin"].filter((champ) => championTags[champ]),
     });
   }
 
-  if (damageComposition["physical-damage"] && damageComposition["physical-damage"] > 50) {
+  if (
+    enemyChampions.length > 0 &&
+    enemyDamageComposition["physical-damage"] &&
+    enemyDamageComposition["physical-damage"] > 50
+  ) {
     suggestions.push({
       reason: "Strong against physical damage (>50%)",
       champions: ["Malphite"].filter((champ) => championTags[champ]),
     });
+  }
+
+  // Check ally team composition and suggest balance
+  if (allyChampions.length >= 2) {
+    const hasPhysical = allyDamageComposition["physical-damage"] > 0;
+    const hasMagic = allyDamageComposition["magic-damage"] > 0;
+    
+    if (hasPhysical && !hasMagic) {
+      suggestions.push({
+        reason: "Add magic damage to your team",
+        champions: ["Syndra", "Ahri", "Lux", "Brand"].filter(
+          (champ) => championTags[champ],
+        ),
+      });
+    } else if (hasMagic && !hasPhysical) {
+      suggestions.push({
+        reason: "Add physical damage to your team",
+        champions: ["Jinx", "Caitlyn", "Zed", "Yasuo"].filter(
+          (champ) => championTags[champ],
+        ),
+      });
+    }
   }
 
   // Display suggestions
@@ -336,7 +363,7 @@ function updateSuggestions() {
       }
     });
   } else {
-    html += "<p>No specific counter-picks available</p>";
+    html += "<p>Build your team to see suggestions</p>";
   }
   html += "</div>";
 
