@@ -116,9 +116,17 @@ function createChampionSelector() {
 }
 
 function removeChampion(selector) {
+  // Get the team container before removing the selector
+  const teamContainer = selector.closest(".team-champions");
+  
   // Remove the entire selector from the DOM
   selector.remove();
-
+  
+  // Add a new empty selector if needed (since we might be under the 5 limit now)
+  if (teamContainer) {
+    addNewChampionSelector(teamContainer);
+  }
+  
   // Update suggestions and team composition after removing a champion
   updateSuggestions();
   updateTeamComposition();
