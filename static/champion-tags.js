@@ -167,5 +167,6 @@ export const championTags = {
   "Ziggs": { "damageTypes": ["magic-damage"] },
   "Zilean": { "damageTypes": ["magic-damage"] },
   "Zoe": { "damageTypes": ["magic-damage"] },
-  "Zyra": { "damageTypes": ["magic-damage"] }
+  "Zyra": { "damageTypes": ["magic-damage"] },
+  "Mel": { "damageTypes": ["magic-damage"] }
 };
