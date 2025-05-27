@@ -286,6 +286,39 @@ function updateSuggestions() {
   const enemyDamageComposition = getDamageComposition(enemyChampions);
   const allyDamageComposition = getDamageComposition(allyChampions);
 
+  // Helper function to create suggestions with priority
+  function createSuggestion(reason, champions, needsPhysical, needsMagic) {
+    let priorityChampions = [];
+    let secondaryChampions = [];
+    
+    champions.forEach(champ => {
+      if (!championTags[champ]) return;
+      
+      const champDamageTypes = championTags[champ].damageTypes;
+      const fitsTeamNeeds = (!needsPhysical && !needsMagic) || 
+                           (needsPhysical && champDamageTypes.includes("physical-damage")) ||
+                           (needsMagic && champDamageTypes.includes("magic-damage"));
+      
+      if (fitsTeamNeeds) {
+        priorityChampions.push(champ);
+      } else {
+        secondaryChampions.push(champ);
+      }
+    });
+    
+    if (priorityChampions.length > 0 || secondaryChampions.length > 0) {
+      return {
+        reason,
+        champions: [...priorityChampions, ...secondaryChampions],
+        championPriorities: [
+          ...priorityChampions.map((c) => ({ name: c, priority: true })),
+          ...secondaryChampions.map((c) => ({ name: c, priority: false })),
+        ],
+      };
+    }
+    return null;
+  }
+
   // Generate suggestions
   let suggestions = [];
 
@@ -300,36 +333,8 @@ function updateSuggestions() {
     enemyDamageComposition["magic-damage"] &&
     enemyDamageComposition["magic-damage"] > 50
   ) {
-    const allAntiMageChampions = ["Galio", "Kassadin"];
-    let priorityChampions = [];
-    let secondaryChampions = [];
-
-    allAntiMageChampions.forEach((champ) => {
-      if (!championTags[champ]) return;
-
-      const champDamageTypes = championTags[champ].damageTypes;
-      const fitsTeamNeeds =
-        (!needsPhysical && !needsMagic) ||
-        (needsPhysical && champDamageTypes.includes("physical-damage")) ||
-        (needsMagic && champDamageTypes.includes("magic-damage"));
-
-      if (fitsTeamNeeds) {
-        priorityChampions.push(champ);
-      } else {
-        secondaryChampions.push(champ);
-      }
-    });
-
-    if (priorityChampions.length > 0 || secondaryChampions.length > 0) {
-      suggestions.push({
-        reason: "Strong against magic damage (>50%)",
-        champions: [...priorityChampions, ...secondaryChampions],
-        championPriorities: [
-          ...priorityChampions.map((c) => ({ name: c, priority: true })),
-          ...secondaryChampions.map((c) => ({ name: c, priority: false })),
-        ],
-      });
-    }
+    const suggestion = createSuggestion("Strong against magic damage (>50%)", ["Galio", "Kassadin"], needsPhysical, needsMagic);
+    if (suggestion) suggestions.push(suggestion);
   }
 
   if (
@@ -337,36 +342,8 @@ function updateSuggestions() {
     enemyDamageComposition["physical-damage"] &&
     enemyDamageComposition["physical-damage"] > 50
   ) {
-    const allAntiAdChampions = ["Malphite", "Rammus", "MonkeyKing"];
-    let priorityChampions = [];
-    let secondaryChampions = [];
-
-    allAntiAdChampions.forEach((champ) => {
-      if (!championTags[champ]) return;
-
-      const champDamageTypes = championTags[champ].damageTypes;
-      const fitsTeamNeeds =
-        (!needsPhysical && !needsMagic) ||
-        (needsPhysical && champDamageTypes.includes("physical-damage")) ||
-        (needsMagic && champDamageTypes.includes("magic-damage"));
-
-      if (fitsTeamNeeds) {
-        priorityChampions.push(champ);
-      } else {
-        secondaryChampions.push(champ);
-      }
-    });
-
-    if (priorityChampions.length > 0 || secondaryChampions.length > 0) {
-      suggestions.push({
-        reason: "Strong against physical damage (>50%)",
-        champions: [...priorityChampions, ...secondaryChampions],
-        championPriorities: [
-          ...priorityChampions.map((c) => ({ name: c, priority: true })),
-          ...secondaryChampions.map((c) => ({ name: c, priority: false })),
-        ],
-      });
-    }
+    const suggestion = createSuggestion("Strong against physical damage (>50%)", ["Malphite", "Rammus", "MonkeyKing"], needsPhysical, needsMagic);
+    if (suggestion) suggestions.push(suggestion);
   }
 
   // Check for high mobility enemies and suggest anti-dash champions
@@ -379,36 +356,8 @@ function updateSuggestions() {
   });
 
   if (dashCount >= 2) {
-    let antiDashChampions = ["Poppy"];
-    let priorityChampions = [];
-    let secondaryChampions = [];
-
-    antiDashChampions.forEach((champ) => {
-      if (!championTags[champ]) return;
-
-      const champDamageTypes = championTags[champ].damageTypes;
-      const fitsTeamNeeds =
-        (!needsPhysical && !needsMagic) ||
-        (needsPhysical && champDamageTypes.includes("physical-damage")) ||
-        (needsMagic && champDamageTypes.includes("magic-damage"));
-
-      if (fitsTeamNeeds) {
-        priorityChampions.push(champ);
-      } else {
-        secondaryChampions.push(champ);
-      }
-    });
-
-    if (priorityChampions.length > 0 || secondaryChampions.length > 0) {
-      suggestions.push({
-        reason: "Strong against dashes",
-        champions: [...priorityChampions, ...secondaryChampions],
-        championPriorities: [
-          ...priorityChampions.map((c) => ({ name: c, priority: true })),
-          ...secondaryChampions.map((c) => ({ name: c, priority: false })),
-        ],
-      });
-    }
+    const suggestion = createSuggestion("Strong against dashes", ["Poppy"], needsPhysical, needsMagic);
+    if (suggestion) suggestions.push(suggestion);
   }
 
   // Check ally team composition and suggest balance
