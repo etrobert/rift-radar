@@ -309,10 +309,12 @@ function generateCounterSuggestion(
   needsMagic,
 ) {
   let tagCount = 0;
+  const triggeringEnemies = [];
   enemyChampions.forEach((championId) => {
     const champion = championTags[championId];
     if (champion && champion.tags && champion.tags.includes(tag)) {
       tagCount++;
+      triggeringEnemies.push(championId);
     }
   });
 
@@ -323,12 +325,16 @@ function generateCounterSuggestion(
     });
 
     if (counterChampions.length > 0) {
-      return createSuggestion(
+      const suggestion = createSuggestion(
         reason,
         counterChampions,
         needsPhysical,
         needsMagic,
       );
+      if (suggestion) {
+        suggestion.triggeringEnemies = triggeringEnemies;
+      }
+      return suggestion;
     }
   }
   return null;
@@ -353,7 +359,14 @@ function generateDamageSuggestions(
       needsPhysical,
       needsMagic,
     );
-    if (suggestion) suggestions.push(suggestion);
+    if (suggestion) {
+      // Find enemies with magic damage
+      suggestion.triggeringEnemies = enemyChampions.filter(championId => {
+        const champion = championTags[championId];
+        return champion && champion.damageTypes && champion.damageTypes.includes("magic-damage");
+      });
+      suggestions.push(suggestion);
+    }
   }
 
   if (
@@ -367,7 +380,14 @@ function generateDamageSuggestions(
       needsPhysical,
       needsMagic,
     );
-    if (suggestion) suggestions.push(suggestion);
+    if (suggestion) {
+      // Find enemies with physical damage
+      suggestion.triggeringEnemies = enemyChampions.filter(championId => {
+        const champion = championTags[championId];
+        return champion && champion.damageTypes && champion.damageTypes.includes("physical-damage");
+      });
+      suggestions.push(suggestion);
+    }
   }
 
   return suggestions;
@@ -443,7 +463,21 @@ function renderSuggestions(suggestions) {
     suggestions.forEach((suggestion) => {
       if (suggestion.champions.length > 0) {
         html += `<div class="suggestion-group">
-          <h4>${suggestion.reason}</h4>
+          <div class="suggestion-header">
+            <h4>${suggestion.reason}</h4>`;
+        
+        // Show triggering enemy champions if available
+        if (suggestion.triggeringEnemies && suggestion.triggeringEnemies.length > 0) {
+          html += `<div class="triggering-enemies">
+            <span class="because-of">because of:</span>`;
+          suggestion.triggeringEnemies.forEach((enemyId) => {
+            html += `<img src="https://ddragon.leagueoflegends.com/cdn/14.24.1/img/champion/${enemyId}.png" 
+                     alt="${enemyId}" class="triggering-enemy-icon" title="${enemyId}">`;
+          });
+          html += `</div>`;
+        }
+        
+        html += `</div>
           <div class="suggested-champions">`;
 
         if (suggestion.championPriorities) {
