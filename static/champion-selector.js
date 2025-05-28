@@ -470,6 +470,48 @@ function generateTagCounterSuggestions(
   return suggestions;
 }
 
+function generateSynergySuggestions(allyChampions, needsPhysical, needsMagic) {
+  const suggestions = [];
+  const synergyMap = {};
+  
+  // Build map of champions that synergize with specific allies
+  Object.keys(championTags).forEach(championName => {
+    const champion = championTags[championName];
+    if (champion.synergiesWith) {
+      champion.synergiesWith.forEach(synergyChampion => {
+        if (!synergyMap[synergyChampion]) {
+          synergyMap[synergyChampion] = [];
+        }
+        synergyMap[synergyChampion].push(championName);
+      });
+    }
+  });
+  
+  // Check each ally for synergy opportunities
+  allyChampions.forEach(allyChampion => {
+    if (synergyMap[allyChampion]) {
+      const synergyPartners = synergyMap[allyChampion].filter(partner => 
+        !allyChampions.includes(partner) // Don't suggest champions already on team
+      );
+      
+      if (synergyPartners.length > 0) {
+        const suggestion = createSuggestion(
+          `Synergizes with ${allyChampion}`,
+          synergyPartners,
+          needsPhysical,
+          needsMagic
+        );
+        if (suggestion) {
+          suggestion.triggeringAllies = [allyChampion];
+          suggestions.push(suggestion);
+        }
+      }
+    }
+  });
+  
+  return suggestions;
+}
+
 function generateBalanceSuggestions(allyChampions, hasPhysical, hasMagic) {
   const suggestions = [];
 
@@ -506,10 +548,21 @@ function renderSuggestions(suggestions) {
         // Show triggering enemy champions if available
         if (suggestion.triggeringEnemies && suggestion.triggeringEnemies.length > 0) {
           html += `<div class="triggering-enemies">
-            <span class="because-of">because of:</span>`;
+            <span class="because-of">counters:</span>`;
           suggestion.triggeringEnemies.forEach((enemyId) => {
             html += `<img src="https://ddragon.leagueoflegends.com/cdn/14.24.1/img/champion/${enemyId}.png" 
                      alt="${enemyId}" class="triggering-enemy-icon" title="${enemyId}">`;
+          });
+          html += `</div>`;
+        }
+        
+        // Show triggering ally champions for synergies
+        if (suggestion.triggeringAllies && suggestion.triggeringAllies.length > 0) {
+          html += `<div class="triggering-allies">
+            <span class="because-of">synergizes with:</span>`;
+          suggestion.triggeringAllies.forEach((allyId) => {
+            html += `<img src="https://ddragon.leagueoflegends.com/cdn/14.24.1/img/champion/${allyId}.png" 
+                     alt="${allyId}" class="triggering-ally-icon" title="${allyId}">`;
           });
           html += `</div>`;
         }
@@ -561,6 +614,9 @@ function updateSuggestions() {
 
   let suggestions = [];
 
+  suggestions.push(
+    ...generateSynergySuggestions(allyChampions, needsPhysical, needsMagic),
+  );
   suggestions.push(
     ...generateSpecificCounterSuggestions(enemyChampions, needsPhysical, needsMagic),
   );

@@ -70,7 +70,7 @@
   flex-shrink: 0;
 }
 
-.triggering-enemies {
+.triggering-enemies, .triggering-allies {
   display: flex;
   align-items: center;
   gap: 4px;
@@ -92,6 +92,18 @@
 
 .triggering-enemy-icon:hover {
   border-color: #cc6600;
+}
+
+.triggering-ally-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 3px;
+  border: 1px solid #0066cc;
+  transition: border-color 0.2s;
+}
+
+.triggering-ally-icon:hover {
+  border-color: #66ccff;
 }
 
 
