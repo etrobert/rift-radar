@@ -22,6 +22,7 @@ rift-radar is a Go application that analyzes League of Legends match data using 
 ## Environment Setup
 
 The application requires a `.env` file with:
+
 - `RIOT_API_KEY`: Your Riot Games API key
 - `REDIS_URL`: Redis server URL for caching
 - `REDISPASSWORD`: Redis authentication password
@@ -29,11 +30,13 @@ The application requires a `.env` file with:
 ## Common Commands
 
 Build the application:
+
 ```bash
 go build .
 ```
 
 Run the application:
+
 ```bash
 go run .
 ```

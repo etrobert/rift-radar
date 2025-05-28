@@ -33,4 +33,3 @@ function updateURL() {
 
 // Load data when page loads
 window.addEventListener("load", loadFromURL);
-

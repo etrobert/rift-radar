@@ -361,9 +361,13 @@ function generateDamageSuggestions(
     );
     if (suggestion) {
       // Find enemies with magic damage
-      suggestion.triggeringEnemies = enemyChampions.filter(championId => {
+      suggestion.triggeringEnemies = enemyChampions.filter((championId) => {
         const champion = championTags[championId];
-        return champion && champion.damageTypes && champion.damageTypes.includes("magic-damage");
+        return (
+          champion &&
+          champion.damageTypes &&
+          champion.damageTypes.includes("magic-damage")
+        );
       });
       suggestions.push(suggestion);
     }
@@ -382,9 +386,13 @@ function generateDamageSuggestions(
     );
     if (suggestion) {
       // Find enemies with physical damage
-      suggestion.triggeringEnemies = enemyChampions.filter(championId => {
+      suggestion.triggeringEnemies = enemyChampions.filter((championId) => {
         const champion = championTags[championId];
-        return champion && champion.damageTypes && champion.damageTypes.includes("physical-damage");
+        return (
+          champion &&
+          champion.damageTypes &&
+          champion.damageTypes.includes("physical-damage")
+        );
       });
       suggestions.push(suggestion);
     }
@@ -393,15 +401,19 @@ function generateDamageSuggestions(
   return suggestions;
 }
 
-function generateSpecificCounterSuggestions(enemyChampions, needsPhysical, needsMagic) {
+function generateSpecificCounterSuggestions(
+  enemyChampions,
+  needsPhysical,
+  needsMagic,
+) {
   const suggestions = [];
   const counterMap = {};
-  
+
   // Build map of champions that counter specific enemies
-  Object.keys(championTags).forEach(championName => {
+  Object.keys(championTags).forEach((championName) => {
     const champion = championTags[championName];
     if (champion.counters) {
-      champion.counters.forEach(targetChampion => {
+      champion.counters.forEach((targetChampion) => {
         if (!counterMap[targetChampion]) {
           counterMap[targetChampion] = [];
         }
@@ -409,16 +421,16 @@ function generateSpecificCounterSuggestions(enemyChampions, needsPhysical, needs
       });
     }
   });
-  
+
   // Check each enemy for specific counters
-  enemyChampions.forEach(enemyChampion => {
+  enemyChampions.forEach((enemyChampion) => {
     if (counterMap[enemyChampion]) {
       const counters = counterMap[enemyChampion];
       const suggestion = createSuggestion(
         `Good against ${enemyChampion}`,
         counters,
         needsPhysical,
-        needsMagic
+        needsMagic,
       );
       if (suggestion) {
         suggestion.triggeringEnemies = [enemyChampion];
@@ -426,7 +438,7 @@ function generateSpecificCounterSuggestions(enemyChampions, needsPhysical, needs
       }
     }
   });
-  
+
   return suggestions;
 }
 
@@ -483,12 +495,12 @@ function generateTagCounterSuggestions(
 function generateSynergySuggestions(allyChampions, needsPhysical, needsMagic) {
   const suggestions = [];
   const synergyMap = {};
-  
+
   // Build map of champions that synergize with specific allies
-  Object.keys(championTags).forEach(championName => {
+  Object.keys(championTags).forEach((championName) => {
     const champion = championTags[championName];
     if (champion.synergiesWith) {
-      champion.synergiesWith.forEach(synergyChampion => {
+      champion.synergiesWith.forEach((synergyChampion) => {
         if (!synergyMap[synergyChampion]) {
           synergyMap[synergyChampion] = [];
         }
@@ -496,20 +508,20 @@ function generateSynergySuggestions(allyChampions, needsPhysical, needsMagic) {
       });
     }
   });
-  
+
   // Check each ally for synergy opportunities
-  allyChampions.forEach(allyChampion => {
+  allyChampions.forEach((allyChampion) => {
     if (synergyMap[allyChampion]) {
-      const synergyPartners = synergyMap[allyChampion].filter(partner => 
-        !allyChampions.includes(partner) // Don't suggest champions already on team
+      const synergyPartners = synergyMap[allyChampion].filter(
+        (partner) => !allyChampions.includes(partner), // Don't suggest champions already on team
       );
-      
+
       if (synergyPartners.length > 0) {
         const suggestion = createSuggestion(
           `Synergizes with ${allyChampion}`,
           synergyPartners,
           needsPhysical,
-          needsMagic
+          needsMagic,
         );
         if (suggestion) {
           suggestion.triggeringAllies = [allyChampion];
@@ -518,7 +530,7 @@ function generateSynergySuggestions(allyChampions, needsPhysical, needsMagic) {
       }
     }
   });
-  
+
   return suggestions;
 }
 
@@ -554,9 +566,12 @@ function renderSuggestions(suggestions) {
         html += `<div class="suggestion-group">
           <div class="suggestion-header">
             <h4>${suggestion.reason}</h4>`;
-        
+
         // Show triggering enemy champions if available
-        if (suggestion.triggeringEnemies && suggestion.triggeringEnemies.length > 0) {
+        if (
+          suggestion.triggeringEnemies &&
+          suggestion.triggeringEnemies.length > 0
+        ) {
           html += `<div class="triggering-enemies">
             <span class="because-of">counters:</span>`;
           suggestion.triggeringEnemies.forEach((enemyId) => {
@@ -565,9 +580,12 @@ function renderSuggestions(suggestions) {
           });
           html += `</div>`;
         }
-        
+
         // Show triggering ally champions for synergies
-        if (suggestion.triggeringAllies && suggestion.triggeringAllies.length > 0) {
+        if (
+          suggestion.triggeringAllies &&
+          suggestion.triggeringAllies.length > 0
+        ) {
           html += `<div class="triggering-allies">
             <span class="because-of">synergizes with:</span>`;
           suggestion.triggeringAllies.forEach((allyId) => {
@@ -576,7 +594,7 @@ function renderSuggestions(suggestions) {
           });
           html += `</div>`;
         }
-        
+
         html += `</div>
           <div class="suggested-champions">`;
 
@@ -628,7 +646,11 @@ function updateSuggestions() {
     ...generateSynergySuggestions(allyChampions, needsPhysical, needsMagic),
   );
   suggestions.push(
-    ...generateSpecificCounterSuggestions(enemyChampions, needsPhysical, needsMagic),
+    ...generateSpecificCounterSuggestions(
+      enemyChampions,
+      needsPhysical,
+      needsMagic,
+    ),
   );
   suggestions.push(
     ...generateDamageSuggestions(
