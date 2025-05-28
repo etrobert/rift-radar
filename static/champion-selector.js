@@ -467,6 +467,16 @@ function generateTagCounterSuggestions(
   );
   if (assassinSuggestion) suggestions.push(assassinSuggestion);
 
+  const ccSuggestion = generateCounterSuggestion(
+    enemyChampions,
+    "cc",
+    2,
+    "Strong against crowd control",
+    needsPhysical,
+    needsMagic,
+  );
+  if (ccSuggestion) suggestions.push(ccSuggestion);
+
   return suggestions;
 }
 
