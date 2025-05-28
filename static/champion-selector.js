@@ -393,6 +393,43 @@ function generateDamageSuggestions(
   return suggestions;
 }
 
+function generateSpecificCounterSuggestions(enemyChampions, needsPhysical, needsMagic) {
+  const suggestions = [];
+  const counterMap = {};
+  
+  // Build map of champions that counter specific enemies
+  Object.keys(championTags).forEach(championName => {
+    const champion = championTags[championName];
+    if (champion.counters) {
+      champion.counters.forEach(targetChampion => {
+        if (!counterMap[targetChampion]) {
+          counterMap[targetChampion] = [];
+        }
+        counterMap[targetChampion].push(championName);
+      });
+    }
+  });
+  
+  // Check each enemy for specific counters
+  enemyChampions.forEach(enemyChampion => {
+    if (counterMap[enemyChampion]) {
+      const counters = counterMap[enemyChampion];
+      const suggestion = createSuggestion(
+        `Good against ${enemyChampion}`,
+        counters,
+        needsPhysical,
+        needsMagic
+      );
+      if (suggestion) {
+        suggestion.triggeringEnemies = [enemyChampion];
+        suggestions.push(suggestion);
+      }
+    }
+  });
+  
+  return suggestions;
+}
+
 function generateTagCounterSuggestions(
   enemyChampions,
   needsPhysical,
@@ -524,6 +561,9 @@ function updateSuggestions() {
 
   let suggestions = [];
 
+  suggestions.push(
+    ...generateSpecificCounterSuggestions(enemyChampions, needsPhysical, needsMagic),
+  );
   suggestions.push(
     ...generateDamageSuggestions(
       enemyDamageComposition,

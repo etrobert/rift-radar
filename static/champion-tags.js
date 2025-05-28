@@ -205,7 +205,7 @@ export const championTags = {
   Zed: { damageTypes: ["physical-damage"], tags: ["dash", "assassin"] },
   Zeri: { damageTypes: ["physical-damage"] },
   Ziggs: { damageTypes: ["magic-damage"] },
-  Zilean: { damageTypes: ["magic-damage"], strongAgainst: ["assassin"] },
+  Zilean: { damageTypes: ["magic-damage"], strongAgainst: ["assassin"], counters: ["Galio"] },
   Zoe: { damageTypes: ["magic-damage"] },
   Zyra: { damageTypes: ["magic-damage"] },
   Mel: { damageTypes: ["magic-damage"] },
