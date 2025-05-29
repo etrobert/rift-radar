@@ -157,8 +157,7 @@
 }
 
 .team-container {
-  flex: 1;
-  min-width: 200px;
+  min-width: 320px;
   background-color: #2d2d2d;
   border: 1px solid #444;
   border-radius: 8px;
@@ -174,7 +173,7 @@
 
 .team-champions {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 8px;
 }
 

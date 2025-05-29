@@ -20,40 +20,42 @@
     </nav>
 
 
-    <div class="teams-section">
-      <div class="team-container">
-        <h3>Ally Bans</h3>
-        <div class="team-champions" data-team="ally" data-type="bans"></div>
-      </div>
-
-      <div class="team-container">
-        <h3>Enemy Bans</h3>
-        <div class="team-champions" data-team="enemy" data-type="bans"></div>
-      </div>
-    </div>
-
-    <div class="teams-section">
-      <div class="team-container">
-        <h3>Ally Team</h3>
-        <div class="team-champions" data-team="ally"></div>
-        <div class="team-damage-composition" id="ally-damage-composition">
-          <div class="team-combined-damage-bar empty-bar"></div>
+    <div class="draft-layout">
+      <div class="left-team">
+        <div class="team-container">
+          <h3>Ally Bans</h3>
+          <div class="team-champions" data-team="ally" data-type="bans"></div>
+        </div>
+        <div class="team-container">
+          <h3>Ally Team</h3>
+          <div class="team-champions" data-team="ally"></div>
+          <div class="team-damage-composition" id="ally-damage-composition">
+            <div class="team-combined-damage-bar empty-bar"></div>
+          </div>
         </div>
       </div>
 
-      <div class="team-container">
-        <h3>Enemy Team</h3>
-        <div class="team-champions" data-team="enemy"></div>
-        <div class="team-damage-composition" id="enemy-damage-composition">
-          <div class="team-combined-damage-bar empty-bar"></div>
+      <div class="center-suggestions">
+        <div class="suggestions-panel">
+          <h3>Pick Suggestions</h3>
+          <div id="suggestions-content">
+            <p>Select enemy champions to see counter-pick suggestions</p>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="suggestions-panel">
-      <h3>Pick Suggestions</h3>
-      <div id="suggestions-content">
-        <p>Select enemy champions to see counter-pick suggestions</p>
+      <div class="right-team">
+        <div class="team-container">
+          <h3>Enemy Bans</h3>
+          <div class="team-champions" data-team="enemy" data-type="bans"></div>
+        </div>
+        <div class="team-container">
+          <h3>Enemy Team</h3>
+          <div class="team-champions" data-team="enemy"></div>
+          <div class="team-damage-composition" id="enemy-damage-composition">
+            <div class="team-combined-damage-bar empty-bar"></div>
+          </div>
+        </div>
       </div>
     </div>
 
