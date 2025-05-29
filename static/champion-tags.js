@@ -88,7 +88,7 @@ export const championTags = {
     tags: ["dash"],
     synergiesWith: ["Galio"],
   },
-  Jax: { damageTypes: ["physical-damage"], tags: ["dash"] },
+  Jax: { damageTypes: ["physical-damage", "magic-damage"], tags: ["dash"] },
   Jayce: { damageTypes: ["physical-damage"] },
   Jhin: { damageTypes: ["physical-damage"] },
   Jinx: { damageTypes: ["physical-damage"] },
