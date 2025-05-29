@@ -230,7 +230,7 @@ export const championTags = {
   },
   Syndra: { damageTypes: ["magic-damage"], tags: ["cc"] },
   TahmKench: { damageTypes: ["magic-damage"] },
-  Taliyah: { damageTypes: ["magic-damage"] },
+  Taliyah: { damageTypes: ["magic-damage"], strongAgainst: ["dash"] },
   Talon: { damageTypes: ["physical-damage"], tags: ["dash", "assassin"] },
   Taric: { damageTypes: ["magic-damage"], tags: ["healing"] },
   Teemo: { damageTypes: ["magic-damage"] },
