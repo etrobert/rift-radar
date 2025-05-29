@@ -20,7 +20,7 @@ export const championTags = {
   AurelionSol: { damageTypes: ["magic-damage"] },
   Aurora: { damageTypes: ["magic-damage"] },
   Azir: { damageTypes: ["magic-damage"], tags: ["dash"] },
-  Bard: {},
+  Bard: { tags: ["cc"] },
   Belveth: { damageTypes: ["physical-damage"] },
   Blitzcrank: { tags: ["cc"] },
   Brand: { damageTypes: ["magic-damage"] },
@@ -105,6 +105,7 @@ export const championTags = {
     damageTypes: ["magic-damage"],
     tags: ["assassin"],
     strongAgainst: ["healing"],
+    weakAgainst: ["cc"],
   },
   Kayle: {
     damageTypes: ["magic-damage", "physical-damage"],
@@ -149,6 +150,7 @@ export const championTags = {
   MasterYi: {
     damageTypes: ["physical-damage", "true-damage"],
     synergiesWith: ["Zilean"],
+    weakAgainst: ["cc"],
   },
   Milio: {
     damageTypes: ["magic-damage"],
@@ -215,7 +217,7 @@ export const championTags = {
   Shen: { damageTypes: ["magic-damage"], tags: ["dash"] },
   Shyvana: { damageTypes: ["magic-damage", "physical-damage"] },
   Singed: { damageTypes: ["magic-damage"], strongAgainst: ["healing"] },
-  Sion: { damageTypes: ["physical-damage"] },
+  Sion: { damageTypes: ["physical-damage"], tags: ["cc"] },
   Sivir: { damageTypes: ["physical-damage"] },
   Skarner: { damageTypes: ["physical-damage"] },
   Smolder: { damageTypes: ["magic-damage", "physical-damage"] },
@@ -226,7 +228,7 @@ export const championTags = {
     damageTypes: ["magic-damage"],
     tags: ["dash", "healing"],
   },
-  Syndra: { damageTypes: ["magic-damage"] },
+  Syndra: { damageTypes: ["magic-damage"], tags: ["cc"] },
   TahmKench: { damageTypes: ["magic-damage"] },
   Taliyah: { damageTypes: ["magic-damage"] },
   Talon: { damageTypes: ["physical-damage"], tags: ["dash", "assassin"] },
@@ -262,7 +264,7 @@ export const championTags = {
   Warwick: { damageTypes: ["physical-damage"], tags: ["dash", "healing"] },
   Xayah: { damageTypes: ["physical-damage"], synergiesWith: ["Rakan"] },
   Xerath: { damageTypes: ["magic-damage"] },
-  XinZhao: { damageTypes: ["physical-damage"], tags: ["dash"] },
+  XinZhao: { damageTypes: ["physical-damage"], tags: ["dash", "cc"] },
   Yasuo: {
     damageTypes: ["physical-damage"],
     tags: ["dash"],

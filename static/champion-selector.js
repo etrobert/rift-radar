@@ -340,6 +340,40 @@ function generateCounterSuggestion(
   return null;
 }
 
+function generateOpportunitySuggestion(
+  enemyChampions,
+  tag,
+  maxCount,
+  reason,
+  needsPhysical,
+  needsMagic,
+) {
+  let tagCount = 0;
+  enemyChampions.forEach((championId) => {
+    const champion = championTags[championId];
+    if (champion && champion.tags && champion.tags.includes(tag)) {
+      tagCount++;
+    }
+  });
+
+  if (enemyChampions.length >= 3 && tagCount <= maxCount) {
+    const opportunityChampions = Object.keys(championTags).filter((champName) => {
+      const champ = championTags[champName];
+      return champ.weakAgainst && champ.weakAgainst.includes(tag);
+    });
+
+    if (opportunityChampions.length > 0) {
+      return createSuggestion(
+        reason,
+        opportunityChampions,
+        needsPhysical,
+        needsMagic,
+      );
+    }
+  }
+  return null;
+}
+
 function generateDamageSuggestions(
   enemyDamageComposition,
   enemyChampions,
@@ -488,6 +522,16 @@ function generateTagCounterSuggestions(
     needsMagic,
   );
   if (ccSuggestion) suggestions.push(ccSuggestion);
+
+  const lowCCSuggestion = generateOpportunitySuggestion(
+    enemyChampions,
+    "cc",
+    1,
+    "Good against low CC teams",
+    needsPhysical,
+    needsMagic,
+  );
+  if (lowCCSuggestion) suggestions.push(lowCCSuggestion);
 
   return suggestions;
 }
