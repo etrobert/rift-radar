@@ -148,7 +148,7 @@ export const championTags = {
     tags: ["cc"],
     strongAgainst: ["assassin"],
   },
-  Maokai: { damageTypes: ["magic-damage"], tags: ["healing"] },
+  Maokai: { damageTypes: ["magic-damage"], tags: ["healing", "strong-ultimate", "cc"] },
   MasterYi: {
     damageTypes: ["physical-damage", "true-damage"],
     synergiesWith: ["Zilean"],
@@ -217,7 +217,7 @@ export const championTags = {
     damageTypes: ["physical-damage", "magic-damage"],
     tags: ["assassin"],
   },
-  Shen: { damageTypes: ["magic-damage"], tags: ["dash", "strong-ultimate"] },
+  Shen: { damageTypes: ["magic-damage"], tags: ["dash", "strong-ultimate", "cc"] },
   Shyvana: { damageTypes: ["magic-damage", "physical-damage"] },
   Singed: { damageTypes: ["magic-damage"], strongAgainst: ["healing"] },
   Sion: { damageTypes: ["physical-damage"], tags: ["cc"] },
@@ -248,7 +248,7 @@ export const championTags = {
   Urgot: { damageTypes: ["physical-damage"], tags: ["dash"] },
   Varus: {
     damageTypes: ["physical-damage", "magic-damage"],
-    tags: ["strong-ultimate"],
+    tags: ["strong-ultimate", "cc"],
     strongAgainst: ["healing"],
   },
   Vayne: {
@@ -277,7 +277,7 @@ export const championTags = {
   },
   Yone: {
     damageTypes: ["physical-damage", "magic-damage"],
-    tags: ["dash"],
+    tags: ["dash", "strong-ultimate"],
   },
   Yorick: { damageTypes: ["physical-damage"] },
   Yuumi: { damageTypes: ["magic-damage"], tags: ["healing"] },
