@@ -533,6 +533,16 @@ function generateTagCounterSuggestions(
   );
   if (lowCCSuggestion) suggestions.push(lowCCSuggestion);
 
+  const strongUltimateSuggestion = generateCounterSuggestion(
+    enemyChampions,
+    "strong-ultimate",
+    2,
+    "Can steal powerful ultimates",
+    needsPhysical,
+    needsMagic,
+  );
+  if (strongUltimateSuggestion) suggestions.push(strongUltimateSuggestion);
+
   return suggestions;
 }
 
