@@ -276,17 +276,27 @@ function getDamageComposition(champions) {
   return composition;
 }
 
-function createSuggestion(reason, championList, needsPhysical, needsMagic) {
-  const validChampions = championList.filter((name) => championTags[name]);
+function createSuggestion(
+  reason,
+  championList,
+  needsPhysical,
+  needsMagic,
+  allyChampions,
+  enemyChampions,
+) {
+  const pickedChampions = [...allyChampions, ...enemyChampions];
+  const validChampions = championList.filter(
+    (name) => championTags[name] && !pickedChampions.includes(name),
+  );
   if (validChampions.length === 0) return null;
 
   const championPriorities = validChampions.map((name) => {
     const champion = championTags[name];
     let priority = true;
 
-    if (needsPhysical && !champion.damageTypes.includes("physical-damage")) {
+    if (needsPhysical && !champion.damageTypes?.includes("physical-damage")) {
       priority = false;
-    } else if (needsMagic && !champion.damageTypes.includes("magic-damage")) {
+    } else if (needsMagic && !champion.damageTypes?.includes("magic-damage")) {
       priority = false;
     }
 
@@ -307,6 +317,7 @@ function generateCounterSuggestion(
   reason,
   needsPhysical,
   needsMagic,
+  allyChampions,
 ) {
   let tagCount = 0;
   const triggeringEnemies = [];
@@ -330,6 +341,8 @@ function generateCounterSuggestion(
         counterChampions,
         needsPhysical,
         needsMagic,
+        allyChampions,
+        enemyChampions,
       );
       if (suggestion) {
         suggestion.triggeringEnemies = triggeringEnemies;
@@ -347,6 +360,7 @@ function generateOpportunitySuggestion(
   reason,
   needsPhysical,
   needsMagic,
+  allyChampions,
 ) {
   let tagCount = 0;
   enemyChampions.forEach((championId) => {
@@ -357,10 +371,12 @@ function generateOpportunitySuggestion(
   });
 
   if (enemyChampions.length >= 3 && tagCount <= maxCount) {
-    const opportunityChampions = Object.keys(championTags).filter((champName) => {
-      const champ = championTags[champName];
-      return champ.weakAgainst && champ.weakAgainst.includes(tag);
-    });
+    const opportunityChampions = Object.keys(championTags).filter(
+      (champName) => {
+        const champ = championTags[champName];
+        return champ.weakAgainst && champ.weakAgainst.includes(tag);
+      },
+    );
 
     if (opportunityChampions.length > 0) {
       return createSuggestion(
@@ -368,6 +384,8 @@ function generateOpportunitySuggestion(
         opportunityChampions,
         needsPhysical,
         needsMagic,
+        allyChampions,
+        enemyChampions,
       );
     }
   }
@@ -379,6 +397,7 @@ function generateDamageSuggestions(
   enemyChampions,
   needsPhysical,
   needsMagic,
+  allyChampions,
 ) {
   const suggestions = [];
 
@@ -392,6 +411,8 @@ function generateDamageSuggestions(
       ["Galio", "Kassadin"],
       needsPhysical,
       needsMagic,
+      allyChampions,
+      enemyChampions,
     );
     if (suggestion) {
       // Find enemies with magic damage
@@ -417,6 +438,8 @@ function generateDamageSuggestions(
       ["Malphite", "Rammus", "MonkeyKing"],
       needsPhysical,
       needsMagic,
+      allyChampions,
+      enemyChampions,
     );
     if (suggestion) {
       // Find enemies with physical damage
@@ -480,6 +503,7 @@ function generateTagCounterSuggestions(
   enemyChampions,
   needsPhysical,
   needsMagic,
+  allyChampions,
 ) {
   const suggestions = [];
 
@@ -490,6 +514,7 @@ function generateTagCounterSuggestions(
     "Strong against dashes",
     needsPhysical,
     needsMagic,
+    allyChampions,
   );
   if (dashSuggestion) suggestions.push(dashSuggestion);
 
@@ -500,6 +525,7 @@ function generateTagCounterSuggestions(
     "Has built-in Grievous Wounds",
     needsPhysical,
     needsMagic,
+    allyChampions,
   );
   if (healingSuggestion) suggestions.push(healingSuggestion);
 
@@ -510,6 +536,7 @@ function generateTagCounterSuggestions(
     "Strong against assassins",
     needsPhysical,
     needsMagic,
+    allyChampions,
   );
   if (assassinSuggestion) suggestions.push(assassinSuggestion);
 
@@ -520,6 +547,7 @@ function generateTagCounterSuggestions(
     "Strong against crowd control",
     needsPhysical,
     needsMagic,
+    allyChampions,
   );
   if (ccSuggestion) suggestions.push(ccSuggestion);
 
@@ -530,6 +558,7 @@ function generateTagCounterSuggestions(
     "Good against low CC teams",
     needsPhysical,
     needsMagic,
+    allyChampions,
   );
   if (lowCCSuggestion) suggestions.push(lowCCSuggestion);
 
@@ -540,6 +569,7 @@ function generateTagCounterSuggestions(
     "Can steal powerful ultimates",
     needsPhysical,
     needsMagic,
+    allyChampions,
   );
   if (strongUltimateSuggestion) suggestions.push(strongUltimateSuggestion);
 
@@ -712,10 +742,16 @@ function updateSuggestions() {
       enemyChampions,
       needsPhysical,
       needsMagic,
+      allyChampions,
     ),
   );
   suggestions.push(
-    ...generateTagCounterSuggestions(enemyChampions, needsPhysical, needsMagic),
+    ...generateTagCounterSuggestions(
+      enemyChampions,
+      needsPhysical,
+      needsMagic,
+      allyChampions,
+    ),
   );
   suggestions.push(
     ...generateBalanceSuggestions(allyChampions, hasPhysical, hasMagic),
