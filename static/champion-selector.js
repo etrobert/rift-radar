@@ -74,31 +74,41 @@ function selectChampion(champion) {
   image.style.display = "block";
   placeholder.style.display = "none";
 
-  // Store selected champion data
+  // Store champion data
   currentSelector.setAttribute("data-champion", champion.id);
 
-  // Check if this selector is in a team container and add new empty selector if needed
-  const teamContainer = currentSelector.closest(".team-champions");
-  if (teamContainer) {
-    addNewChampionSelector(teamContainer);
+  // Get selector type from the element
+  const selectorType = currentSelector.getAttribute("data-selector-type");
+
+  // Add new empty selector if needed
+  const container = currentSelector.closest(".team-champions");
+  if (container) {
+    addNewSelector(container);
+  }
+  
+  // Only update team composition for picks, not bans
+  if (selectorType === "pick") {
+    updateTeamComposition();
   }
 
-  // Update suggestions and team composition when a champion is selected
+  // Update suggestions for both picks and bans
   updateSuggestions();
-  updateTeamComposition();
-
   closeChampionModal();
 }
 
-function createChampionSelector() {
+function createSelector(type = "pick") {
   const selector = document.createElement("button");
   selector.type = "button";
   selector.className = "champion-selector";
+  selector.setAttribute("data-selector-type", type);
+  
+  const altText = type === "ban" ? "Ban Champion" : "Select Champion";
+  
   selector.innerHTML = `
     <div class="champion-placeholder">+</div>
     <img
       src=""
-      alt="Select Champion"
+      alt="${altText}"
       class="champion-selector-image"
       style="display: none"
     />
@@ -109,22 +119,23 @@ function createChampionSelector() {
     if (selector.hasAttribute("data-champion")) {
       removeChampion(selector);
     } else {
-      openChampionModal(selector);
+      openModal(selector);
     }
   };
   return selector;
 }
 
+
 function removeChampion(selector) {
-  // Get the team container before removing the selector
-  const teamContainer = selector.closest(".team-champions");
+  // Get the container before removing the selector
+  const container = selector.closest(".team-champions");
 
   // Remove the entire selector from the DOM
   selector.remove();
 
   // Add a new empty selector if needed (since we might be under the 5 limit now)
-  if (teamContainer) {
-    addNewChampionSelector(teamContainer);
+  if (container) {
+    addNewSelector(container);
   }
 
   // Update suggestions and team composition after removing a champion
@@ -132,29 +143,30 @@ function removeChampion(selector) {
   updateTeamComposition();
 }
 
-function addNewChampionSelector(teamContainer) {
+function addNewSelector(container) {
   // Check if there's already an empty selector (one without data-champion)
-  const emptySelector = teamContainer.querySelector(
+  const emptySelector = container.querySelector(
     ".champion-selector:not([data-champion])",
   );
 
-  // Count current champions (excluding empty selectors)
-  const selectedChampions = teamContainer.querySelectorAll(
-    ".champion-selector[data-champion]",
-  ).length;
+  // Count current selections (excluding empty selectors)
+  const selectedCount = container.querySelectorAll("[data-champion]").length;
 
   // Only add a new selector if there isn't already an empty one and we haven't reached the limit of 5
-  if (!emptySelector && selectedChampions < 5) {
-    const newSelector = createChampionSelector();
-    teamContainer.appendChild(newSelector);
+  if (!emptySelector && selectedCount < 5) {
+    const isBanContainer = container.hasAttribute("data-type") && container.getAttribute("data-type") === "bans";
+    const newSelector = createSelector(isBanContainer ? "ban" : "pick");
+    container.appendChild(newSelector);
   }
 }
 
-function openChampionModal(selector) {
+
+function openModal(selector) {
   currentSelector = selector;
   document.getElementById("championModal").style.display = "block";
   document.getElementById("championSearch").focus();
 }
+
 
 function closeChampionModal() {
   document.getElementById("championModal").style.display = "none";
@@ -208,10 +220,16 @@ function initChampionSelector() {
   const searchInput = document.getElementById("championSearch");
 
   // Add initial empty selectors to both teams
-  const allyTeam = document.querySelector('[data-team="ally"]');
-  const enemyTeam = document.querySelector('[data-team="enemy"]');
-  allyTeam.appendChild(createChampionSelector());
-  enemyTeam.appendChild(createChampionSelector());
+  const allyTeam = document.querySelector('.team-champions[data-team="ally"]:not([data-type])');
+  const enemyTeam = document.querySelector('.team-champions[data-team="enemy"]:not([data-type])');
+  allyTeam.appendChild(createSelector("pick"));
+  enemyTeam.appendChild(createSelector("pick"));
+
+  // Add initial empty ban selectors to both teams
+  const allyBans = document.querySelector('.team-champions[data-team="ally"][data-type="bans"]');
+  const enemyBans = document.querySelector('.team-champions[data-team="enemy"][data-type="bans"]');
+  allyBans.appendChild(createSelector("ban"));
+  enemyBans.appendChild(createSelector("ban"));
 
   closeBtn.onclick = closeChampionModal;
 
@@ -285,8 +303,10 @@ function createSuggestion(
   enemyChampions,
 ) {
   const pickedChampions = [...allyChampions, ...enemyChampions];
+  const bannedChampions = getAllBannedChampions();
+  const excludedChampions = [...pickedChampions, ...bannedChampions];
   const validChampions = championList.filter(
-    (name) => championTags[name] && !pickedChampions.includes(name),
+    (name) => championTags[name] && !excludedChampions.includes(name),
   );
   if (validChampions.length === 0) return null;
 
@@ -760,11 +780,23 @@ function updateSuggestions() {
   suggestionsContent.innerHTML = renderSuggestions(suggestions);
 }
 
-function getTeamChampions(team) {
-  const teamContainer = document.querySelector(`[data-team="${team}"]`);
-  return Array.from(teamContainer.querySelectorAll("[data-champion]"))
+function getChampionsFromContainer(selector) {
+  const container = document.querySelector(selector);
+  return Array.from(container.querySelectorAll("[data-champion]"))
     .map((selector) => selector.getAttribute("data-champion"))
     .filter((champion) => champion !== null);
+}
+
+function getTeamChampions(team) {
+  return getChampionsFromContainer(`.team-champions[data-team="${team}"]:not([data-type])`);
+}
+
+function getBannedChampions(team) {
+  return getChampionsFromContainer(`.team-champions[data-team="${team}"][data-type="bans"]`);
+}
+
+function getAllBannedChampions() {
+  return [...getBannedChampions("ally"), ...getBannedChampions("enemy")];
 }
 
 function updateTeamCompositionDisplay(team) {
