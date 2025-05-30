@@ -40,7 +40,7 @@ async function getAllStats(event) {
       const winrate = ((champion.Wins / champion.Games) * 100).toFixed(1);
       html += `
           <div class="champion">
-            <img src="https://ddragon.leagueoflegends.com/cdn/14.24.1/img/champion/${champion.ChampionName}.png" 
+            <img src="https://ddragon.leagueoflegends.com/cdn/15.11.1/img/champion/${champion.ChampionName}.png" 
                  alt="${champion.ChampionName}" class="champion-icon" 
                  onerror="this.style.display='none'">
             <div>
@@ -61,7 +61,7 @@ async function getAllStats(event) {
       const winrate = ((result.Wins / result.Games) * 100).toFixed(1);
       html += `
           <div class="champion">
-            <img src="https://ddragon.leagueoflegends.com/cdn/14.24.1/img/champion/${result.ChampionName}.png" 
+            <img src="https://ddragon.leagueoflegends.com/cdn/15.11.1/img/champion/${result.ChampionName}.png" 
                  alt="${result.ChampionName}" class="champion-icon" 
                  onerror="this.style.display='none'">
             <div>

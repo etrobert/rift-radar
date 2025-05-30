@@ -7,7 +7,7 @@ let selectedGridIndex = -1;
 async function loadChampions() {
   try {
     const response = await fetch(
-      "https://ddragon.leagueoflegends.com/cdn/14.24.1/data/en_US/champion.json",
+      "https://ddragon.leagueoflegends.com/cdn/15.11.1/data/en_US/champion.json",
     );
     const data = await response.json();
     champions = Object.values(data.data).sort((a, b) =>
@@ -42,7 +42,7 @@ function renderChampionGrid(filter = "") {
     };
 
     item.innerHTML = `
-      <img src="https://ddragon.leagueoflegends.com/cdn/14.24.1/img/champion/${champion.id}.png" 
+      <img src="https://ddragon.leagueoflegends.com/cdn/15.11.1/img/champion/${champion.id}.png" 
            alt="${champion.name}" class="champion-grid-image"
            onerror="this.style.display='none'">
       <div class="champion-grid-name">${champion.name}</div>
@@ -69,7 +69,7 @@ function selectChampion(champion) {
   const image = currentSelector.querySelector(".champion-selector-image");
   const placeholder = currentSelector.querySelector(".champion-placeholder");
 
-  image.src = `https://ddragon.leagueoflegends.com/cdn/14.24.1/img/champion/${champion.id}.png`;
+  image.src = `https://ddragon.leagueoflegends.com/cdn/15.11.1/img/champion/${champion.id}.png`;
   image.alt = champion.name;
   image.style.display = "block";
   placeholder.style.display = "none";
