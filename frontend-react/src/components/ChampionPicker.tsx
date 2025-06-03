@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useQuery } from '@tanstack/react-query';
+import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import {
   CommandDialog,
@@ -13,33 +13,29 @@ import type { Champion } from "../types/champion";
 import { ChampionDataSchema } from "../types/champion";
 
 interface ChampionPickerProps {
-  selectedChampion?: string;
   onSelect: (championId: string) => void;
 }
 
 const fetchChampions = async (): Promise<Champion[]> => {
   const response = await fetch(
-    'https://ddragon.leagueoflegends.com/cdn/15.11.1/data/en_US/champion.json'
+    "https://ddragon.leagueoflegends.com/cdn/15.11.1/data/en_US/champion.json",
   );
-  
+
   if (!response.ok) {
     throw new Error(`Failed to fetch champions: ${response.status}`);
   }
-  
+
   const rawData = await response.json();
   const data = ChampionDataSchema.parse(rawData);
-  
+
   return Object.values(data.data).sort((a, b) => a.name.localeCompare(b.name));
 };
 
-export function ChampionPicker({
-  selectedChampion,
-  onSelect,
-}: ChampionPickerProps) {
+export function ChampionPicker({ onSelect }: ChampionPickerProps) {
   const [open, setOpen] = useState(false);
-  
+
   const { data: champions = [], isLoading } = useQuery({
-    queryKey: ['champions'],
+    queryKey: ["champions"],
     queryFn: fetchChampions,
     staleTime: 1000 * 60 * 60, // 1 hour
   });
@@ -56,22 +52,16 @@ export function ChampionPicker({
         onClick={() => setOpen(true)}
         className="h-12 w-12 p-0"
       >
-        {selectedChampion ? (
-          <img
-            src={`https://ddragon.leagueoflegends.com/cdn/15.11.1/img/champion/${selectedChampion}.png`}
-            alt={selectedChampion}
-            className="h-full w-full rounded object-cover"
-          />
-        ) : (
-          "+"
-        )}
+        +
       </Button>
 
       <CommandDialog open={open} onOpenChange={setOpen}>
         <CommandInput placeholder="Search champions..." />
         <CommandList>
           {isLoading ? (
-            <div className="p-8 text-center text-muted-foreground">Loading champions...</div>
+            <div className="text-muted-foreground p-8 text-center">
+              Loading champions...
+            </div>
           ) : (
             <>
               <CommandEmpty>No champions found.</CommandEmpty>
@@ -90,7 +80,9 @@ export function ChampionPicker({
                           alt={champion.name}
                           className="mb-1 h-12 w-12 rounded"
                         />
-                        <span className="text-center text-xs">{champion.name}</span>
+                        <span className="text-center text-xs">
+                          {champion.name}
+                        </span>
                       </div>
                     </CommandItem>
                   ))}

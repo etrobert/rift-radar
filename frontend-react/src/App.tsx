@@ -2,31 +2,15 @@ import { useState } from "react";
 import { ChampionPicker } from "./components/ChampionPicker";
 
 function App() {
-  const [allyPicks, setAllyPicks] = useState<(string | undefined)[]>([
-    undefined,
-  ]);
-  const [enemyPicks, setEnemyPicks] = useState<(string | undefined)[]>([
-    undefined,
-  ]);
+  const [allyPicks, setAllyPicks] = useState<string[]>([]);
+  const [enemyPicks, setEnemyPicks] = useState<string[]>([]);
 
-  const handleAllySelect = (index: number, championId: string) => {
-    const newPicks = [...allyPicks];
-    newPicks[index] = championId;
-    // Add new slot if this was the last one and we have less than 5
-    if (index === newPicks.length - 1 && newPicks.length < 5) {
-      newPicks.push(undefined);
-    }
-    setAllyPicks(newPicks);
+  const handleAllySelect = (championId: string) => {
+    setAllyPicks((allyPicks) => [...allyPicks, championId]);
   };
 
-  const handleEnemySelect = (index: number, championId: string) => {
-    const newPicks = [...enemyPicks];
-    newPicks[index] = championId;
-    // Add new slot if this was the last one and we have less than 5
-    if (index === newPicks.length - 1 && newPicks.length < 5) {
-      newPicks.push(undefined);
-    }
-    setEnemyPicks(newPicks);
+  const handleEnemySelect = (championId: string) => {
+    setEnemyPicks((enemyPicks) => [...enemyPicks, championId]);
   };
 
   return (
@@ -47,13 +31,10 @@ function App() {
           <div className="rounded-lg border border-gray-600 bg-gray-800 p-4">
             <h3 className="mb-4 text-center text-gray-200">Ally Team</h3>
             <div className="flex flex-nowrap gap-2">
-              {allyPicks.map((champion, index) => (
-                <ChampionPicker
-                  key={index}
-                  selectedChampion={champion}
-                  onSelect={(championId) => handleAllySelect(index, championId)}
-                />
-              ))}
+              {allyPicks.map((champion) => champion)}
+              {allyPicks.length < 5 && (
+                <ChampionPicker onSelect={handleAllySelect} />
+              )}
             </div>
             <div className="mt-4">
               <div className="h-6 rounded bg-gray-700">
@@ -84,15 +65,11 @@ function App() {
           <div className="rounded-lg border border-gray-600 bg-gray-800 p-4">
             <h3 className="mb-4 text-center text-gray-200">Enemy Team</h3>
             <div className="flex flex-nowrap gap-2">
-              {enemyPicks.map((champion, index) => (
-                <ChampionPicker
-                  key={index}
-                  selectedChampion={champion}
-                  onSelect={(championId) =>
-                    handleEnemySelect(index, championId)
-                  }
-                />
-              ))}
+              {enemyPicks.map((champion) => champion)}
+
+              {enemyPicks.length < 5 && (
+                <ChampionPicker onSelect={handleEnemySelect} />
+              )}
             </div>
             <div className="mt-4">
               <div className="h-6 rounded bg-gray-700">
