@@ -9,7 +9,8 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import type { Champion, ChampionData } from "../types/champion";
+import type { Champion } from "../types/champion";
+import { ChampionDataSchema } from "../types/champion";
 
 interface ChampionPickerProps {
   selectedChampion?: string;
@@ -20,7 +21,14 @@ const fetchChampions = async (): Promise<Champion[]> => {
   const response = await fetch(
     'https://ddragon.leagueoflegends.com/cdn/15.11.1/data/en_US/champion.json'
   );
-  const data: ChampionData = await response.json();
+  
+  if (!response.ok) {
+    throw new Error(`Failed to fetch champions: ${response.status}`);
+  }
+  
+  const rawData = await response.json();
+  const data = ChampionDataSchema.parse(rawData);
+  
   return Object.values(data.data).sort((a, b) => a.name.localeCompare(b.name));
 };
 
