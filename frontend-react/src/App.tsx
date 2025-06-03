@@ -8,6 +8,8 @@ import type { ChampionId } from "./types/championTags";
 function App() {
   const [allyPicks, setAllyPicks] = useState<ChampionId[]>([]);
   const [enemyPicks, setEnemyPicks] = useState<ChampionId[]>([]);
+  const [allyBans, setAllyBans] = useState<ChampionId[]>([]);
+  const [enemyBans, setEnemyBans] = useState<ChampionId[]>([]);
 
   const handleAllySelect = (championId: ChampionId) => {
     setAllyPicks((allyPicks) => [...allyPicks, championId]);
@@ -25,6 +27,22 @@ function App() {
     setEnemyPicks((enemyPicks) => enemyPicks.filter((_, i) => i !== index));
   };
 
+  const handleAllyBanSelect = (championId: ChampionId) => {
+    setAllyBans((allyBans) => [...allyBans, championId]);
+  };
+
+  const handleAllyBanRemove = (index: number) => {
+    setAllyBans((allyBans) => allyBans.filter((_, i) => i !== index));
+  };
+
+  const handleEnemyBanSelect = (championId: ChampionId) => {
+    setEnemyBans((enemyBans) => [...enemyBans, championId]);
+  };
+
+  const handleEnemyBanRemove = (index: number) => {
+    setEnemyBans((enemyBans) => enemyBans.filter((_, i) => i !== index));
+  };
+
   return (
     <>
       <nav className="border-b border-gray-700 bg-gray-800 p-4">
@@ -37,7 +55,16 @@ function App() {
           <div className="mb-5 rounded-lg border border-gray-600 bg-gray-800 p-4">
             <h3 className="mb-4 text-center text-gray-200">Ally Bans</h3>
             <div className="flex flex-nowrap gap-2">
-              {/* Ban selectors will go here */}
+              {allyBans.map((champion, index) => (
+                <ChampionCard
+                  key={index}
+                  championId={champion}
+                  onRemove={() => handleAllyBanRemove(index)}
+                />
+              ))}
+              {allyBans.length < 5 && (
+                <ChampionPicker onSelect={handleAllyBanSelect} />
+              )}
             </div>
           </div>
           <div className="rounded-lg border border-gray-600 bg-gray-800 p-4">
@@ -73,7 +100,16 @@ function App() {
           <div className="mb-5 rounded-lg border border-gray-600 bg-gray-800 p-4">
             <h3 className="mb-4 text-center text-gray-200">Enemy Bans</h3>
             <div className="flex flex-nowrap gap-2">
-              {/* Ban selectors will go here */}
+              {enemyBans.map((champion, index) => (
+                <ChampionCard
+                  key={index}
+                  championId={champion}
+                  onRemove={() => handleEnemyBanRemove(index)}
+                />
+              ))}
+              {enemyBans.length < 5 && (
+                <ChampionPicker onSelect={handleEnemyBanSelect} />
+              )}
             </div>
           </div>
           <div className="rounded-lg border border-gray-600 bg-gray-800 p-4">
