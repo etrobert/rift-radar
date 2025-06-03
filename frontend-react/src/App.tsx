@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { ChampionPicker } from "./components/ChampionPicker";
 import { ChampionCard } from "./components/ChampionCard";
+import { DamageComposition } from "./components/DamageComposition";
+import type { ChampionId } from "./types/championTags";
 
 function App() {
-  const [allyPicks, setAllyPicks] = useState<string[]>([]);
-  const [enemyPicks, setEnemyPicks] = useState<string[]>([]);
+  const [allyPicks, setAllyPicks] = useState<ChampionId[]>([]);
+  const [enemyPicks, setEnemyPicks] = useState<ChampionId[]>([]);
 
-  const handleAllySelect = (championId: string) => {
+  const handleAllySelect = (championId: ChampionId) => {
     setAllyPicks((allyPicks) => [...allyPicks, championId]);
   };
 
@@ -14,7 +16,7 @@ function App() {
     setAllyPicks((allyPicks) => allyPicks.filter((_, i) => i !== index));
   };
 
-  const handleEnemySelect = (championId: string) => {
+  const handleEnemySelect = (championId: ChampionId) => {
     setEnemyPicks((enemyPicks) => [...enemyPicks, championId]);
   };
 
@@ -52,9 +54,7 @@ function App() {
               )}
             </div>
             <div className="mt-4">
-              <div className="h-6 rounded bg-gray-700">
-                {/* Damage composition bar */}
-              </div>
+              <DamageComposition champions={allyPicks} />
             </div>
           </div>
         </div>
@@ -92,9 +92,7 @@ function App() {
               )}
             </div>
             <div className="mt-4">
-              <div className="h-6 rounded bg-gray-700">
-                {/* Damage composition bar */}
-              </div>
+              <DamageComposition champions={enemyPicks} />
             </div>
           </div>
         </div>

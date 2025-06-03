@@ -1,5 +1,7 @@
+import type { ChampionId } from "../types/championTags";
+
 interface ChampionCardProps {
-  championId: string;
+  championId: ChampionId;
   onRemove: () => void;
 }
 

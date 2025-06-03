@@ -11,9 +11,10 @@ import {
 } from "@/components/ui/command";
 import type { Champion } from "../types/champion";
 import { ChampionDataSchema } from "../types/champion";
+import type { ChampionId } from "@/types/championTags";
 
 interface ChampionPickerProps {
-  onSelect: (championId: string) => void;
+  onSelect: (championId: ChampionId) => void;
 }
 
 const fetchChampions = async (): Promise<Champion[]> => {
@@ -41,7 +42,7 @@ export function ChampionPicker({ onSelect }: ChampionPickerProps) {
   });
 
   const handleSelect = (championId: string) => {
-    onSelect(championId);
+    onSelect(championId as ChampionId);
     setOpen(false);
   };
 
