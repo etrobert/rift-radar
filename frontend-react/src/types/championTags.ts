@@ -1,4 +1,13 @@
-export const championTags = {
+type DamageType = "physical-damage" | "magic-damage" | "true-damage";
+
+type ChampionTags = {
+  damageTypes?: DamageType[];
+  tags?: string[];
+  strongAgainst?: string[];
+  synergiesWith?: string[];
+};
+
+export const championTags: Record<string, ChampionTags> = {
   Aatrox: { damageTypes: ["physical-damage"], tags: ["dash", "healing"] },
   Ahri: {
     damageTypes: ["magic-damage"],
