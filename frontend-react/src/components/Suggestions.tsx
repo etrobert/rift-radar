@@ -96,25 +96,21 @@ export function Suggestions({
                   key={enemyId}
                   src={`https://ddragon.leagueoflegends.com/cdn/15.11.1/img/champion/${enemyId}.png`}
                   alt={enemyId}
-                  className="h-4 w-4 rounded"
+                  className="h-6 w-6 rounded border border-gray-500"
                   title={enemyId}
                 />
               ))}
             </div>
           </div>
-          <div className="grid grid-cols-6 gap-1">
-            {suggestion.champions.map((championName) => (
-              <div key={championName} className="relative">
-                <img
-                  src={`https://ddragon.leagueoflegends.com/cdn/15.11.1/img/champion/${championName}.png`}
-                  alt={championName}
-                  className="aspect-square w-full cursor-pointer rounded border border-gray-600 object-cover transition-colors hover:border-blue-400"
-                  title={championName}
-                />
-                <div className="bg-opacity-75 absolute right-0 bottom-0 left-0 rounded-b bg-black py-0.5 text-center text-xs text-white">
-                  <span className="text-xs leading-none">{championName}</span>
-                </div>
-              </div>
+          <div className="grid grid-cols-8 gap-1">
+            {suggestion.champions.slice(0, 8).map((championName) => (
+              <img
+                key={championName}
+                src={`https://ddragon.leagueoflegends.com/cdn/15.11.1/img/champion/${championName}.png`}
+                alt={championName}
+                className="aspect-square w-full cursor-pointer rounded border border-gray-600 object-cover transition-colors hover:border-blue-400"
+                title={championName}
+              />
             ))}
           </div>
         </div>
