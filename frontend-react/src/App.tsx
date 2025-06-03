@@ -43,6 +43,9 @@ function App() {
     setEnemyBans((enemyBans) => enemyBans.filter((_, i) => i !== index));
   };
 
+  // Get all unavailable champions (picks + bans)
+  const unavailableChampions = [...allyPicks, ...enemyPicks, ...allyBans, ...enemyBans];
+
   return (
     <>
       <nav className="border-b border-gray-700 bg-gray-800 p-4">
@@ -63,7 +66,10 @@ function App() {
                 />
               ))}
               {allyBans.length < 5 && (
-                <ChampionPicker onSelect={handleAllyBanSelect} />
+                <ChampionPicker
+                  onSelect={handleAllyBanSelect}
+                  unavailableChampions={unavailableChampions}
+                />
               )}
             </div>
           </div>
@@ -78,7 +84,10 @@ function App() {
                 />
               ))}
               {allyPicks.length < 5 && (
-                <ChampionPicker onSelect={handleAllySelect} />
+                <ChampionPicker
+                  onSelect={handleAllySelect}
+                  unavailableChampions={unavailableChampions}
+                />
               )}
             </div>
             <div className="mt-4">
@@ -108,7 +117,10 @@ function App() {
                 />
               ))}
               {enemyBans.length < 5 && (
-                <ChampionPicker onSelect={handleEnemyBanSelect} />
+                <ChampionPicker
+                  onSelect={handleEnemyBanSelect}
+                  unavailableChampions={unavailableChampions}
+                />
               )}
             </div>
           </div>
@@ -123,7 +135,10 @@ function App() {
                 />
               ))}
               {enemyPicks.length < 5 && (
-                <ChampionPicker onSelect={handleEnemySelect} />
+                <ChampionPicker
+                  onSelect={handleEnemySelect}
+                  unavailableChampions={unavailableChampions}
+                />
               )}
             </div>
             <div className="mt-4">

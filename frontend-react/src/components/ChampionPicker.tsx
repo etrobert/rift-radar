@@ -15,6 +15,7 @@ import type { ChampionId } from "@/types/championTags";
 
 interface ChampionPickerProps {
   onSelect: (championId: ChampionId) => void;
+  unavailableChampions: ChampionId[];
 }
 
 const fetchChampions = async (): Promise<Champion[]> => {
@@ -32,7 +33,10 @@ const fetchChampions = async (): Promise<Champion[]> => {
   return Object.values(data.data).sort((a, b) => a.name.localeCompare(b.name));
 };
 
-export function ChampionPicker({ onSelect }: ChampionPickerProps) {
+export function ChampionPicker({
+  onSelect,
+  unavailableChampions,
+}: ChampionPickerProps) {
   const [open, setOpen] = useState(false);
 
   const { data: champions = [], isLoading } = useQuery({
@@ -42,7 +46,7 @@ export function ChampionPicker({ onSelect }: ChampionPickerProps) {
   });
 
   const handleSelect = (championId: string) => {
-    onSelect(championId as ChampionId);
+    onSelect(championId);
     setOpen(false);
   };
 
@@ -68,25 +72,29 @@ export function ChampionPicker({ onSelect }: ChampionPickerProps) {
               <CommandEmpty>No champions found.</CommandEmpty>
               <CommandGroup>
                 <div className="grid grid-cols-6 gap-2 p-4">
-                  {champions.map((champion) => (
-                    <CommandItem
-                      key={champion.id}
-                      onSelect={() => handleSelect(champion.id)}
-                      className="hover:bg-accent flex h-20 cursor-pointer flex-col items-center justify-center rounded-md p-2"
-                      asChild
-                    >
-                      <div>
-                        <img
-                          src={`https://ddragon.leagueoflegends.com/cdn/15.11.1/img/champion/${champion.id}.png`}
-                          alt={champion.name}
-                          className="mb-1 h-12 w-12 rounded"
-                        />
-                        <span className="text-center text-xs">
-                          {champion.name}
-                        </span>
-                      </div>
-                    </CommandItem>
-                  ))}
+                  {champions
+                    .filter(
+                      (champion) => !unavailableChampions.includes(champion.id),
+                    )
+                    .map((champion) => (
+                      <CommandItem
+                        key={champion.id}
+                        onSelect={() => handleSelect(champion.id)}
+                        className="hover:bg-accent flex h-20 cursor-pointer flex-col items-center justify-center rounded-md p-2"
+                        asChild
+                      >
+                        <div>
+                          <img
+                            src={`https://ddragon.leagueoflegends.com/cdn/15.11.1/img/champion/${champion.id}.png`}
+                            alt={champion.name}
+                            className="mb-1 h-12 w-12 rounded"
+                          />
+                          <span className="text-center text-xs">
+                            {champion.name}
+                          </span>
+                        </div>
+                      </CommandItem>
+                    ))}
                 </div>
               </CommandGroup>
             </>
