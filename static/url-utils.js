@@ -1,36 +1,12 @@
 "use strict";
-const getGameNameElement = () => {
-    const gameNameElement = document.getElementById("gameName");
-    if (!gameNameElement)
-        throw new Error("Game name element not found");
-    if (!(gameNameElement instanceof HTMLInputElement))
-        throw new Error("Game name element is not an input");
-    return gameNameElement;
-};
-const getTagLineElement = () => {
-    const tagLineElement = document.getElementById("tagLine");
-    if (!tagLineElement)
-        throw new Error("Tag line element not found");
-    if (!(tagLineElement instanceof HTMLInputElement))
-        throw new Error("Tag line element is not an input");
-    return tagLineElement;
-};
-const getQueueTypeElement = () => {
-    const queueTypeElement = document.getElementById("queueType");
-    if (!queueTypeElement)
-        throw new Error("Queue type element not found");
-    if (!(queueTypeElement instanceof HTMLSelectElement))
-        throw new Error("Queue type element is not a select");
-    return queueTypeElement;
-};
-const getGamesElement = () => {
-    const gamesElement = document.getElementById("games");
-    if (!gamesElement)
-        throw new Error("Games element not found");
-    if (!(gamesElement instanceof HTMLInputElement))
-        throw new Error("Games element is not an input");
-    return gamesElement;
-};
+function getElement(id, expectedType) {
+    const element = document.getElementById(id);
+    if (!element)
+        throw new Error(`Element ${id} not found`);
+    if (!(element instanceof expectedType))
+        throw new Error(`Element ${id} is not the expected type`);
+    return element;
+}
 function loadFromURL() {
     const urlParams = new URLSearchParams(window.location.search);
     const gameName = urlParams.get("gameName");
@@ -38,22 +14,22 @@ function loadFromURL() {
     const queueType = urlParams.get("queueType");
     const games = urlParams.get("games");
     if (gameName)
-        getGameNameElement().value = gameName;
+        getElement("gameName", HTMLInputElement).value = gameName;
     if (tagLine)
-        getTagLineElement().value = tagLine;
+        getElement("tagLine", HTMLInputElement).value = tagLine;
     if (queueType)
-        getQueueTypeElement().value = queueType;
+        getElement("queueType", HTMLSelectElement).value = queueType;
     if (games)
-        getGamesElement().value = games;
+        getElement("games", HTMLInputElement).value = games;
     // @ts-expect-error Still migrating
     if (gameName && tagLine)
         getAllStats();
 }
 function updateURL() {
-    const gameName = getGameNameElement().value;
-    const tagLine = getTagLineElement().value;
-    const queueType = getQueueTypeElement().value;
-    const games = getGamesElement().value;
+    const gameName = getElement("gameName", HTMLInputElement).value;
+    const tagLine = getElement("tagLine", HTMLInputElement).value;
+    const queueType = getElement("queueType", HTMLSelectElement).value;
+    const games = getElement("games", HTMLInputElement).value;
     if (gameName && tagLine) {
         const params = new URLSearchParams();
         params.set("gameName", gameName);
