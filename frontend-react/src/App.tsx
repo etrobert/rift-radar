@@ -1,6 +1,6 @@
 function App() {
   return (
-    <div className="grid place-items-center grid-cols-[auto_1fr_auto]">
+    <div className="grid grid-cols-[auto_1fr_auto] place-items-center">
       <div>Team 1</div>
       <div>Suggestions</div>
       <div>Team 2</div>
