@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ChampionPicker } from "./components/ChampionPicker";
+import { ChampionCard } from "./components/ChampionCard";
 
 function App() {
   const [allyPicks, setAllyPicks] = useState<string[]>([]);
@@ -9,8 +10,16 @@ function App() {
     setAllyPicks((allyPicks) => [...allyPicks, championId]);
   };
 
+  const handleAllyRemove = (index: number) => {
+    setAllyPicks((allyPicks) => allyPicks.filter((_, i) => i !== index));
+  };
+
   const handleEnemySelect = (championId: string) => {
     setEnemyPicks((enemyPicks) => [...enemyPicks, championId]);
+  };
+
+  const handleEnemyRemove = (index: number) => {
+    setEnemyPicks((enemyPicks) => enemyPicks.filter((_, i) => i !== index));
   };
 
   return (
@@ -31,7 +40,13 @@ function App() {
           <div className="rounded-lg border border-gray-600 bg-gray-800 p-4">
             <h3 className="mb-4 text-center text-gray-200">Ally Team</h3>
             <div className="flex flex-nowrap gap-2">
-              {allyPicks.map((champion) => champion)}
+              {allyPicks.map((champion, index) => (
+                <ChampionCard
+                  key={index}
+                  championId={champion}
+                  onRemove={() => handleAllyRemove(index)}
+                />
+              ))}
               {allyPicks.length < 5 && (
                 <ChampionPicker onSelect={handleAllySelect} />
               )}
@@ -65,8 +80,13 @@ function App() {
           <div className="rounded-lg border border-gray-600 bg-gray-800 p-4">
             <h3 className="mb-4 text-center text-gray-200">Enemy Team</h3>
             <div className="flex flex-nowrap gap-2">
-              {enemyPicks.map((champion) => champion)}
-
+              {enemyPicks.map((champion, index) => (
+                <ChampionCard
+                  key={index}
+                  championId={champion}
+                  onRemove={() => handleEnemyRemove(index)}
+                />
+              ))}
               {enemyPicks.length < 5 && (
                 <ChampionPicker onSelect={handleEnemySelect} />
               )}
