@@ -17,12 +17,11 @@ export function ChampionCard({ championId, onRemove }: ChampionCardProps) {
       title={`Remove ${championId}`}
     >
       <ChampionIcon championId={championId} />
-      
+
       {/* Overlay X that appears on hover */}
-      <div className="absolute inset-0 bg-red-500/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-        <span className="text-white text-2xl font-bold">×</span>
+      <div className="absolute inset-0 flex items-center justify-center bg-red-500/70 opacity-0 transition-opacity group-hover:opacity-100">
+        <span className="text-2xl font-bold text-white">×</span>
       </div>
     </Button>
   );
 }
-

@@ -44,7 +44,12 @@ function App() {
   };
 
   // Get all unavailable champions (picks + bans)
-  const unavailableChampions = [...allyPicks, ...enemyPicks, ...allyBans, ...enemyBans];
+  const unavailableChampions = [
+    ...allyPicks,
+    ...enemyPicks,
+    ...allyBans,
+    ...enemyBans,
+  ];
 
   return (
     <>
@@ -100,9 +105,9 @@ function App() {
         <div className="flex-1">
           <div className="rounded-lg border border-gray-600 bg-gray-800 p-4">
             <h3 className="mb-4 text-center text-gray-200">Pick Suggestions</h3>
-            <Suggestions 
-              allyChampions={allyPicks} 
-              enemyChampions={enemyPicks} 
+            <Suggestions
+              allyChampions={allyPicks}
+              enemyChampions={enemyPicks}
               unavailableChampions={unavailableChampions}
             />
           </div>

@@ -267,4 +267,3 @@ export const championTags: Record<string, ChampionTags> = {
 } as const;
 
 export type ChampionId = keyof typeof championTags;
-

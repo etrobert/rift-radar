@@ -105,7 +105,11 @@ export function Suggestions({
                 key={championName}
                 size="lg"
                 championId={championName}
-                className={unavailableChampions.includes(championName) ? "opacity-40" : ""}
+                className={
+                  unavailableChampions.includes(championName)
+                    ? "opacity-40"
+                    : ""
+                }
               />
             ))}
           </div>
