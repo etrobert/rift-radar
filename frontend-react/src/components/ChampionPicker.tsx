@@ -12,6 +12,7 @@ import {
 import type { Champion } from "../types/champion";
 import { ChampionDataSchema } from "../types/champion";
 import type { ChampionId } from "@/types/championTags";
+import { ChampionIcon } from "./ChampionIcon";
 
 interface ChampionPickerProps {
   onSelect: (championId: ChampionId) => void;
@@ -84,10 +85,9 @@ export function ChampionPicker({
                         asChild
                       >
                         <div>
-                          <img
-                            src={`https://ddragon.leagueoflegends.com/cdn/15.11.1/img/champion/${champion.id}.png`}
-                            alt={champion.name}
-                            className="mb-1 h-12 w-12 rounded"
+                          <ChampionIcon
+                            championId={champion.id}
+                            className="mb-1"
                           />
                           <span className="text-center text-xs">
                             {champion.name}

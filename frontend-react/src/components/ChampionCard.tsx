@@ -1,4 +1,5 @@
 import type { ChampionId } from "../types/championTags";
+import { ChampionIcon } from "./ChampionIcon";
 
 interface ChampionCardProps {
   championId: ChampionId;
@@ -12,10 +13,8 @@ export function ChampionCard({ championId, onRemove }: ChampionCardProps) {
       className="group relative h-12 w-12 overflow-hidden rounded border-2 border-gray-600 bg-gray-700 hover:border-red-500 transition-colors duration-200"
       title={`Remove ${championId}`}
     >
-      <img
-        src={`https://ddragon.leagueoflegends.com/cdn/15.11.1/img/champion/${championId}.png`}
-        alt={championId}
-        className="h-full w-full object-cover"
+      <ChampionIcon
+        championId={championId}
       />
       
       {/* Overlay X that appears on hover */}

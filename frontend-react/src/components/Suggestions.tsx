@@ -1,4 +1,5 @@
 import { championTags, type ChampionId } from "../types/championTags";
+import { ChampionIcon } from "./ChampionIcon";
 
 interface SuggestionsProps {
   allyChampions: ChampionId[];
@@ -92,24 +93,16 @@ export function Suggestions({
             <div className="flex items-center gap-1 text-xs text-gray-400">
               <span>Counters:</span>
               {suggestion.triggeringEnemies.map((enemyId) => (
-                <img
-                  key={enemyId}
-                  src={`https://ddragon.leagueoflegends.com/cdn/15.11.1/img/champion/${enemyId}.png`}
-                  alt={enemyId}
-                  className="h-6 w-6 rounded border border-gray-500"
-                  title={enemyId}
-                />
+                <ChampionIcon key={enemyId} championId={enemyId} size="sm" />
               ))}
             </div>
           </div>
-          <div className="grid grid-cols-8 gap-1">
-            {suggestion.champions.slice(0, 8).map((championName) => (
-              <img
+          <div className="flex flex-wrap gap-1">
+            {suggestion.champions.map((championName) => (
+              <ChampionIcon
+                size="lg"
                 key={championName}
-                src={`https://ddragon.leagueoflegends.com/cdn/15.11.1/img/champion/${championName}.png`}
-                alt={championName}
-                className="aspect-square w-full cursor-pointer rounded border border-gray-600 object-cover transition-colors hover:border-blue-400"
-                title={championName}
+                championId={championName}
               />
             ))}
           </div>
