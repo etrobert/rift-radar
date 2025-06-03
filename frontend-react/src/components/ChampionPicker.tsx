@@ -27,7 +27,10 @@ interface ChampionPickerProps {
   onSelect: (championId: string) => void;
 }
 
-export function ChampionPicker({ selectedChampion, onSelect }: ChampionPickerProps) {
+export function ChampionPicker({
+  selectedChampion,
+  onSelect,
+}: ChampionPickerProps) {
   const [open, setOpen] = useState(false);
 
   const handleSelect = (championId: string) => {
@@ -40,13 +43,13 @@ export function ChampionPicker({ selectedChampion, onSelect }: ChampionPickerPro
       <Button
         variant="outline"
         onClick={() => setOpen(true)}
-        className="w-12 h-12 p-0"
+        className="h-12 w-12 p-0"
       >
         {selectedChampion ? (
           <img
             src={`https://ddragon.leagueoflegends.com/cdn/15.11.1/img/champion/${selectedChampion}.png`}
             alt={selectedChampion}
-            className="w-full h-full rounded object-cover"
+            className="h-full w-full rounded object-cover"
           />
         ) : (
           "+"
@@ -63,16 +66,16 @@ export function ChampionPicker({ selectedChampion, onSelect }: ChampionPickerPro
                 <CommandItem
                   key={champion.id}
                   onSelect={() => handleSelect(champion.id)}
-                  className="flex flex-col items-center p-2 h-20 justify-center cursor-pointer hover:bg-accent rounded-md"
+                  className="hover:bg-accent flex h-20 cursor-pointer flex-col items-center justify-center rounded-md p-2"
                   asChild
                 >
                   <div>
                     <img
                       src={`https://ddragon.leagueoflegends.com/cdn/15.11.1/img/champion/${champion.id}.png`}
                       alt={champion.name}
-                      className="w-12 h-12 rounded mb-1"
+                      className="mb-1 h-12 w-12 rounded"
                     />
-                    <span className="text-xs text-center">{champion.name}</span>
+                    <span className="text-center text-xs">{champion.name}</span>
                   </div>
                 </CommandItem>
               ))}

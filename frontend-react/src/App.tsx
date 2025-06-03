@@ -2,8 +2,12 @@ import { useState } from "react";
 import { ChampionPicker } from "./components/ChampionPicker";
 
 function App() {
-  const [allyPicks, setAllyPicks] = useState<(string | undefined)[]>([undefined]);
-  const [enemyPicks, setEnemyPicks] = useState<(string | undefined)[]>([undefined]);
+  const [allyPicks, setAllyPicks] = useState<(string | undefined)[]>([
+    undefined,
+  ]);
+  const [enemyPicks, setEnemyPicks] = useState<(string | undefined)[]>([
+    undefined,
+  ]);
 
   const handleAllySelect = (index: number, championId: string) => {
     const newPicks = [...allyPicks];
@@ -84,7 +88,9 @@ function App() {
                 <ChampionPicker
                   key={index}
                   selectedChampion={champion}
-                  onSelect={(championId) => handleEnemySelect(index, championId)}
+                  onSelect={(championId) =>
+                    handleEnemySelect(index, championId)
+                  }
                 />
               ))}
             </div>
