@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ChampionPicker } from "./components/ChampionPicker";
 import { ChampionCard } from "./components/ChampionCard";
 import { DamageComposition } from "./components/DamageComposition";
+import { Suggestions } from "./components/Suggestions";
 import type { ChampionId } from "./types/championTags";
 
 function App() {
@@ -63,9 +64,7 @@ function App() {
         <div className="flex-1">
           <div className="rounded-lg border border-gray-600 bg-gray-800 p-4">
             <h3 className="mb-4 text-center text-gray-200">Pick Suggestions</h3>
-            <div className="text-center text-gray-400">
-              <p>Select enemy champions to see counter-pick suggestions</p>
-            </div>
+            <Suggestions allyChampions={allyPicks} enemyChampions={enemyPicks} />
           </div>
         </div>
 
