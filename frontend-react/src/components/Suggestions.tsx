@@ -43,6 +43,8 @@ const generateCounterSuggestion = (
 const counterRules = [
   { tag: "dash", minCount: 2, reason: "Strong against dashes" },
   { tag: "assassin", minCount: 2, reason: "Strong against assassins" },
+  { tag: "healing", minCount: 2, reason: "Strong against healing" },
+  { tag: "strong-ultimate", minCount: 2, reason: "Good ultimates to steal" },
 ];
 
 const generateTagCounterSuggestions = (
