@@ -4,6 +4,7 @@ import { ChampionIcon } from "./ChampionIcon";
 interface SuggestionsProps {
   allyChampions: ChampionId[];
   enemyChampions: ChampionId[];
+  unavailableChampions: ChampionId[];
 }
 
 interface Suggestion {
@@ -59,6 +60,7 @@ const generateTagCounterSuggestions = (
 export function Suggestions({
   allyChampions,
   enemyChampions,
+  unavailableChampions,
 }: SuggestionsProps) {
   const suggestions = generateTagCounterSuggestions(enemyChampions);
 
@@ -100,9 +102,10 @@ export function Suggestions({
           <div className="flex flex-wrap gap-1">
             {suggestion.champions.map((championName) => (
               <ChampionIcon
-                size="lg"
                 key={championName}
+                size="lg"
                 championId={championName}
+                className={unavailableChampions.includes(championName) ? "opacity-40" : ""}
               />
             ))}
           </div>
