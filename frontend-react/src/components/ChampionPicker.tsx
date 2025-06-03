@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useQuery } from '@tanstack/react-query';
 import { Button } from "@/components/ui/button";
 import {
   CommandDialog,
@@ -8,30 +9,32 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-
-// Mock champion data
-const mockChampions = [
-  { id: "Ahri", name: "Ahri" },
-  { id: "Akali", name: "Akali" },
-  { id: "Ashe", name: "Ashe" },
-  { id: "Darius", name: "Darius" },
-  { id: "Ezreal", name: "Ezreal" },
-  { id: "Jinx", name: "Jinx" },
-  { id: "Lux", name: "Lux" },
-  { id: "Yasuo", name: "Yasuo" },
-  { id: "Zed", name: "Zed" },
-];
+import type { Champion, ChampionData } from "../types/champion";
 
 interface ChampionPickerProps {
   selectedChampion?: string;
   onSelect: (championId: string) => void;
 }
 
+const fetchChampions = async (): Promise<Champion[]> => {
+  const response = await fetch(
+    'https://ddragon.leagueoflegends.com/cdn/15.11.1/data/en_US/champion.json'
+  );
+  const data: ChampionData = await response.json();
+  return Object.values(data.data).sort((a, b) => a.name.localeCompare(b.name));
+};
+
 export function ChampionPicker({
   selectedChampion,
   onSelect,
 }: ChampionPickerProps) {
   const [open, setOpen] = useState(false);
+  
+  const { data: champions = [], isLoading } = useQuery({
+    queryKey: ['champions'],
+    queryFn: fetchChampions,
+    staleTime: 1000 * 60 * 60, // 1 hour
+  });
 
   const handleSelect = (championId: string) => {
     onSelect(championId);
@@ -59,28 +62,34 @@ export function ChampionPicker({
       <CommandDialog open={open} onOpenChange={setOpen}>
         <CommandInput placeholder="Search champions..." />
         <CommandList>
-          <CommandEmpty>No champions found.</CommandEmpty>
-          <CommandGroup>
-            <div className="grid grid-cols-6 gap-2 p-4">
-              {mockChampions.map((champion) => (
-                <CommandItem
-                  key={champion.id}
-                  onSelect={() => handleSelect(champion.id)}
-                  className="hover:bg-accent flex h-20 cursor-pointer flex-col items-center justify-center rounded-md p-2"
-                  asChild
-                >
-                  <div>
-                    <img
-                      src={`https://ddragon.leagueoflegends.com/cdn/15.11.1/img/champion/${champion.id}.png`}
-                      alt={champion.name}
-                      className="mb-1 h-12 w-12 rounded"
-                    />
-                    <span className="text-center text-xs">{champion.name}</span>
-                  </div>
-                </CommandItem>
-              ))}
-            </div>
-          </CommandGroup>
+          {isLoading ? (
+            <div className="p-8 text-center text-muted-foreground">Loading champions...</div>
+          ) : (
+            <>
+              <CommandEmpty>No champions found.</CommandEmpty>
+              <CommandGroup>
+                <div className="grid grid-cols-6 gap-2 p-4">
+                  {champions.map((champion) => (
+                    <CommandItem
+                      key={champion.id}
+                      onSelect={() => handleSelect(champion.id)}
+                      className="hover:bg-accent flex h-20 cursor-pointer flex-col items-center justify-center rounded-md p-2"
+                      asChild
+                    >
+                      <div>
+                        <img
+                          src={`https://ddragon.leagueoflegends.com/cdn/15.11.1/img/champion/${champion.id}.png`}
+                          alt={champion.name}
+                          className="mb-1 h-12 w-12 rounded"
+                        />
+                        <span className="text-center text-xs">{champion.name}</span>
+                      </div>
+                    </CommandItem>
+                  ))}
+                </div>
+              </CommandGroup>
+            </>
+          )}
         </CommandList>
       </CommandDialog>
     </>
