@@ -10,7 +10,8 @@ interface SuggestionsProps {
 interface Suggestion {
   reason: string;
   champions: ChampionId[];
-  triggeringEnemies: ChampionId[];
+  triggeringEnemies?: ChampionId[];
+  triggeringAllies?: ChampionId[];
 }
 
 const generateCounterSuggestion = (
@@ -59,17 +60,35 @@ const generateTagCounterSuggestions = (
 
   return suggestions;
 };
+
+const generateSynergySuggestions = (
+  allyChampions: ChampionId[],
+): Suggestion[] =>
+  allyChampions
+    .map((ally) => {
+      const champion = championTags[ally];
+      if (!champion.synergiesWith) return null;
+      return {
+        reason: `Synergy with ${ally}`,
+        champions: champion.synergiesWith,
+        triggeringAllies: [ally],
+      } satisfies Suggestion;
+    })
+    .filter((s) => s !== null);
+
 export function Suggestions({
   allyChampions,
   enemyChampions,
   unavailableChampions,
 }: SuggestionsProps) {
-  const suggestions = generateTagCounterSuggestions(enemyChampions);
+  const tagCounterSuggestions = generateTagCounterSuggestions(enemyChampions);
+  const synergySuggestions = generateSynergySuggestions(allyChampions);
+  const suggestions = [...synergySuggestions, ...tagCounterSuggestions];
 
-  if (enemyChampions.length === 0) {
+  if (enemyChampions.length === 0 && allyChampions.length === 0) {
     return (
       <div className="text-center text-gray-400">
-        <p>Select enemy champions to see counter-pick suggestions</p>
+        <p>Select champions to see suggestions</p>
       </div>
     );
   }
@@ -94,11 +113,25 @@ export function Suggestions({
             <h4 className="mb-1 text-sm font-medium text-gray-200">
               {suggestion.reason}
             </h4>
-            <div className="flex items-center gap-1 text-xs text-gray-400">
-              <span>Counters:</span>
-              {suggestion.triggeringEnemies.map((enemyId) => (
-                <ChampionIcon key={enemyId} championId={enemyId} size="sm" />
-              ))}
+            <div className="flex items-center gap-2 text-xs text-gray-400">
+              {[
+                { champions: suggestion.triggeringEnemies, label: "Counters:" },
+                { champions: suggestion.triggeringAllies, label: "Sinergies:" },
+              ].map(
+                ({ champions, label }) =>
+                  champions && (
+                    <div key={label} className="flex items-center gap-1">
+                      <span>{label}</span>
+                      {champions.map((championId) => (
+                        <ChampionIcon
+                          key={championId}
+                          championId={championId}
+                          size="sm"
+                        />
+                      ))}
+                    </div>
+                  ),
+              )}
             </div>
           </div>
           <div className="flex flex-wrap gap-1">
