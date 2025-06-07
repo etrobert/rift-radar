@@ -262,7 +262,7 @@ export const championTags: Record<string, ChampionTags> = {
     strongAgainst: ["strong-ultimate"],
   },
   Syndra: { damageTypes: ["magic-damage"], tags: ["cc"] },
-  TahmKench: { damageTypes: ["magic-damage"] },
+  TahmKench: { damageTypes: ["magic-damage"], strongAgainst: ["assassin"] },
   Taliyah: { damageTypes: ["magic-damage"], strongAgainst: ["dash"] },
   Talon: { damageTypes: ["physical-damage"], tags: ["dash", "assassin"] },
   Taric: { damageTypes: ["magic-damage"], tags: ["healing"] },
