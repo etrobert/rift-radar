@@ -76,6 +76,24 @@ const generateSynergySuggestions = (
     })
     .filter((s) => s !== null);
 
+const generateSpecificCounterSuggestions = (
+  enemyChampions: ChampionId[],
+): Suggestion[] =>
+  Object.entries(championTags)
+    .map(([championName, tags]) => {
+      if (!tags.counters) return null;
+      const counteredEnemies = enemyChampions.filter((enemy) =>
+        tags.counters!.includes(enemy),
+      );
+      if (counteredEnemies.length === 0) return null;
+      return {
+        reason: `Counters specific enemies`,
+        champions: [championName],
+        triggeringEnemies: counteredEnemies,
+      } satisfies Suggestion;
+    })
+    .filter((s) => s !== null);
+
 export function Suggestions({
   allyChampions,
   enemyChampions,
@@ -83,7 +101,13 @@ export function Suggestions({
 }: SuggestionsProps) {
   const tagCounterSuggestions = generateTagCounterSuggestions(enemyChampions);
   const synergySuggestions = generateSynergySuggestions(allyChampions);
-  const suggestions = [...synergySuggestions, ...tagCounterSuggestions];
+  const specificCounterSuggestions =
+    generateSpecificCounterSuggestions(enemyChampions);
+  const suggestions = [
+    ...synergySuggestions,
+    ...specificCounterSuggestions,
+    ...tagCounterSuggestions,
+  ];
 
   if (enemyChampions.length === 0 && allyChampions.length === 0) {
     return (
