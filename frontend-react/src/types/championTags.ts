@@ -5,6 +5,7 @@ type ChampionTags = {
   tags?: string[];
   counters?: string[];
   strongAgainst?: string[];
+  strongAgainstDamageTypes?: DamageType[];
   weakAgainst?: string[];
   synergiesWith?: string[];
 };
@@ -80,6 +81,7 @@ export const championTags: Record<string, ChampionTags> = {
   Galio: {
     damageTypes: ["magic-damage"],
     tags: ["dash", "cc", "strong-ultimate"],
+    strongAgainstDamageTypes: ["magic-damage"],
     synergiesWith: ["Camille", "JarvanIV"],
   },
   Gangplank: {
@@ -119,7 +121,11 @@ export const championTags: Record<string, ChampionTags> = {
   },
   Karma: { damageTypes: ["magic-damage"] },
   Karthus: { damageTypes: ["magic-damage"] },
-  Kassadin: { damageTypes: ["magic-damage"], tags: ["assassin"] },
+  Kassadin: {
+    damageTypes: ["magic-damage"],
+    tags: ["assassin"],
+    strongAgainstDamageTypes: ["magic-damage"],
+  },
   Katarina: {
     damageTypes: ["magic-damage"],
     tags: ["assassin"],
@@ -160,6 +166,7 @@ export const championTags: Record<string, ChampionTags> = {
   Malphite: {
     damageTypes: ["magic-damage"],
     tags: ["strong-ultimate"],
+    strongAgainstDamageTypes: ["physical-damage"],
     synergiesWith: ["Yasuo", "Yone", "MissFortune", "Orianna"],
   },
   Malzahar: {
@@ -185,7 +192,11 @@ export const championTags: Record<string, ChampionTags> = {
     damageTypes: ["physical-damage"],
     synergiesWith: ["Amumu", "Malphite"],
   },
-  MonkeyKing: { damageTypes: ["physical-damage"], tags: ["dash"] },
+  MonkeyKing: {
+    damageTypes: ["physical-damage"],
+    tags: ["dash"],
+    strongAgainstDamageTypes: ["physical-damage"],
+  },
   Mordekaiser: { damageTypes: ["magic-damage"], tags: ["healing"] },
   Morgana: {
     damageTypes: ["magic-damage"],
@@ -221,7 +232,10 @@ export const championTags: Record<string, ChampionTags> = {
     tags: ["dash", "healing"],
     synergiesWith: ["Xayah", "Orianna"],
   },
-  Rammus: { damageTypes: ["magic-damage"] },
+  Rammus: {
+    damageTypes: ["magic-damage"],
+    strongAgainstDamageTypes: ["physical-damage"],
+  },
   RekSai: { damageTypes: ["physical-damage"] },
   Rell: {},
   Renata: { damageTypes: ["magic-damage"], tags: ["strong-ultimate"] },

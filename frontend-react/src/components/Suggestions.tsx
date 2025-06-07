@@ -94,6 +94,34 @@ const generateSpecificCounterSuggestions = (
     })
     .filter((s) => s !== null);
 
+const generateDamageCounterSuggestions = (
+  enemyChampions: ChampionId[],
+): Suggestion[] =>
+  (
+    [
+      { type: "physical-damage", reason: "Strong against physical damage" },
+      { type: "magic-damage", reason: "Strong against magic damage" },
+    ] as const
+  )
+    .map(({ type, reason }) => {
+      const enemiesWithDamageType = enemyChampions.filter((enemy) =>
+        championTags[enemy]?.damageTypes?.includes(type),
+      );
+      if (enemiesWithDamageType.length < 3) return null;
+
+      const counters = Object.keys(championTags).filter((championName) =>
+        championTags[championName]?.strongAgainstDamageTypes?.includes(type),
+      );
+      if (counters.length === 0) return null;
+
+      return {
+        reason,
+        champions: counters,
+        triggeringEnemies: enemiesWithDamageType,
+      } satisfies Suggestion;
+    })
+    .filter((s) => s !== null);
+
 export function Suggestions({
   allyChampions,
   enemyChampions,
@@ -103,9 +131,12 @@ export function Suggestions({
   const synergySuggestions = generateSynergySuggestions(allyChampions);
   const specificCounterSuggestions =
     generateSpecificCounterSuggestions(enemyChampions);
+  const damageCounterSuggestions =
+    generateDamageCounterSuggestions(enemyChampions);
   const suggestions = [
     ...synergySuggestions,
     ...specificCounterSuggestions,
+    ...damageCounterSuggestions,
     ...tagCounterSuggestions,
   ];
 
