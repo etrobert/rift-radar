@@ -9,6 +9,8 @@ type ChampionTags = {
   synergiesWith?: string[];
 };
 
+export type ChampionId = keyof typeof championTags;
+
 export const championTags: Record<string, ChampionTags> = {
   Aatrox: { damageTypes: ["physical-damage"], tags: ["dash", "healing"] },
   Ahri: {
