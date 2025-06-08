@@ -1,6 +1,6 @@
 type DamageType = "physical-damage" | "magic-damage" | "true-damage";
 
-type Tag =
+export type Tag =
   | "projectile"
   | "dash"
   | "cc"
@@ -94,7 +94,7 @@ export const championTags: Record<string, ChampionTags> = {
   Evelynn: { damageTypes: ["magic-damage"], tags: ["assassin"] },
   Ezreal: {
     damageTypes: ["magic-damage", "physical-damage"],
-    tags: ["projeectile"],
+    tags: ["projectile"],
   },
   Fiddlesticks: { damageTypes: ["magic-damage"], tags: ["healing"] },
   Fiora: {
