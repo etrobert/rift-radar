@@ -43,6 +43,13 @@ function App() {
     setEnemyBans((enemyBans) => enemyBans.filter((_, i) => i !== index));
   };
 
+  const handleSwitchTeams = () => {
+    setAllyPicks(enemyPicks);
+    setAllyBans(enemyBans);
+    setEnemyPicks(allyPicks);
+    setEnemyBans(allyBans);
+  };
+
   // Get all unavailable champions (picks + bans)
   const unavailableChampions = [
     ...allyPicks,
@@ -54,7 +61,15 @@ function App() {
   return (
     <>
       <nav className="border-b border-gray-700 bg-gray-800 p-4">
-        <h1 className="text-2xl font-bold">Rift Radar</h1>
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-bold">Rift Radar</h1>
+          <button
+            onClick={handleSwitchTeams}
+            className="rounded bg-blue-600 px-3 py-1 text-sm font-medium text-white hover:bg-blue-700"
+          >
+            Switch Teams
+          </button>
+        </div>
       </nav>
 
       <div className="flex gap-5 p-5">
