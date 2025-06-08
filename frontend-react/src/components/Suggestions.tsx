@@ -1,6 +1,8 @@
 import { championTags, type ChampionId, type Tag } from "../types/championTags";
 import { ChampionIcon } from "./ChampionIcon";
 import { getDamageComposition } from "../lib/damageComposition";
+import { CheckIcon } from "lucide-react";
+import { cn } from "../lib/utils";
 
 interface SuggestionsProps {
   allyChampions: ChampionId[];
@@ -241,18 +243,28 @@ export function Suggestions({
             </div>
           </div>
           <div className="flex flex-wrap gap-1">
-            {suggestion.champions.map((championName) => (
-              <ChampionIcon
-                key={championName}
-                size="lg"
-                championId={championName}
-                className={
-                  unavailableChampions.includes(championName)
-                    ? "opacity-40"
-                    : ""
-                }
-              />
-            ))}
+            {suggestion.champions.map((championName) => {
+              const isPickedByAllies = allyChampions.includes(championName);
+              const isUnavailable = unavailableChampions.includes(championName);
+
+              return (
+                <div key={championName} className="relative">
+                  <ChampionIcon
+                    size="lg"
+                    championId={championName}
+                    className={cn(
+                      isPickedByAllies && "[filter:sepia(1)_hue-rotate(90deg)]",
+                      !isPickedByAllies && isUnavailable && "opacity-40"
+                    )}
+                  />
+                  {isPickedByAllies && (
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 text-green-300 text-3xl font-bold drop-shadow-lg">
+                      ✓
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       ))}
