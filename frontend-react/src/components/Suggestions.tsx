@@ -99,7 +99,7 @@ const generateSpecificCounterSuggestions = (
 const generateDamageCounterSuggestions = (
   enemyChampions: ChampionId[],
 ): Suggestion[] => {
-  if (enemyChampions.length === 0) return [];
+  if (enemyChampions.length < 3) return [];
 
   const composition = getDamageComposition(enemyChampions);
 
