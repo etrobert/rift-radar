@@ -48,6 +48,7 @@ const counterRules = [
   { tag: "healing", minCount: 2, reason: "Strong against healing" },
   { tag: "strong-ultimate", minCount: 2, reason: "Good ultimates to steal" },
   { tag: "projectile", minCount: 2, reason: "Strong against projectiles" },
+  { tag: "shield", minCount: 2, reason: "Strong against shields" },
 ] as const;
 
 const generateTagCounterSuggestions = (
