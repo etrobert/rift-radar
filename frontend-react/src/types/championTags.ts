@@ -297,7 +297,7 @@ export const championTags: Record<string, ChampionTags> = {
   Quinn: { damageTypes: ["physical-damage"] },
   Rakan: {
     damageTypes: ["magic-damage"],
-    tags: ["dash", "healing"],
+    tags: ["dash", "healing", "strong-ultimate"],
     synergiesWith: ["Xayah", "Orianna"],
   },
   Rammus: {
