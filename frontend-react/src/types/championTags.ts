@@ -1,10 +1,18 @@
 type DamageType = "physical-damage" | "magic-damage" | "true-damage";
 
+type Tag =
+  | "projectile"
+  | "dash"
+  | "cc"
+  | "healing"
+  | "assassin"
+  | "strong-ultimate";
+
 type ChampionTags = {
   damageTypes?: DamageType[];
-  tags?: string[];
+  tags?: Tag[];
   counters?: string[];
-  strongAgainst?: string[];
+  strongAgainst?: Tag[];
   strongAgainstDamageTypes?: DamageType[];
   weakAgainst?: string[];
   synergiesWith?: string[];
@@ -16,10 +24,13 @@ export const championTags: Record<string, ChampionTags> = {
   Aatrox: { damageTypes: ["physical-damage"], tags: ["dash", "healing"] },
   Ahri: {
     damageTypes: ["magic-damage"],
-    tags: ["dash", "assassin", "strong-ultimate"],
+    tags: ["dash", "assassin", "strong-ultimate", "projectile"],
   },
   Akali: { damageTypes: ["magic-damage"], tags: ["dash", "assassin"] },
-  Akshan: { damageTypes: ["physical-damage"], tags: ["dash", "assassin"] },
+  Akshan: {
+    damageTypes: ["physical-damage"],
+    tags: ["dash", "assassin", "projectile"],
+  },
   Alistar: {
     tags: ["dash", "cc", "strong-ultimate"],
     synergiesWith: ["Kalista"],
@@ -27,40 +38,50 @@ export const championTags: Record<string, ChampionTags> = {
   Ambessa: { damageTypes: ["physical-damage"], tags: ["dash"] },
   Amumu: {
     damageTypes: ["magic-damage"],
-    tags: ["dash", "strong-ultimate"],
+    tags: ["dash", "strong-ultimate", "projectile"],
     synergiesWith: ["MissFortune"],
   },
-  Anivia: { damageTypes: ["magic-damage"] },
+  Anivia: { damageTypes: ["magic-damage"], tags: ["projectile"] },
   Annie: { damageTypes: ["magic-damage"], tags: ["strong-ultimate"] },
   Aphelios: { damageTypes: ["physical-damage"] },
-  Ashe: { damageTypes: ["physical-damage"], tags: ["strong-ultimate"] },
+  Ashe: {
+    damageTypes: ["physical-damage"],
+    tags: ["strong-ultimate", "projectile"],
+  },
   AurelionSol: { damageTypes: ["magic-damage"] },
   Aurora: { damageTypes: ["magic-damage"], tags: ["strong-ultimate"] },
   Azir: { damageTypes: ["magic-damage"], tags: ["dash", "strong-ultimate"] },
-  Bard: { tags: ["cc"] },
+  Bard: { tags: ["cc", "projectile"] },
   Belveth: { damageTypes: ["physical-damage"] },
-  Blitzcrank: { tags: ["cc"] },
+  Blitzcrank: { tags: ["cc", "projectile"] },
   Brand: { damageTypes: ["magic-damage"] },
-  Braum: { synergiesWith: ["Lucian"] },
-  Briar: { damageTypes: ["physical-damage"] },
-  Caitlyn: { damageTypes: ["physical-damage"], tags: ["dash"] },
+  Braum: { synergiesWith: ["Lucian"], strongAgainst: ["projectile"] },
+  Briar: { damageTypes: ["physical-damage"], tags: ["projectile"] },
+  Caitlyn: { damageTypes: ["physical-damage"], tags: ["dash", "projectile"] },
   Camille: {
     damageTypes: ["physical-damage", "true-damage"],
     tags: ["dash"],
     synergiesWith: ["Galio"],
   },
-  Cassiopeia: { damageTypes: ["magic-damage"], strongAgainst: ["dash"] },
+  Cassiopeia: {
+    damageTypes: ["magic-damage"],
+    strongAgainst: ["dash"],
+    tags: ["projectile"],
+  },
   Chogath: { damageTypes: ["magic-damage"] },
   Corki: {
     damageTypes: ["magic-damage", "physical-damage"],
-    tags: ["dash"],
+    tags: ["dash", "projectile"],
   },
   Darius: {
     damageTypes: ["physical-damage", "true-damage"],
     tags: ["healing"],
   },
-  Diana: { damageTypes: ["magic-damage"], tags: ["dash", "assassin"] },
-  Draven: { damageTypes: ["physical-damage"] },
+  Diana: {
+    damageTypes: ["magic-damage"],
+    tags: ["dash", "assassin", "projectile"],
+  },
+  Draven: { damageTypes: ["physical-damage"], tags: ["projectile"] },
   DrMundo: {
     damageTypes: ["magic-damage"],
     tags: ["healing", "strong-ultimate"],
@@ -69,15 +90,21 @@ export const championTags: Record<string, ChampionTags> = {
     damageTypes: ["magic-damage"],
     tags: ["dash", "healing", "assassin"],
   },
-  Elise: { damageTypes: ["magic-damage"] },
+  Elise: { damageTypes: ["magic-damage"], tags: ["projectile"] },
   Evelynn: { damageTypes: ["magic-damage"], tags: ["assassin"] },
-  Ezreal: { damageTypes: ["magic-damage", "physical-damage"] },
+  Ezreal: {
+    damageTypes: ["magic-damage", "physical-damage"],
+    tags: ["projeectile"],
+  },
   Fiddlesticks: { damageTypes: ["magic-damage"], tags: ["healing"] },
   Fiora: {
     damageTypes: ["physical-damage", "true-damage"],
     tags: ["dash", "healing"],
   },
-  Fizz: { damageTypes: ["magic-damage"], tags: ["dash", "assassin"] },
+  Fizz: {
+    damageTypes: ["magic-damage"],
+    tags: ["dash", "assassin", "projectile"],
+  },
   Galio: {
     damageTypes: ["magic-damage"],
     tags: ["dash", "cc", "strong-ultimate"],
@@ -87,18 +114,22 @@ export const championTags: Record<string, ChampionTags> = {
   Gangplank: {
     damageTypes: ["physical-damage", "true-damage"],
     strongAgainst: ["cc"],
+    tags: ["projectile"],
   },
   Garen: { damageTypes: ["physical-damage", "true-damage"] },
   Gnar: { damageTypes: ["physical-damage"], tags: ["dash"] },
-  Gragas: { damageTypes: ["magic-damage"], tags: ["dash", "healing"] },
+  Gragas: {
+    damageTypes: ["magic-damage"],
+    tags: ["dash", "healing", "projectile"],
+  },
   Graves: { damageTypes: ["physical-damage"], tags: ["dash"] },
   Gwen: { damageTypes: ["magic-damage", "true-damage"], tags: ["dash"] },
   Hecarim: { damageTypes: ["physical-damage"], tags: ["healing"] },
   Heimerdinger: { damageTypes: ["magic-damage"] },
-  Hwei: { damageTypes: ["magic-damage"] },
+  Hwei: { damageTypes: ["magic-damage"], tags: ["projectile"] },
   Illaoi: { damageTypes: ["physical-damage"], tags: ["healing"] },
   Irelia: { damageTypes: ["physical-damage"], tags: ["dash", "healing"] },
-  Ivern: { damageTypes: ["magic-damage"] },
+  Ivern: { damageTypes: ["magic-damage"], tags: ["projectile"] },
   Janna: {
     damageTypes: ["magic-damage"],
     tags: ["healing"],
@@ -110,16 +141,19 @@ export const championTags: Record<string, ChampionTags> = {
     synergiesWith: ["Galio"],
   },
   Jax: { damageTypes: ["physical-damage", "magic-damage"], tags: ["dash"] },
-  Jayce: { damageTypes: ["physical-damage"] },
-  Jhin: { damageTypes: ["physical-damage"] },
-  Jinx: { damageTypes: ["physical-damage"] },
-  Kaisa: { damageTypes: ["magic-damage", "physical-damage"] },
+  Jayce: { damageTypes: ["physical-damage"], tags: ["projectile"] },
+  Jhin: { damageTypes: ["physical-damage"], tags: ["projectile"] },
+  Jinx: { damageTypes: ["physical-damage"], tags: ["projectile"] },
+  Kaisa: {
+    damageTypes: ["magic-damage", "physical-damage"],
+    tags: ["projectile"],
+  },
   Kalista: {
     damageTypes: ["physical-damage"],
     tags: ["dash"],
     synergiesWith: ["Alistar", "Neeko"],
   },
-  Karma: { damageTypes: ["magic-damage"] },
+  Karma: { damageTypes: ["magic-damage"], tags: ["projectile"] },
   Karthus: { damageTypes: ["magic-damage"] },
   Kassadin: {
     damageTypes: ["magic-damage"],
@@ -141,16 +175,22 @@ export const championTags: Record<string, ChampionTags> = {
     damageTypes: ["physical-damage"],
     tags: ["dash", "healing", "assassin"],
   },
-  Kennen: { damageTypes: ["magic-damage"], tags: ["strong-ultimate"] },
+  Kennen: {
+    damageTypes: ["magic-damage"],
+    tags: ["strong-ultimate", "projectile"],
+  },
   Khazix: { damageTypes: ["physical-damage"], tags: ["dash", "assassin"] },
   Kindred: { damageTypes: ["physical-damage"], tags: ["dash"] },
   Kled: { damageTypes: ["physical-damage"], strongAgainst: ["healing"] },
   KogMaw: { damageTypes: ["magic-damage", "physical-damage"] },
   KSante: { damageTypes: ["physical-damage"] },
   Leblanc: { damageTypes: ["magic-damage"], tags: ["dash", "assassin"] },
-  LeeSin: { damageTypes: ["physical-damage"], tags: ["dash"] },
+  LeeSin: { damageTypes: ["physical-damage"], tags: ["dash", "projectile"] },
   Leona: { tags: ["dash", "cc"] },
-  Lillia: { damageTypes: ["magic-damage", "true-damage"] },
+  Lillia: {
+    damageTypes: ["magic-damage", "true-damage"],
+    tags: ["projectile"],
+  },
   Lissandra: {
     damageTypes: ["magic-damage"],
     tags: ["cc", "strong-ultimate"],
@@ -158,11 +198,11 @@ export const championTags: Record<string, ChampionTags> = {
   },
   Lucian: {
     damageTypes: ["physical-damage"],
-    tags: ["dash"],
+    tags: ["dash", "projectile"],
     synergiesWith: ["Braum"],
   },
   Lulu: { damageTypes: ["magic-damage"], strongAgainst: ["assassin"] },
-  Lux: { damageTypes: ["magic-damage"] },
+  Lux: { damageTypes: ["magic-damage"], tags: ["projectile"] },
   Malphite: {
     damageTypes: ["magic-damage"],
     tags: ["strong-ultimate"],
@@ -176,7 +216,7 @@ export const championTags: Record<string, ChampionTags> = {
   },
   Maokai: {
     damageTypes: ["magic-damage"],
-    tags: ["healing", "strong-ultimate", "cc"],
+    tags: ["healing", "strong-ultimate", "cc", "projectile"],
   },
   MasterYi: {
     damageTypes: ["physical-damage", "true-damage"],
@@ -191,6 +231,7 @@ export const championTags: Record<string, ChampionTags> = {
   MissFortune: {
     damageTypes: ["physical-damage"],
     synergiesWith: ["Amumu", "Malphite"],
+    tags: ["projectile"],
   },
   MonkeyKing: {
     damageTypes: ["physical-damage"],
@@ -200,31 +241,42 @@ export const championTags: Record<string, ChampionTags> = {
   Mordekaiser: { damageTypes: ["magic-damage"], tags: ["healing"] },
   Morgana: {
     damageTypes: ["magic-damage"],
-    tags: ["cc"],
+    tags: ["cc", "projectile"],
     strongAgainst: ["cc"],
   },
   Naafiri: { damageTypes: ["physical-damage"], tags: ["dash", "assassin"] },
-  Nami: { damageTypes: ["magic-damage"], tags: ["healing"] },
+  Nami: { damageTypes: ["magic-damage"], tags: ["healing", "projectile"] },
   Nasus: { damageTypes: ["physical-damage"], tags: ["healing"] },
-  Nautilus: { tags: ["cc"] },
-  Neeko: { damageTypes: ["magic-damage"], synergiesWith: ["Kalista"] },
-  Nidalee: { damageTypes: ["magic-damage"], tags: ["dash", "healing"] },
+  Nautilus: { tags: ["cc", "projectile"] },
+  Neeko: {
+    damageTypes: ["magic-damage"],
+    synergiesWith: ["Kalista"],
+    tags: ["strong-ultimate", "projectile"],
+  },
+  Nidalee: {
+    damageTypes: ["magic-damage"],
+    tags: ["dash", "healing", "projectile"],
+  },
   Nilah: { damageTypes: ["physical-damage"], tags: ["dash"] },
   Nocturne: { damageTypes: ["physical-damage"], synergiesWith: ["Orianna"] },
   Nunu: { damageTypes: ["magic-damage"] },
   Olaf: {
     damageTypes: ["physical-damage", "true-damage"],
     strongAgainst: ["cc"],
+    tags: ["healing"],
   },
   Orianna: {
     damageTypes: ["magic-damage"],
     tags: ["strong-ultimate"],
     synergiesWith: ["Nocturne", "Malphite", "Yasuo", "Rakan"],
   },
-  Ornn: { damageTypes: ["magic-damage"] },
+  Ornn: { damageTypes: ["magic-damage"], tags: ["projectile"] },
   Pantheon: { damageTypes: ["physical-damage"] },
   Poppy: { damageTypes: ["physical-damage"], strongAgainst: ["dash"] },
-  Pyke: { damageTypes: ["physical-damage"], tags: ["dash", "assassin"] },
+  Pyke: {
+    damageTypes: ["physical-damage"],
+    tags: ["dash", "assassin", "projectile"],
+  },
   Qiyana: { damageTypes: ["physical-damage"], tags: ["dash", "assassin"] },
   Quinn: { damageTypes: ["physical-damage"] },
   Rakan: {
@@ -238,18 +290,24 @@ export const championTags: Record<string, ChampionTags> = {
   },
   RekSai: { damageTypes: ["physical-damage"] },
   Rell: {},
-  Renata: { damageTypes: ["magic-damage"], tags: ["strong-ultimate"] },
+  Renata: {
+    damageTypes: ["magic-damage"],
+    tags: ["strong-ultimate", "projectile"],
+  },
   Renekton: { damageTypes: ["physical-damage"], tags: ["dash"] },
   Rengar: { damageTypes: ["physical-damage"], tags: ["dash", "assassin"] },
   Riven: { damageTypes: ["physical-damage"], tags: ["dash"] },
   Rumble: { damageTypes: ["magic-damage"] },
   Ryze: { damageTypes: ["magic-damage"] },
   Samira: { damageTypes: ["physical-damage"], tags: ["dash", "healing"] },
-  Sejuani: { damageTypes: ["magic-damage"], tags: ["dash", "strong-ultimate"] },
-  Senna: { damageTypes: ["physical-damage"], tags: ["healing"] },
+  Sejuani: {
+    damageTypes: ["magic-damage"],
+    tags: ["dash", "strong-ultimate", "projectile"],
+  },
+  Senna: { damageTypes: ["physical-damage"], tags: ["healing", "projectile"] },
   Seraphine: {
     damageTypes: ["magic-damage"],
-    tags: ["healing", "strong-ultimate"],
+    tags: ["healing", "strong-ultimate", "projectile"],
   },
   Sett: { damageTypes: ["physical-damage", "true-damage"] },
   Shaco: {
@@ -263,10 +321,16 @@ export const championTags: Record<string, ChampionTags> = {
   Shyvana: { damageTypes: ["magic-damage", "physical-damage"] },
   Singed: { damageTypes: ["magic-damage"], strongAgainst: ["healing"] },
   Sion: { damageTypes: ["physical-damage"], tags: ["cc"] },
-  Sivir: { damageTypes: ["physical-damage"] },
+  Sivir: { damageTypes: ["physical-damage"], tags: ["projectile"] },
   Skarner: { damageTypes: ["physical-damage"] },
-  Smolder: { damageTypes: ["magic-damage", "physical-damage"] },
-  Sona: { damageTypes: ["magic-damage"], tags: ["healing", "strong-ultimate"] },
+  Smolder: {
+    damageTypes: ["magic-damage", "physical-damage"],
+    tags: ["projectile"],
+  },
+  Sona: {
+    damageTypes: ["magic-damage"],
+    tags: ["healing", "strong-ultimate", "projectile"],
+  },
   Soraka: { damageTypes: ["magic-damage"], tags: ["healing"] },
   Swain: {
     damageTypes: ["magic-damage"],
@@ -274,37 +338,48 @@ export const championTags: Record<string, ChampionTags> = {
   },
   Sylas: {
     damageTypes: ["magic-damage"],
-    tags: ["dash", "healing"],
+    tags: ["dash", "healing", "projectile"],
     strongAgainst: ["strong-ultimate"],
   },
   Syndra: { damageTypes: ["magic-damage"], tags: ["cc"] },
   TahmKench: { damageTypes: ["magic-damage"], strongAgainst: ["assassin"] },
-  Taliyah: { damageTypes: ["magic-damage"], strongAgainst: ["dash"] },
+  Taliyah: {
+    damageTypes: ["magic-damage"],
+    strongAgainst: ["dash"],
+    tags: ["projectile"],
+  },
   Talon: { damageTypes: ["physical-damage"], tags: ["dash", "assassin"] },
   Taric: { damageTypes: ["magic-damage"], tags: ["healing"] },
   Teemo: { damageTypes: ["magic-damage"], tags: ["strong-ultimate"] },
-  Thresh: { tags: ["cc"] },
+  Thresh: { tags: ["cc", "projectile"] },
   Tristana: { damageTypes: ["physical-damage"], tags: ["dash"] },
   Trundle: { damageTypes: ["physical-damage"], tags: ["healing"] },
   Tryndamere: { damageTypes: ["physical-damage"], tags: ["dash", "healing"] },
-  TwistedFate: { damageTypes: ["magic-damage"], counters: ["Shaco"] },
+  TwistedFate: {
+    damageTypes: ["magic-damage"],
+    counters: ["Shaco"],
+    tags: ["projectile"],
+  },
   Twitch: { damageTypes: ["physical-damage"] },
   Udyr: { damageTypes: ["physical-damage"] },
-  Urgot: { damageTypes: ["physical-damage"], tags: ["dash"] },
+  Urgot: { damageTypes: ["physical-damage"], tags: ["dash", "projectile"] },
   Varus: {
     damageTypes: ["physical-damage", "magic-damage"],
-    tags: ["strong-ultimate", "cc"],
+    tags: ["strong-ultimate", "cc", "projectile"],
     strongAgainst: ["healing"],
   },
   Vayne: {
     damageTypes: ["physical-damage", "true-damage"],
     tags: ["dash"],
   },
-  Veigar: { damageTypes: ["magic-damage"], tags: ["cc"] },
-  Velkoz: { damageTypes: ["magic-damage", "true-damage"] },
-  Vex: { damageTypes: ["magic-damage"] },
+  Veigar: { damageTypes: ["magic-damage"], tags: ["cc", "projectile"] },
+  Velkoz: {
+    damageTypes: ["magic-damage", "true-damage"],
+    tags: ["projectile"],
+  },
+  Vex: { damageTypes: ["magic-damage"], tags: ["projectile"] },
   Vi: { damageTypes: ["physical-damage"], tags: ["dash"] },
-  Viego: { damageTypes: ["physical-damage"], tags: ["dash"] },
+  Viego: { damageTypes: ["physical-damage"], tags: ["dash", "projectile"] },
   Viktor: { damageTypes: ["magic-damage"] },
   Vladimir: { damageTypes: ["magic-damage"], tags: ["healing"] },
   Volibear: {
@@ -313,23 +388,24 @@ export const championTags: Record<string, ChampionTags> = {
   },
   Warwick: { damageTypes: ["physical-damage"], tags: ["dash", "healing"] },
   Xayah: { damageTypes: ["physical-damage"], synergiesWith: ["Rakan"] },
-  Xerath: { damageTypes: ["magic-damage"] },
+  Xerath: { damageTypes: ["magic-damage"], tags: ["projectile"] },
   XinZhao: { damageTypes: ["physical-damage"], tags: ["dash", "cc"] },
   Yasuo: {
     damageTypes: ["physical-damage"],
-    tags: ["dash"],
+    tags: ["dash", "projectile"],
     synergiesWith: ["Malphite", "Orianna", "Gragas"],
+    strongAgainst: ["projectile"],
   },
   Yone: {
     damageTypes: ["physical-damage", "magic-damage"],
-    tags: ["dash", "strong-ultimate"],
+    tags: ["dash", "strong-ultimate", "projectile"],
   },
   Yorick: { damageTypes: ["physical-damage"] },
   Yuumi: { damageTypes: ["magic-damage"], tags: ["healing"] },
   Zac: { damageTypes: ["magic-damage"], tags: ["dash", "healing"] },
   Zed: { damageTypes: ["physical-damage"], tags: ["dash", "assassin"] },
   Zeri: { damageTypes: ["physical-damage"] },
-  Ziggs: { damageTypes: ["magic-damage"] },
+  Ziggs: { damageTypes: ["magic-damage"], tags: ["projectile"] },
   Zilean: {
     damageTypes: ["magic-damage"],
     tags: ["strong-ultimate"],
@@ -337,7 +413,14 @@ export const championTags: Record<string, ChampionTags> = {
     counters: ["Galio"],
     synergiesWith: ["MasterYi"],
   },
-  Zoe: { damageTypes: ["magic-damage"] },
-  Zyra: { damageTypes: ["magic-damage"], tags: ["strong-ultimate"] },
-  Mel: { damageTypes: ["magic-damage"] },
+  Zoe: { damageTypes: ["magic-damage"], tags: ["projectile"] },
+  Zyra: {
+    damageTypes: ["magic-damage"],
+    tags: ["strong-ultimate", "projectile"],
+  },
+  Mel: {
+    damageTypes: ["magic-damage"],
+    tags: ["projectile"],
+    strongAgainst: ["projectile"],
+  },
 };

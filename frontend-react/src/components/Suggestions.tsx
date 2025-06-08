@@ -1,4 +1,4 @@
-import { championTags, type ChampionId } from "../types/championTags";
+import { championTags, type ChampionId, type Tag } from "../types/championTags";
 import { ChampionIcon } from "./ChampionIcon";
 
 interface SuggestionsProps {
@@ -16,7 +16,7 @@ interface Suggestion {
 
 const generateCounterSuggestion = (
   enemyChampions: ChampionId[],
-  targetTag: string,
+  targetTag: Tag,
   minCount: number,
   reason: string,
 ): Suggestion | null => {
@@ -46,7 +46,8 @@ const counterRules = [
   { tag: "assassin", minCount: 2, reason: "Strong against assassins" },
   { tag: "healing", minCount: 2, reason: "Strong against healing" },
   { tag: "strong-ultimate", minCount: 2, reason: "Good ultimates to steal" },
-];
+  { tag: "projectile", minCount: 2, reason: "Strong against projectiles" },
+] as const;
 
 const generateTagCounterSuggestions = (
   enemyChampions: ChampionId[],
