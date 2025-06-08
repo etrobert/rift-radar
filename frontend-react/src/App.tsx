@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useURLState } from "./hooks/useURLState";
 import { ChampionPicker } from "./components/ChampionPicker";
 import { ChampionCard } from "./components/ChampionCard";
 import { DamageComposition } from "./components/DamageComposition";
@@ -6,10 +6,10 @@ import { Suggestions } from "./components/Suggestions";
 import type { ChampionId } from "./types/championTags";
 
 function App() {
-  const [allyPicks, setAllyPicks] = useState<ChampionId[]>([]);
-  const [enemyPicks, setEnemyPicks] = useState<ChampionId[]>([]);
-  const [allyBans, setAllyBans] = useState<ChampionId[]>([]);
-  const [enemyBans, setEnemyBans] = useState<ChampionId[]>([]);
+  const [allyPicks, setAllyPicks] = useURLState("allies");
+  const [enemyPicks, setEnemyPicks] = useURLState("enemies");
+  const [allyBans, setAllyBans] = useURLState("allyBans");
+  const [enemyBans, setEnemyBans] = useURLState("enemyBans");
 
   const handleAllySelect = (championId: ChampionId) => {
     setAllyPicks((allyPicks) => [...allyPicks, championId]);
