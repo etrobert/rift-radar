@@ -6,7 +6,8 @@ export type Tag =
   | "cc"
   | "healing"
   | "assassin"
-  | "strong-ultimate";
+  | "strong-ultimate"
+  | "wall";
 
 type ChampionTags = {
   damageTypes?: DamageType[];
@@ -14,6 +15,7 @@ type ChampionTags = {
   counters?: string[];
   strongAgainst?: Tag[];
   strongAgainstDamageTypes?: DamageType[];
+  strongWith?: Tag[];
   weakAgainst?: string[];
   synergiesWith?: string[];
 };
@@ -41,7 +43,7 @@ export const championTags: Record<string, ChampionTags> = {
     tags: ["dash", "strong-ultimate", "projectile"],
     synergiesWith: ["MissFortune"],
   },
-  Anivia: { damageTypes: ["magic-damage"], tags: ["projectile"] },
+  Anivia: { damageTypes: ["magic-damage"], tags: ["projectile", "wall"] },
   Annie: { damageTypes: ["magic-damage"], tags: ["strong-ultimate"] },
   Aphelios: { damageTypes: ["physical-damage"], tags: ["projectile"] },
   Ashe: {
@@ -50,8 +52,11 @@ export const championTags: Record<string, ChampionTags> = {
   },
   AurelionSol: { damageTypes: ["magic-damage"] },
   Aurora: { damageTypes: ["magic-damage"], tags: ["strong-ultimate"] },
-  Azir: { damageTypes: ["magic-damage"], tags: ["dash", "strong-ultimate"] },
-  Bard: { tags: ["cc", "projectile"] },
+  Azir: {
+    damageTypes: ["magic-damage"],
+    tags: ["dash", "strong-ultimate", "wall"],
+  },
+  Bard: { tags: ["cc", "projectile"], strongWith: ["wall"] },
   Belveth: { damageTypes: ["physical-damage"] },
   Blitzcrank: { tags: ["cc", "projectile"] },
   Brand: { damageTypes: ["magic-damage"] },
@@ -137,7 +142,7 @@ export const championTags: Record<string, ChampionTags> = {
   },
   JarvanIV: {
     damageTypes: ["physical-damage"],
-    tags: ["dash"],
+    tags: ["dash", "wall"],
     synergiesWith: ["Galio"],
   },
   Jax: { damageTypes: ["physical-damage", "magic-damage"], tags: ["dash"] },
@@ -270,14 +275,22 @@ export const championTags: Record<string, ChampionTags> = {
     tags: ["strong-ultimate"],
     synergiesWith: ["Nocturne", "Malphite", "Yasuo", "Rakan"],
   },
-  Ornn: { damageTypes: ["magic-damage"], tags: ["projectile"] },
+  Ornn: { damageTypes: ["magic-damage"], tags: ["projectile", "wall"] },
   Pantheon: { damageTypes: ["physical-damage"] },
-  Poppy: { damageTypes: ["physical-damage"], strongAgainst: ["dash"] },
+  Poppy: {
+    damageTypes: ["physical-damage"],
+    strongAgainst: ["dash"],
+    strongWith: ["wall"],
+  },
   Pyke: {
     damageTypes: ["physical-damage"],
     tags: ["dash", "assassin", "projectile"],
   },
-  Qiyana: { damageTypes: ["physical-damage"], tags: ["dash", "assassin"] },
+  Qiyana: {
+    damageTypes: ["physical-damage"],
+    tags: ["dash", "assassin"],
+    strongWith: ["wall"],
+  },
   Quinn: { damageTypes: ["physical-damage"] },
   Rakan: {
     damageTypes: ["magic-damage"],
@@ -297,7 +310,7 @@ export const championTags: Record<string, ChampionTags> = {
   Renekton: { damageTypes: ["physical-damage"], tags: ["dash"] },
   Rengar: { damageTypes: ["physical-damage"], tags: ["dash", "assassin"] },
   Riven: { damageTypes: ["physical-damage"], tags: ["dash"] },
-  Rumble: { damageTypes: ["magic-damage"] },
+  Rumble: { damageTypes: ["magic-damage"], strongWith: ["wall"] },
   Ryze: { damageTypes: ["magic-damage"] },
   Samira: { damageTypes: ["physical-damage"], tags: ["dash", "healing"] },
   Sejuani: {
@@ -346,14 +359,14 @@ export const championTags: Record<string, ChampionTags> = {
   Taliyah: {
     damageTypes: ["magic-damage"],
     strongAgainst: ["dash"],
-    tags: ["projectile"],
+    tags: ["projectile", "wall"],
   },
   Talon: { damageTypes: ["physical-damage"], tags: ["dash", "assassin"] },
   Taric: { damageTypes: ["magic-damage"], tags: ["healing"] },
   Teemo: { damageTypes: ["magic-damage"], tags: ["strong-ultimate"] },
   Thresh: { tags: ["cc", "projectile"] },
   Tristana: { damageTypes: ["physical-damage"], tags: ["dash"] },
-  Trundle: { damageTypes: ["physical-damage"], tags: ["healing"] },
+  Trundle: { damageTypes: ["physical-damage"], tags: ["healing", "wall"] },
   Tryndamere: { damageTypes: ["physical-damage"], tags: ["dash", "healing"] },
   TwistedFate: {
     damageTypes: ["magic-damage"],
@@ -371,6 +384,7 @@ export const championTags: Record<string, ChampionTags> = {
   Vayne: {
     damageTypes: ["physical-damage", "true-damage"],
     tags: ["dash"],
+    strongWith: ["wall"],
   },
   Veigar: { damageTypes: ["magic-damage"], tags: ["cc", "projectile"] },
   Velkoz: {

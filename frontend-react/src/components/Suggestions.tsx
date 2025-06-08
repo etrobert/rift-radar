@@ -96,6 +96,45 @@ const generateSpecificCounterSuggestions = (
     })
     .filter((s) => s !== null);
 
+const generateStrongWithSuggestion = (
+  allyChampions: ChampionId[],
+  targetTag: Tag,
+  reason: string,
+): Suggestion | null => {
+  const alliesWithTag = allyChampions.filter((id) =>
+    championTags[id]?.tags?.includes(targetTag),
+  );
+
+  if (alliesWithTag.length === 0) return null;
+
+  // Find champions that are strong with this tag
+  const strongWithChampions = Object.keys(championTags).filter((champName) =>
+    championTags[champName]?.strongWith?.includes(targetTag),
+  );
+
+  if (strongWithChampions.length === 0) return null;
+
+  return {
+    reason,
+    champions: strongWithChampions,
+    triggeringAllies: alliesWithTag,
+  };
+};
+
+const strongWithRules = [
+  { tag: "wall", reason: "Strong with wall champions" },
+] as const;
+
+const generateStrongWithSuggestions = (
+  allyChampions: ChampionId[],
+): Suggestion[] => {
+  return strongWithRules
+    .map(({ tag, reason }) =>
+      generateStrongWithSuggestion(allyChampions, tag, reason),
+    )
+    .filter((s) => s !== null);
+};
+
 const generateDamageCounterSuggestions = (
   enemyChampions: ChampionId[],
 ): Suggestion[] => {
@@ -139,10 +178,12 @@ export function Suggestions({
   const synergySuggestions = generateSynergySuggestions(allyChampions);
   const specificCounterSuggestions =
     generateSpecificCounterSuggestions(enemyChampions);
+  const strongWithSuggestions = generateStrongWithSuggestions(allyChampions);
   const damageCounterSuggestions =
     generateDamageCounterSuggestions(enemyChampions);
   const suggestions = [
     ...synergySuggestions,
+    ...strongWithSuggestions,
     ...specificCounterSuggestions,
     ...damageCounterSuggestions,
     ...tagCounterSuggestions,
