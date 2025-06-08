@@ -1,5 +1,6 @@
 import { championTags, type ChampionId, type Tag } from "../types/championTags";
 import { ChampionIcon } from "./ChampionIcon";
+import { getDamageComposition } from "../lib/damageComposition";
 
 interface SuggestionsProps {
   allyChampions: ChampionId[];
@@ -97,18 +98,23 @@ const generateSpecificCounterSuggestions = (
 
 const generateDamageCounterSuggestions = (
   enemyChampions: ChampionId[],
-): Suggestion[] =>
-  (
+): Suggestion[] => {
+  if (enemyChampions.length === 0) return [];
+
+  const composition = getDamageComposition(enemyChampions);
+
+  return (
     [
       { type: "physical-damage", reason: "Strong against physical damage" },
       { type: "magic-damage", reason: "Strong against magic damage" },
     ] as const
   )
     .map(({ type, reason }) => {
+      if (composition[type] < 60) return null;
+
       const enemiesWithDamageType = enemyChampions.filter((enemy) =>
         championTags[enemy]?.damageTypes?.includes(type),
       );
-      if (enemiesWithDamageType.length < 3) return null;
 
       const counters = Object.keys(championTags).filter((championName) =>
         championTags[championName]?.strongAgainstDamageTypes?.includes(type),
@@ -122,6 +128,7 @@ const generateDamageCounterSuggestions = (
       } satisfies Suggestion;
     })
     .filter((s) => s !== null);
+};
 
 export function Suggestions({
   allyChampions,
