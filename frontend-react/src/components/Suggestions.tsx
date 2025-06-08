@@ -123,6 +123,7 @@ const generateStrongWithSuggestion = (
 
 const strongWithRules = [
   { tag: "wall", reason: "Strong with wall champions" },
+  { tag: "poison", reason: "Strong with poison champions" },
 ] as const;
 
 const generateStrongWithSuggestions = (

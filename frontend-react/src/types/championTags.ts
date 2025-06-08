@@ -7,7 +7,8 @@ export type Tag =
   | "healing"
   | "assassin"
   | "strong-ultimate"
-  | "wall";
+  | "wall"
+  | "poison";
 
 type ChampionTags = {
   damageTypes?: DamageType[];
@@ -71,7 +72,8 @@ export const championTags: Record<string, ChampionTags> = {
   Cassiopeia: {
     damageTypes: ["magic-damage"],
     strongAgainst: ["dash"],
-    tags: ["projectile"],
+    tags: ["projectile", "poison"],
+    strongWith: ["poison"],
   },
   Chogath: { damageTypes: ["magic-damage"] },
   Corki: {
@@ -332,7 +334,7 @@ export const championTags: Record<string, ChampionTags> = {
     tags: ["dash", "strong-ultimate", "cc"],
   },
   Shyvana: { damageTypes: ["magic-damage", "physical-damage"] },
-  Singed: { damageTypes: ["magic-damage"], strongAgainst: ["healing"] },
+  Singed: { damageTypes: ["magic-damage"], strongAgainst: ["healing"], tags: ["poison"] },
   Sion: { damageTypes: ["physical-damage"], tags: ["cc"] },
   Sivir: { damageTypes: ["physical-damage"], tags: ["projectile"] },
   Skarner: { damageTypes: ["physical-damage"] },
@@ -363,7 +365,7 @@ export const championTags: Record<string, ChampionTags> = {
   },
   Talon: { damageTypes: ["physical-damage"], tags: ["dash", "assassin"] },
   Taric: { damageTypes: ["magic-damage"], tags: ["healing"] },
-  Teemo: { damageTypes: ["magic-damage"], tags: ["strong-ultimate"] },
+  Teemo: { damageTypes: ["magic-damage"], tags: ["strong-ultimate", "poison"] },
   Thresh: { tags: ["cc", "projectile"] },
   Tristana: { damageTypes: ["physical-damage"], tags: ["dash"] },
   Trundle: { damageTypes: ["physical-damage"], tags: ["healing", "wall"] },
@@ -373,7 +375,7 @@ export const championTags: Record<string, ChampionTags> = {
     counters: ["Shaco"],
     tags: ["projectile"],
   },
-  Twitch: { damageTypes: ["physical-damage"] },
+  Twitch: { damageTypes: ["physical-damage"], tags: ["poison"] },
   Udyr: { damageTypes: ["physical-damage"] },
   Urgot: { damageTypes: ["physical-damage"], tags: ["dash", "projectile"] },
   Varus: {
