@@ -76,7 +76,7 @@ export const championTags: Record<string, ChampionTags> = {
     tags: ["projectile", "poison"],
     strongWith: ["poison"],
   },
-  Chogath: { damageTypes: ["magic-damage"] },
+  Chogath: { damageTypes: ["magic-damage"], tags: ["strong-ultimate"] },
   Corki: {
     damageTypes: ["magic-damage", "physical-damage"],
     tags: ["dash", "projectile"],
