@@ -43,7 +43,7 @@ export const championTags: Record<string, ChampionTags> = {
   },
   Anivia: { damageTypes: ["magic-damage"], tags: ["projectile"] },
   Annie: { damageTypes: ["magic-damage"], tags: ["strong-ultimate"] },
-  Aphelios: { damageTypes: ["physical-damage"] },
+  Aphelios: { damageTypes: ["physical-damage"], tags: ["projectile"] },
   Ashe: {
     damageTypes: ["physical-damage"],
     tags: ["strong-ultimate", "projectile"],
