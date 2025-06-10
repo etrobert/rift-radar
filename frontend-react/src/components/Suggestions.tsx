@@ -110,7 +110,7 @@ const generateStrongWithSuggestion = (
 
   if (alliesWithTag.length === 0) return null;
 
-  // Find champions that are strong with this tag
+  // Find champions that are explicitly strong with this tag
   const strongWithChampions = Object.keys(championTags).filter((champName) =>
     championTags[champName]?.strongWith?.includes(targetTag),
   );
@@ -124,10 +124,38 @@ const generateStrongWithSuggestion = (
   };
 };
 
+// Tags that auto-suggest champions with the same tag
+const autoSynergyTags = [
+  { tag: "pick-potential", reason: "Strong with pick champions" },
+] as const;
+
+const generateAutoSynergySuggestions = (allyChampions: ChampionId[]) =>
+  autoSynergyTags
+    .map(({ tag, reason }) => {
+      const alliesWithTag = allyChampions.filter((id) =>
+        championTags[id]?.tags?.includes(tag),
+      );
+
+      if (alliesWithTag.length === 0) return null;
+
+      // Find all champions with the same tag
+      const sameTagChampions = Object.keys(championTags).filter((champName) =>
+        championTags[champName]?.tags?.includes(tag),
+      );
+
+      if (sameTagChampions.length === 0) return null;
+
+      return {
+        reason,
+        champions: sameTagChampions,
+        triggeringAllies: alliesWithTag,
+      };
+    })
+    .filter((s) => s !== null);
+
 const strongWithRules = [
   { tag: "wall", reason: "Strong with wall champions" },
   { tag: "poison", reason: "Strong with poison champions" },
-  { tag: "pick-potential", reason: "Strong with pick champions" },
 ] as const;
 
 const generateStrongWithSuggestions = (
@@ -184,11 +212,13 @@ export function Suggestions({
   const specificCounterSuggestions =
     generateSpecificCounterSuggestions(enemyChampions);
   const strongWithSuggestions = generateStrongWithSuggestions(allyChampions);
+  const autoSynergySuggestions = generateAutoSynergySuggestions(allyChampions);
   const damageCounterSuggestions =
     generateDamageCounterSuggestions(enemyChampions);
   const suggestions = [
     ...synergySuggestions,
     ...strongWithSuggestions,
+    ...autoSynergySuggestions,
     ...specificCounterSuggestions,
     ...damageCounterSuggestions,
     ...tagCounterSuggestions,
@@ -255,11 +285,11 @@ export function Suggestions({
                     championId={championName}
                     className={cn(
                       isPickedByAllies && "[filter:sepia(1)_hue-rotate(90deg)]",
-                      !isPickedByAllies && isUnavailable && "opacity-40"
+                      !isPickedByAllies && isUnavailable && "opacity-40",
                     )}
                   />
                   {isPickedByAllies && (
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 text-green-300 text-3xl font-bold drop-shadow-lg">
+                    <div className="absolute top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 text-3xl font-bold text-green-300 drop-shadow-lg">
                       ✓
                     </div>
                   )}
