@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useURLState } from "./hooks/useURLState";
+import { useLCU } from "./hooks/useLCU";
 import { ChampionPicker } from "./components/ChampionPicker";
 import { ChampionCard } from "./components/ChampionCard";
 import { DamageComposition } from "./components/DamageComposition";
@@ -13,6 +14,14 @@ function App() {
   const [allyBans, setAllyBans] = useURLState("allyBans");
   const [enemyBans, setEnemyBans] = useURLState("enemyBans");
   const [roleFilter, setRoleFilter] = useState<Role | null>(null);
+
+  // LCU integration
+  const lcu = useLCU((championSelectState) => {
+    setAllyPicks(championSelectState.allyPicks);
+    setEnemyPicks(championSelectState.enemyPicks);
+    setAllyBans(championSelectState.allyBans);
+    setEnemyBans(championSelectState.enemyBans);
+  });
 
   const handleAllySelect = (championId: ChampionId) => {
     setAllyPicks((allyPicks) => [...allyPicks, championId]);
@@ -73,19 +82,53 @@ function App() {
       <nav className="border-b border-gray-700 bg-gray-800 p-4">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold">Rift Radar</h1>
-          <div className="flex gap-2">
-            <button
-              onClick={handleReset}
-              className="rounded bg-red-600 px-3 py-1 text-sm font-medium text-white hover:bg-red-700"
-            >
-              Reset
-            </button>
-            <button
-              onClick={handleSwitchTeams}
-              className="rounded bg-blue-600 px-3 py-1 text-sm font-medium text-white hover:bg-blue-700"
-            >
-              Switch Teams
-            </button>
+
+          {/* LCU Connection Status */}
+          <div className="flex items-center gap-4">
+            {lcu.isAvailable && (
+              <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2">
+                  <div
+                    className={`h-2 w-2 rounded-full ${lcu.isConnected ? "bg-green-500" : "bg-red-500"}`}
+                  />
+                  <span className="text-sm text-gray-300">
+                    {lcu.isConnected
+                      ? "League Connected"
+                      : "League Disconnected"}
+                  </span>
+                </div>
+                {!lcu.isConnected ? (
+                  <button
+                    onClick={lcu.connect}
+                    className="rounded bg-green-600 px-3 py-1 text-sm font-medium text-white hover:bg-green-700"
+                  >
+                    Connect
+                  </button>
+                ) : (
+                  <button
+                    onClick={lcu.disconnect}
+                    className="rounded bg-gray-600 px-3 py-1 text-sm font-medium text-white hover:bg-gray-700"
+                  >
+                    Disconnect
+                  </button>
+                )}
+              </div>
+            )}
+
+            <div className="flex gap-2">
+              <button
+                onClick={handleReset}
+                className="rounded bg-red-600 px-3 py-1 text-sm font-medium text-white hover:bg-red-700"
+              >
+                Reset
+              </button>
+              <button
+                onClick={handleSwitchTeams}
+                className="rounded bg-blue-600 px-3 py-1 text-sm font-medium text-white hover:bg-blue-700"
+              >
+                Switch Teams
+              </button>
+            </div>
           </div>
         </div>
       </nav>

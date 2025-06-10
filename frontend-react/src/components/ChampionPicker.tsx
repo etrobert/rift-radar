@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import {
   CommandDialog,
@@ -9,30 +8,14 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import type { Champion } from "../types/champion";
-import { ChampionDataSchema } from "../types/champion";
 import type { ChampionId } from "@/types/championTags";
 import { ChampionIcon } from "./ChampionIcon";
+import { useChampions } from "../hooks/useChampions";
 
 interface ChampionPickerProps {
   onSelect: (championId: ChampionId) => void;
   unavailableChampions: ChampionId[];
 }
-
-const fetchChampions = async (): Promise<Champion[]> => {
-  const response = await fetch(
-    "https://ddragon.leagueoflegends.com/cdn/15.11.1/data/en_US/champion.json",
-  );
-
-  if (!response.ok) {
-    throw new Error(`Failed to fetch champions: ${response.status}`);
-  }
-
-  const rawData = await response.json();
-  const data = ChampionDataSchema.parse(rawData);
-
-  return Object.values(data.data).sort((a, b) => a.name.localeCompare(b.name));
-};
 
 export function ChampionPicker({
   onSelect,
@@ -40,11 +23,7 @@ export function ChampionPicker({
 }: ChampionPickerProps) {
   const [open, setOpen] = useState(false);
 
-  const { data: champions = [], isLoading } = useQuery({
-    queryKey: ["champions"],
-    queryFn: fetchChampions,
-    staleTime: 1000 * 60 * 60, // 1 hour
-  });
+  const { data: champions = [], isLoading } = useChampions();
 
   const handleSelect = (championId: string) => {
     onSelect(championId);
