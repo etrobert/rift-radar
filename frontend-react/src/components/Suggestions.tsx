@@ -127,6 +127,7 @@ const generateStrongWithSuggestion = (
 // Tags that auto-suggest champions with the same tag
 const autoSynergyTags = [
   { tag: "pick-potential", reason: "Strong with pick champions" },
+  { tag: "wombo-combo", reason: "Strong with wombo combo champions" },
 ] as const;
 
 const generateAutoSynergySuggestions = (allyChampions: ChampionId[]) =>

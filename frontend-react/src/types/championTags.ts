@@ -10,7 +10,8 @@ export type Tag =
   | "wall"
   | "poison"
   | "shield"
-  | "pick-potential";
+  | "pick-potential"
+  | "wombo-combo";
 
 type ChampionTags = {
   damageTypes?: DamageType[];
@@ -43,13 +44,13 @@ export const championTags: Record<string, ChampionTags> = {
     tags: ["dash", "assassin", "projectile"],
   },
   Alistar: {
-    tags: ["dash", "cc", "strong-ultimate"],
+    tags: ["dash", "cc", "strong-ultimate", "wombo-combo"],
     synergiesWith: ["Kalista"],
   },
   Ambessa: { damageTypes: ["physical-damage"], tags: ["dash"] },
   Amumu: {
     damageTypes: ["magic-damage"],
-    tags: ["dash", "strong-ultimate", "projectile"],
+    tags: ["dash", "strong-ultimate", "projectile", "wombo-combo"],
     synergiesWith: ["MissFortune"],
   },
   Anivia: { damageTypes: ["magic-damage"], tags: ["projectile", "wall"] },
@@ -198,7 +199,7 @@ export const championTags: Record<string, ChampionTags> = {
   },
   Kennen: {
     damageTypes: ["magic-damage"],
-    tags: ["strong-ultimate", "projectile"],
+    tags: ["strong-ultimate", "projectile", "wombo-combo"],
   },
   Khazix: { damageTypes: ["physical-damage"], tags: ["dash", "assassin"] },
   Kindred: { damageTypes: ["physical-damage"], tags: ["dash"] },
@@ -228,7 +229,7 @@ export const championTags: Record<string, ChampionTags> = {
   Lux: { damageTypes: ["magic-damage"], tags: ["projectile", "shield"] },
   Malphite: {
     damageTypes: ["magic-damage"],
-    tags: ["strong-ultimate"],
+    tags: ["strong-ultimate", "wombo-combo"],
     strongAgainstDamageTypes: ["physical-damage"],
     synergiesWith: ["Yasuo", "Yone", "MissFortune", "Orianna"],
   },
@@ -254,11 +255,11 @@ export const championTags: Record<string, ChampionTags> = {
   MissFortune: {
     damageTypes: ["physical-damage"],
     synergiesWith: ["Amumu", "Malphite"],
-    tags: ["projectile"],
+    tags: ["projectile", "wombo-combo"],
   },
   MonkeyKing: {
     damageTypes: ["physical-damage"],
-    tags: ["dash"],
+    tags: ["dash", "wombo-combo"],
     strongAgainstDamageTypes: ["physical-damage"],
   },
   Mordekaiser: { damageTypes: ["magic-damage"], tags: ["healing"] },
@@ -292,7 +293,7 @@ export const championTags: Record<string, ChampionTags> = {
   },
   Orianna: {
     damageTypes: ["magic-damage"],
-    tags: ["strong-ultimate", "shield"],
+    tags: ["strong-ultimate", "shield", "wombo-combo"],
     synergiesWith: ["Nocturne", "Malphite", "Yasuo", "Rakan"],
   },
   Ornn: { damageTypes: ["magic-damage"], tags: ["projectile", "wall"] },
@@ -443,7 +444,7 @@ export const championTags: Record<string, ChampionTags> = {
   XinZhao: { damageTypes: ["physical-damage"], tags: ["dash", "cc"] },
   Yasuo: {
     damageTypes: ["physical-damage"],
-    tags: ["dash", "projectile"],
+    tags: ["dash", "projectile", "wombo-combo"],
     synergiesWith: ["Malphite", "Orianna", "Gragas"],
     strongAgainst: ["projectile"],
   },
