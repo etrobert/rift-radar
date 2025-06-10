@@ -6,7 +6,6 @@ interface DamageCompositionProps {
 }
 
 export function DamageComposition({ champions }: DamageCompositionProps) {
-
   const composition = getDamageComposition(champions);
   const hasAnyDamage = Object.values(composition).some((value) => value > 0);
 

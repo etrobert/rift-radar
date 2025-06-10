@@ -41,6 +41,12 @@ Run the application:
 go run .
 ```
 
+Format React frontend code (ALWAYS run after making changes):
+
+```bash
+npx prettier --write "src/**/*.{ts,tsx}"
+```
+
 ## Data Flow
 
 1. **Account Lookup**: Fetch account data by riot ID and tag line
