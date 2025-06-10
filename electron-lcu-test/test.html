@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LCU Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #1a1a1a;
+            color: #fff;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .connect { background-color: #4CAF50; color: white; }
+        .disconnect { background-color: #f44336; color: white; }
+        .fetch { background-color: #2196F3; color: white; }
+        #status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            background-color: #333;
+        }
+        #data {
+            background-color: #222;
+            padding: 15px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .error { background-color: #ffebee; color: #c62828; }
+        .success { background-color: #e8f5e8; color: #2e7d32; }
+    </style>
+</head>
+<body>
+    <h1>League Client LCU Test</h1>
+    
+    <div>
+        <button id="connect" class="connect">Connect to League Client</button>
+        <button id="disconnect" class="disconnect">Disconnect</button>
+        <button id="fetch" class="fetch">Get Current Champion Select</button>
+    </div>
+    
+    <div id="status">Ready to connect...</div>
+    
+    <h3>Champion Select Data:</h3>
+    <div id="data">No data yet...</div>
+    
+    <h3>Real-time Updates:</h3>
+    <div id="updates">Waiting for updates...</div>
+
+    <script>
+        const statusEl = document.getElementById('status');
+        const dataEl = document.getElementById('data');
+        const updatesEl = document.getElementById('updates');
+        
+        function updateStatus(message, isError = false) {
+            statusEl.textContent = message;
+            statusEl.className = isError ? 'error' : 'success';
+        }
+        
+        function updateData(data) {
+            dataEl.textContent = JSON.stringify(data, null, 2);
+        }
+        
+        function addUpdate(data) {
+            const timestamp = new Date().toLocaleTimeString();
+            const updateDiv = document.createElement('div');
+            updateDiv.style.marginBottom = '10px';
+            updateDiv.style.padding = '10px';
+            updateDiv.style.backgroundColor = '#333';
+            updateDiv.style.borderRadius = '5px';
+            updateDiv.innerHTML = `<strong>${timestamp}:</strong><br><pre style="margin: 5px 0; font-size: 11px;">${JSON.stringify(data, null, 2)}</pre>`;
+            updatesEl.insertBefore(updateDiv, updatesEl.firstChild);
+            
+            // Keep only last 5 updates
+            while (updatesEl.children.length > 5) {
+                updatesEl.removeChild(updatesEl.lastChild);
+            }
+        }
+        
+        // Connect button
+        document.getElementById('connect').addEventListener('click', async () => {
+            updateStatus('Connecting to League client...');
+            try {
+                const result = await window.electronAPI.lcuConnect();
+                if (result.success) {
+                    updateStatus(`✅ ${result.message}`);
+                } else {
+                    updateStatus(`❌ ${result.error}`, true);
+                }
+            } catch (error) {
+                updateStatus(`❌ Connection failed: ${error.message}`, true);
+            }
+        });
+        
+        // Disconnect button
+        document.getElementById('disconnect').addEventListener('click', async () => {
+            try {
+                const result = await window.electronAPI.lcuDisconnect();
+                updateStatus(`🔌 ${result.message}`);
+                dataEl.textContent = 'No data...';
+                updatesEl.textContent = 'Waiting for updates...';
+            } catch (error) {
+                updateStatus(`❌ Disconnect failed: ${error.message}`, true);
+            }
+        });
+        
+        // Fetch data button
+        document.getElementById('fetch').addEventListener('click', async () => {
+            try {
+                const result = await window.electronAPI.lcuGetCurrentSession();
+                if (result.success) {
+                    updateData(result.data);
+                    updateStatus('✅ Champion select data fetched');
+                } else {
+                    updateStatus(`❌ ${result.error}`, true);
+                }
+            } catch (error) {
+                updateStatus(`❌ Fetch failed: ${error.message}`, true);
+            }
+        });
+        
+        // Listen for real-time updates
+        window.electronAPI.onChampionSelectUpdate((data) => {
+            console.log('Champion select update received:', data);
+            addUpdate(data);
+            updateData(data);
+        });
+        
+        // Check if electronAPI is available
+        if (typeof window.electronAPI === 'undefined') {
+            updateStatus('❌ Electron API not available. Make sure preload script is loaded.', true);
+        }
+    </script>
+</body>
+</html>

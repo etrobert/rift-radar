@@ -16,5 +16,8 @@
   "description": "",
   "devDependencies": {
     "electron": "^36.4.0"
+  },
+  "dependencies": {
+    "league-connect": "^6.0.0-rc13"
   }
 }
