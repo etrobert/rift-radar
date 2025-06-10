@@ -9,7 +9,8 @@ export type Tag =
   | "strong-ultimate"
   | "wall"
   | "poison"
-  | "shield";
+  | "shield"
+  | "pick-potential";
 
 type ChampionTags = {
   damageTypes?: DamageType[];
@@ -28,7 +29,8 @@ export const championTags: Record<string, ChampionTags> = {
   Aatrox: { damageTypes: ["physical-damage"], tags: ["dash", "healing"] },
   Ahri: {
     damageTypes: ["magic-damage"],
-    tags: ["dash", "assassin", "strong-ultimate", "projectile"],
+    tags: ["dash", "assassin", "strong-ultimate", "projectile", "pick-potential"],
+    strongWith: ["pick-potential"],
   },
   Akali: { damageTypes: ["magic-damage"], tags: ["dash", "assassin"] },
   Akshan: {
@@ -50,7 +52,8 @@ export const championTags: Record<string, ChampionTags> = {
   Aphelios: { damageTypes: ["physical-damage"], tags: ["projectile"] },
   Ashe: {
     damageTypes: ["physical-damage"],
-    tags: ["strong-ultimate", "projectile"],
+    tags: ["strong-ultimate", "projectile", "pick-potential"],
+    strongWith: ["pick-potential"],
   },
   AurelionSol: { damageTypes: ["magic-damage"] },
   Aurora: { damageTypes: ["magic-damage"], tags: ["strong-ultimate"] },
@@ -60,7 +63,11 @@ export const championTags: Record<string, ChampionTags> = {
   },
   Bard: { tags: ["cc", "projectile"], strongWith: ["wall"] },
   Belveth: { damageTypes: ["physical-damage"] },
-  Blitzcrank: { tags: ["cc", "projectile"], strongAgainst: ["shield"] },
+  Blitzcrank: {
+    tags: ["cc", "projectile", "pick-potential"],
+    strongAgainst: ["shield"],
+    strongWith: ["pick-potential"],
+  },
   Brand: { damageTypes: ["magic-damage"] },
   Braum: { synergiesWith: ["Lucian"], strongAgainst: ["projectile"] },
   Briar: { damageTypes: ["physical-damage"], tags: ["projectile"] },
@@ -98,7 +105,11 @@ export const championTags: Record<string, ChampionTags> = {
     damageTypes: ["magic-damage"],
     tags: ["dash", "healing", "assassin"],
   },
-  Elise: { damageTypes: ["magic-damage"], tags: ["projectile"] },
+  Elise: {
+    damageTypes: ["magic-damage"],
+    tags: ["projectile", "pick-potential"],
+    strongWith: ["pick-potential"],
+  },
   Evelynn: { damageTypes: ["magic-damage"], tags: ["assassin"] },
   Ezreal: {
     damageTypes: ["magic-damage", "physical-damage"],
@@ -194,7 +205,10 @@ export const championTags: Record<string, ChampionTags> = {
   KSante: { damageTypes: ["physical-damage"] },
   Leblanc: { damageTypes: ["magic-damage"], tags: ["dash", "assassin"] },
   LeeSin: { damageTypes: ["physical-damage"], tags: ["dash", "projectile"] },
-  Leona: { tags: ["dash", "cc"] },
+  Leona: {
+    tags: ["dash", "cc", "pick-potential"],
+    strongWith: ["pick-potential"],
+  },
   Lillia: {
     damageTypes: ["magic-damage", "true-damage"],
     tags: ["projectile"],
@@ -249,13 +263,17 @@ export const championTags: Record<string, ChampionTags> = {
   Mordekaiser: { damageTypes: ["magic-damage"], tags: ["healing"] },
   Morgana: {
     damageTypes: ["magic-damage"],
-    tags: ["cc", "projectile"],
+    tags: ["cc", "projectile", "pick-potential"],
     strongAgainst: ["cc"],
+    strongWith: ["pick-potential"],
   },
   Naafiri: { damageTypes: ["physical-damage"], tags: ["dash", "assassin"] },
   Nami: { damageTypes: ["magic-damage"], tags: ["healing", "projectile"] },
   Nasus: { damageTypes: ["physical-damage"], tags: ["healing"] },
-  Nautilus: { tags: ["cc", "projectile"] },
+  Nautilus: {
+    tags: ["cc", "projectile", "pick-potential"],
+    strongWith: ["pick-potential"],
+  },
   Neeko: {
     damageTypes: ["magic-damage"],
     synergiesWith: ["Kalista"],
@@ -263,7 +281,8 @@ export const championTags: Record<string, ChampionTags> = {
   },
   Nidalee: {
     damageTypes: ["magic-damage"],
-    tags: ["dash", "healing", "projectile"],
+    tags: ["dash", "healing", "projectile", "pick-potential"],
+    strongWith: ["pick-potential"],
   },
   Nilah: { damageTypes: ["physical-damage"], tags: ["dash"] },
   Nocturne: { damageTypes: ["physical-damage"], synergiesWith: ["Orianna"] },
@@ -287,7 +306,8 @@ export const championTags: Record<string, ChampionTags> = {
   },
   Pyke: {
     damageTypes: ["physical-damage"],
-    tags: ["dash", "assassin", "projectile"],
+    tags: ["dash", "assassin", "projectile", "pick-potential"],
+    strongWith: ["pick-potential"],
   },
   Qiyana: {
     damageTypes: ["physical-damage"],
@@ -322,7 +342,8 @@ export const championTags: Record<string, ChampionTags> = {
   Samira: { damageTypes: ["physical-damage"], tags: ["dash", "healing"] },
   Sejuani: {
     damageTypes: ["magic-damage"],
-    tags: ["dash", "strong-ultimate", "projectile"],
+    tags: ["dash", "strong-ultimate", "projectile", "pick-potential"],
+    strongWith: ["pick-potential"],
   },
   Senna: { damageTypes: ["physical-damage"], tags: ["healing", "projectile"] },
   Seraphine: {
@@ -361,7 +382,11 @@ export const championTags: Record<string, ChampionTags> = {
     tags: ["dash", "healing", "projectile"],
     strongAgainst: ["strong-ultimate"],
   },
-  Syndra: { damageTypes: ["magic-damage"], tags: ["cc"] },
+  Syndra: {
+    damageTypes: ["magic-damage"],
+    tags: ["cc", "pick-potential"],
+    strongWith: ["pick-potential"],
+  },
   TahmKench: { damageTypes: ["magic-damage"], strongAgainst: ["assassin"], tags: ["shield"] },
   Taliyah: {
     damageTypes: ["magic-damage"],
@@ -371,14 +396,18 @@ export const championTags: Record<string, ChampionTags> = {
   Talon: { damageTypes: ["physical-damage"], tags: ["dash", "assassin"] },
   Taric: { damageTypes: ["magic-damage"], tags: ["healing", "shield"] },
   Teemo: { damageTypes: ["magic-damage"], tags: ["strong-ultimate", "poison"] },
-  Thresh: { tags: ["cc", "projectile", "shield"] },
+  Thresh: {
+    tags: ["cc", "projectile", "shield", "pick-potential"],
+    strongWith: ["pick-potential"],
+  },
   Tristana: { damageTypes: ["physical-damage"], tags: ["dash"] },
   Trundle: { damageTypes: ["physical-damage"], tags: ["healing", "wall"] },
   Tryndamere: { damageTypes: ["physical-damage"], tags: ["dash", "healing"] },
   TwistedFate: {
     damageTypes: ["magic-damage"],
     counters: ["Shaco"],
-    tags: ["projectile"],
+    tags: ["projectile", "pick-potential"],
+    strongWith: ["pick-potential"],
   },
   Twitch: { damageTypes: ["physical-damage"], tags: ["poison"] },
   Udyr: { damageTypes: ["physical-damage"], tags: ["shield"] },
