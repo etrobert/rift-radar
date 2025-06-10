@@ -226,7 +226,7 @@ export function Suggestions({
   const autoSynergySuggestions = generateAutoSynergySuggestions(allyChampions);
   const damageCounterSuggestions =
     generateDamageCounterSuggestions(enemyChampions);
-  let suggestions = [
+  let suggestions: Suggestion[] = [
     ...synergySuggestions,
     ...strongWithSuggestions,
     ...autoSynergySuggestions,

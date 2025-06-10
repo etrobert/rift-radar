@@ -38,16 +38,16 @@ describe("getDamageComposition", () => {
     // Garen: physical + true, Annie: magic = 3 total damage sources
     const result = getDamageComposition(["Garen", "Annie"]);
     expect(result["physical-damage"]).toBe(33); // 1/3
-    expect(result["magic-damage"]).toBe(33);    // 1/3  
-    expect(result["true-damage"]).toBe(33);     // 1/3
+    expect(result["magic-damage"]).toBe(33); // 1/3
+    expect(result["true-damage"]).toBe(33); // 1/3
   });
 
   it("should round percentages correctly", () => {
     // Garen x2: 2 physical + 2 true, Annie: 1 magic = 5 total damage sources
     const result = getDamageComposition(["Garen", "Garen", "Annie"]);
     expect(result["physical-damage"]).toBe(40); // 2/5 = 40%
-    expect(result["magic-damage"]).toBe(20);    // 1/5 = 20%
-    expect(result["true-damage"]).toBe(40);     // 2/5 = 40%
+    expect(result["magic-damage"]).toBe(20); // 1/5 = 20%
+    expect(result["true-damage"]).toBe(40); // 2/5 = 40%
   });
 
   it("should handle champions without damage type tags", () => {
@@ -64,11 +64,11 @@ describe("getDamageComposition", () => {
     // Garen: physical + true, Invalid: nothing, Annie: magic = 3 total damage sources
     const result = getDamageComposition([
       "Garen",
-      "NonExistentChampion", 
+      "NonExistentChampion",
       "Annie",
     ]);
     expect(result["physical-damage"]).toBe(33); // 1/3
-    expect(result["magic-damage"]).toBe(33);    // 1/3
-    expect(result["true-damage"]).toBe(33);     // 1/3
+    expect(result["magic-damage"]).toBe(33); // 1/3
+    expect(result["true-damage"]).toBe(33); // 1/3
   });
 });
