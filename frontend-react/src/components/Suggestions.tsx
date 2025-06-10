@@ -1,13 +1,18 @@
-import { championTags, type ChampionId, type Tag } from "../types/championTags";
+import {
+  championTags,
+  type ChampionId,
+  type Tag,
+  type Role,
+} from "../types/championTags";
 import { ChampionIcon } from "./ChampionIcon";
 import { getDamageComposition } from "../lib/damageComposition";
-import { CheckIcon } from "lucide-react";
 import { cn } from "../lib/utils";
 
 interface SuggestionsProps {
   allyChampions: ChampionId[];
   enemyChampions: ChampionId[];
   unavailableChampions: ChampionId[];
+  roleFilter: Role | null;
 }
 
 interface Suggestion {
@@ -16,6 +21,10 @@ interface Suggestion {
   triggeringEnemies?: ChampionId[];
   triggeringAllies?: ChampionId[];
 }
+
+// Helper function to filter champions by role
+const filterChampionsByRole = (champions: string[], role: Role): string[] =>
+  champions.filter((champion) => championTags[champion].roles.includes(role));
 
 const generateCounterSuggestion = (
   enemyChampions: ChampionId[],
@@ -207,6 +216,7 @@ export function Suggestions({
   allyChampions,
   enemyChampions,
   unavailableChampions,
+  roleFilter,
 }: SuggestionsProps) {
   const tagCounterSuggestions = generateTagCounterSuggestions(enemyChampions);
   const synergySuggestions = generateSynergySuggestions(allyChampions);
@@ -216,7 +226,7 @@ export function Suggestions({
   const autoSynergySuggestions = generateAutoSynergySuggestions(allyChampions);
   const damageCounterSuggestions =
     generateDamageCounterSuggestions(enemyChampions);
-  const suggestions = [
+  let suggestions = [
     ...synergySuggestions,
     ...strongWithSuggestions,
     ...autoSynergySuggestions,
@@ -224,6 +234,16 @@ export function Suggestions({
     ...damageCounterSuggestions,
     ...tagCounterSuggestions,
   ];
+
+  // Apply role filtering if a role is selected
+  if (roleFilter) {
+    suggestions = suggestions
+      .map((suggestion) => ({
+        ...suggestion,
+        champions: filterChampionsByRole(suggestion.champions, roleFilter),
+      }))
+      .filter((suggestion) => suggestion.champions.length > 0);
+  }
 
   if (enemyChampions.length === 0 && allyChampions.length === 0) {
     return (

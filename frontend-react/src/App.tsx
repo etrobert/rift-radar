@@ -1,15 +1,18 @@
+import { useState } from "react";
 import { useURLState } from "./hooks/useURLState";
 import { ChampionPicker } from "./components/ChampionPicker";
 import { ChampionCard } from "./components/ChampionCard";
 import { DamageComposition } from "./components/DamageComposition";
 import { Suggestions } from "./components/Suggestions";
-import type { ChampionId } from "./types/championTags";
+import { RoleFilter } from "./components/RoleFilter";
+import type { ChampionId, Role } from "./types/championTags";
 
 function App() {
   const [allyPicks, setAllyPicks] = useURLState("allies");
   const [enemyPicks, setEnemyPicks] = useURLState("enemies");
   const [allyBans, setAllyBans] = useURLState("allyBans");
   const [enemyBans, setEnemyBans] = useURLState("enemyBans");
+  const [roleFilter, setRoleFilter] = useState<Role | null>(null);
 
   const handleAllySelect = (championId: ChampionId) => {
     setAllyPicks((allyPicks) => [...allyPicks, championId]);
@@ -134,11 +137,15 @@ function App() {
         {/* Center Suggestions */}
         <div className="flex-1">
           <div className="rounded-lg border border-gray-600 bg-gray-800 p-4">
-            <h3 className="mb-4 text-center text-gray-200">Pick Suggestions</h3>
+            <div className="mb-4 flex items-center justify-between">
+              <h3 className="text-gray-200">Pick Suggestions</h3>
+              <RoleFilter value={roleFilter} onChange={setRoleFilter} />
+            </div>
             <Suggestions
               allyChampions={allyPicks}
               enemyChampions={enemyPicks}
               unavailableChampions={unavailableChampions}
+              roleFilter={roleFilter}
             />
           </div>
         </div>
