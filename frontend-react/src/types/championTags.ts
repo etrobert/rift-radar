@@ -54,7 +54,10 @@ export const championTags: Record<string, ChampionTags> = {
     synergiesWith: ["MissFortune"],
   },
   Anivia: { damageTypes: ["magic-damage"], tags: ["projectile", "wall"] },
-  Annie: { damageTypes: ["magic-damage"], tags: ["strong-ultimate"] },
+  Annie: {
+    damageTypes: ["magic-damage"],
+    tags: ["strong-ultimate", "wombo-combo"],
+  },
   Aphelios: { damageTypes: ["physical-damage"], tags: ["projectile"] },
   Ashe: {
     damageTypes: ["physical-damage"],
@@ -66,13 +69,19 @@ export const championTags: Record<string, ChampionTags> = {
     damageTypes: ["magic-damage"],
     tags: ["dash", "strong-ultimate", "wall"],
   },
-  Bard: { tags: ["cc", "projectile"], strongWith: ["wall"] },
+  Bard: {
+    tags: ["cc", "projectile", "wombo-combo"],
+    strongWith: ["wall"],
+  },
   Belveth: { damageTypes: ["physical-damage"] },
   Blitzcrank: {
     tags: ["cc", "projectile", "pick-potential"],
     strongAgainst: ["shield"],
   },
-  Brand: { damageTypes: ["magic-damage"] },
+  Brand: {
+    damageTypes: ["magic-damage"],
+    tags: ["wombo-combo"],
+  },
   Braum: { synergiesWith: ["Lucian"], strongAgainst: ["projectile"] },
   Briar: { damageTypes: ["physical-damage"], tags: ["projectile"] },
   Caitlyn: { damageTypes: ["physical-damage"], tags: ["dash", "projectile"] },
@@ -111,7 +120,7 @@ export const championTags: Record<string, ChampionTags> = {
   },
   Elise: {
     damageTypes: ["magic-damage"],
-    tags: ["projectile", "pick-potential"],
+    tags: ["projectile", "pick-potential", "assassin"],
   },
   Evelynn: { damageTypes: ["magic-damage"], tags: ["assassin"] },
   Ezreal: {
@@ -164,7 +173,10 @@ export const championTags: Record<string, ChampionTags> = {
   },
   Jax: { damageTypes: ["physical-damage", "magic-damage"], tags: ["dash"] },
   Jayce: { damageTypes: ["physical-damage"], tags: ["projectile"] },
-  Jhin: { damageTypes: ["physical-damage"], tags: ["projectile"] },
+  Jhin: {
+    damageTypes: ["physical-damage"],
+    tags: ["projectile", "pick-potential"],
+  },
   Jinx: { damageTypes: ["physical-damage"], tags: ["projectile"] },
   Kaisa: {
     damageTypes: ["magic-damage", "physical-damage"],
@@ -201,7 +213,10 @@ export const championTags: Record<string, ChampionTags> = {
     damageTypes: ["magic-damage"],
     tags: ["strong-ultimate", "projectile", "wombo-combo"],
   },
-  Khazix: { damageTypes: ["physical-damage"], tags: ["dash", "assassin"] },
+  Khazix: {
+    damageTypes: ["physical-damage"],
+    tags: ["dash", "assassin", "pick-potential"],
+  },
   Kindred: { damageTypes: ["physical-damage"], tags: ["dash"] },
   Kled: { damageTypes: ["physical-damage"], strongAgainst: ["healing"] },
   KogMaw: { damageTypes: ["magic-damage", "physical-damage"] },
@@ -277,14 +292,18 @@ export const championTags: Record<string, ChampionTags> = {
   Neeko: {
     damageTypes: ["magic-damage"],
     synergiesWith: ["Kalista"],
-    tags: ["strong-ultimate", "projectile"],
+    tags: ["strong-ultimate", "projectile", "wombo-combo"],
   },
   Nidalee: {
     damageTypes: ["magic-damage"],
     tags: ["dash", "healing", "projectile", "pick-potential"],
   },
   Nilah: { damageTypes: ["physical-damage"], tags: ["dash"] },
-  Nocturne: { damageTypes: ["physical-damage"], synergiesWith: ["Orianna"] },
+  Nocturne: {
+    damageTypes: ["physical-damage"],
+    synergiesWith: ["Orianna"],
+    tags: ["assassin"],
+  },
   Nunu: { damageTypes: ["magic-damage"] },
   Olaf: {
     damageTypes: ["physical-damage", "true-damage"],
@@ -294,7 +313,7 @@ export const championTags: Record<string, ChampionTags> = {
   Orianna: {
     damageTypes: ["magic-damage"],
     tags: ["strong-ultimate", "shield", "wombo-combo"],
-    synergiesWith: ["Nocturne", "Malphite", "Yasuo", "Rakan"],
+    synergiesWith: ["Nocturne", "Malphite", "Yasuo", "Rakan", "Rengar"],
   },
   Ornn: { damageTypes: ["magic-damage"], tags: ["projectile", "wall"] },
   Pantheon: { damageTypes: ["physical-damage"] },
@@ -333,7 +352,11 @@ export const championTags: Record<string, ChampionTags> = {
     tags: ["dash"],
     strongAgainst: ["shield"],
   },
-  Rengar: { damageTypes: ["physical-damage"], tags: ["dash", "assassin"] },
+  Rengar: {
+    damageTypes: ["physical-damage"],
+    tags: ["dash", "assassin", "pick-potential"],
+    synergiesWith: ["Orianna"],
+  },
   Riven: { damageTypes: ["physical-damage"], tags: ["dash", "shield"] },
   Rumble: { damageTypes: ["magic-damage"], strongWith: ["wall"] },
   Ryze: { damageTypes: ["magic-damage"] },
@@ -397,7 +420,10 @@ export const championTags: Record<string, ChampionTags> = {
     strongAgainst: ["dash"],
     tags: ["projectile", "wall"],
   },
-  Talon: { damageTypes: ["physical-damage"], tags: ["dash", "assassin"] },
+  Talon: {
+    damageTypes: ["physical-damage"],
+    tags: ["dash", "assassin", "pick-potential"],
+  },
   Taric: { damageTypes: ["magic-damage"], tags: ["healing", "shield"] },
   Teemo: { damageTypes: ["magic-damage"], tags: ["strong-ultimate", "poison"] },
   Thresh: {
@@ -431,7 +457,10 @@ export const championTags: Record<string, ChampionTags> = {
   },
   Vex: { damageTypes: ["magic-damage"], tags: ["projectile"] },
   Vi: { damageTypes: ["physical-damage"], tags: ["dash"] },
-  Viego: { damageTypes: ["physical-damage"], tags: ["dash", "projectile"] },
+  Viego: {
+    damageTypes: ["physical-damage"],
+    tags: ["dash", "projectile", "assassin"],
+  },
   Viktor: { damageTypes: ["magic-damage"], tags: ["shield"] },
   Vladimir: { damageTypes: ["magic-damage"], tags: ["healing"] },
   Volibear: {
@@ -455,7 +484,10 @@ export const championTags: Record<string, ChampionTags> = {
   Yorick: { damageTypes: ["physical-damage"] },
   Yuumi: { damageTypes: ["magic-damage"], tags: ["healing", "shield"] },
   Zac: { damageTypes: ["magic-damage"], tags: ["dash", "healing"] },
-  Zed: { damageTypes: ["physical-damage"], tags: ["dash", "assassin"] },
+  Zed: {
+    damageTypes: ["physical-damage"],
+    tags: ["dash", "assassin", "pick-potential"],
+  },
   Zeri: { damageTypes: ["physical-damage"] },
   Ziggs: { damageTypes: ["magic-damage"], tags: ["projectile"] },
   Zilean: {
