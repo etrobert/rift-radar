@@ -79,10 +79,16 @@ jobs:
       - name: Display structure of downloaded files
         run: ls -la releases/
 
+      - name: Flatten and rename release files
+        run: |
+          mkdir -p final-releases
+          find releases -type f \( -name "*.exe" -o -name "*.dmg" -o -name "*.AppImage" -o -name "*.deb" -o -name "*.rpm" \) -exec cp {} final-releases/ \;
+          ls -la final-releases/
+
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
-          files: releases/**/*
+          files: final-releases/*
           draft: false
           prerelease: ${{ contains(github.ref, 'v0.') || contains(github.ref, 'beta') || contains(github.ref, 'alpha') || contains(github.ref, 'rc') }}
           generate_release_notes: true
