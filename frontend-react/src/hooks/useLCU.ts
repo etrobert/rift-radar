@@ -1,27 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
 import type { ChampionId } from "../types/championTags";
 import { useChampions } from "./useChampions";
+import type { LcuComponents } from "hexgate";
 
-// LCU API types
-interface ChampionSelectPlayer {
-  championId: number;
-}
-
-interface ChampionSelectBan {
-  championId: number;
-}
-
-interface ChampionSelectBans {
-  myTeamBans: ChampionSelectBan[];
-  theirTeamBans: ChampionSelectBan[];
-  numBans: number;
-}
-
-interface ChampionSelectData {
-  myTeam?: ChampionSelectPlayer[];
-  theirTeam?: ChampionSelectPlayer[];
-  bans?: ChampionSelectBans;
-}
+// Use official LCU API types from hexgate
+type ChampionSelectSession =
+  LcuComponents["schemas"]["LolChampSelectChampSelectSession"];
 
 // Declare electron API types
 declare global {
@@ -35,11 +19,11 @@ declare global {
       lcuDisconnect: () => Promise<{ success: boolean; message?: string }>;
       lcuGetCurrentSession: () => Promise<{
         success: boolean;
-        data?: ChampionSelectData;
+        data?: ChampionSelectSession;
         error?: string;
       }>;
       onChampionSelectUpdate: (
-        callback: (data: ChampionSelectData) => void,
+        callback: (data: ChampionSelectSession | null) => void,
       ) => void;
       removeChampionSelectListener: () => void;
     };
@@ -94,8 +78,8 @@ export function useLCU(
 
   // Process champion select data from LCU
   const processChampionSelectData = useCallback(
-    (data: ChampionSelectData) => {
-      if (!data.myTeam || !data.theirTeam || !onChampionSelectUpdate) return;
+    (data: ChampionSelectSession | null) => {
+      if (!data?.myTeam || !data?.theirTeam || !onChampionSelectUpdate) return;
 
       try {
         // Extract picks and bans
@@ -123,9 +107,9 @@ export function useLCU(
         // Process bans using the correct structure
         if (data.bans) {
           // Process ally bans
-          data.bans.myTeamBans.forEach((ban) => {
-            if (ban.championId && ban.championId > 0) {
-              const championName = championKeyToId[ban.championId];
+          data.bans.myTeamBans?.forEach((championId) => {
+            if (championId && championId > 0) {
+              const championName = championKeyToId[championId];
               if (championName) {
                 allyBans.push(championName);
               }
@@ -133,9 +117,9 @@ export function useLCU(
           });
 
           // Process enemy bans
-          data.bans.theirTeamBans.forEach((ban) => {
-            if (ban.championId && ban.championId > 0) {
-              const championName = championKeyToId[ban.championId];
+          data.bans.theirTeamBans?.forEach((championId) => {
+            if (championId && championId > 0) {
+              const championName = championKeyToId[championId];
               if (championName) {
                 enemyBans.push(championName);
               }
