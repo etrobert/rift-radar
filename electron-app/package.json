@@ -1,6 +1,6 @@
 {
   "name": "rift-radar-electron",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "League of Legends champion draft analysis tool with live client integration",
   "main": "main.js",
   "homepage": "https://github.com/etrobert/rift-radar",
