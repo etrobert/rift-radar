@@ -6,8 +6,8 @@
     "start": "electron .",
     "dev": "NODE_ENV=development electron .",
     "build": "npm run build:react && npm run copy:dist",
-    "build:react": "cd ../frontend-react && npm run build",
-    "copy:dist": "cp -r ../frontend-react/dist .",
+    "build:react": "cd ../frontend && npm run build",
+    "copy:dist": "cp -r ../frontend/dist .",
     "clean": "rm -rf dist"
   },
   "keywords": [],

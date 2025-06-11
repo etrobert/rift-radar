@@ -107,10 +107,6 @@ func main() {
 	// API endpoints
 	mux.HandleFunc("/api/stats", statsHandler)
 
-	// Serve static files from ./static directory
-	fs := http.FileServer(http.Dir("./static/"))
-	mux.Handle("/", fs)
-
 	loggedMux := loggingMiddleware(mux)
 
 	log.Printf("Server starting on port 8080")

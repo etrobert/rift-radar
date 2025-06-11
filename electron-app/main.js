@@ -26,7 +26,7 @@ function createWindow() {
     mainWindow.webContents.openDevTools();
   } else {
     // Load from built files in production
-    mainWindow.loadFile(path.join(__dirname, '../frontend-react/dist/index.html'));
+    mainWindow.loadFile(path.join(__dirname, '../frontend/dist/index.html'));
   }
 }
 
