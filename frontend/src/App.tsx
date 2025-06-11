@@ -79,9 +79,16 @@ function App() {
 
   return (
     <>
-      <nav className="border-b border-gray-700 bg-gray-800 p-4">
+      <nav className={`border-b p-4 ${lcu.isConnected ? 'border-green-600 bg-green-900/20' : 'border-gray-700 bg-gray-800'}`}>
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold">Rift Radar</h1>
+          <div className="flex items-center gap-3">
+            <h1 className="text-2xl font-bold">Rift Radar</h1>
+            {lcu.isConnected && (
+              <span className="rounded-full bg-green-600 px-2 py-1 text-xs font-medium text-white">
+                LIVE MODE
+              </span>
+            )}
+          </div>
 
           {/* LCU Connection Status */}
           <div className="flex items-center gap-4">
@@ -115,20 +122,22 @@ function App() {
               </div>
             )}
 
-            <div className="flex gap-2">
-              <button
-                onClick={handleReset}
-                className="rounded bg-red-600 px-3 py-1 text-sm font-medium text-white hover:bg-red-700"
-              >
-                Reset
-              </button>
-              <button
-                onClick={handleSwitchTeams}
-                className="rounded bg-blue-600 px-3 py-1 text-sm font-medium text-white hover:bg-blue-700"
-              >
-                Switch Teams
-              </button>
-            </div>
+            {!lcu.isConnected && (
+              <div className="flex gap-2">
+                <button
+                  onClick={handleReset}
+                  className="rounded bg-red-600 px-3 py-1 text-sm font-medium text-white hover:bg-red-700"
+                >
+                  Reset
+                </button>
+                <button
+                  onClick={handleSwitchTeams}
+                  className="rounded bg-blue-600 px-3 py-1 text-sm font-medium text-white hover:bg-blue-700"
+                >
+                  Switch Teams
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </nav>
@@ -143,10 +152,10 @@ function App() {
                 <ChampionCard
                   key={index}
                   championId={champion}
-                  onRemove={() => handleAllyBanRemove(index)}
+                  onRemove={!lcu.isConnected ? () => handleAllyBanRemove(index) : undefined}
                 />
               ))}
-              {allyBans.length < 5 && (
+              {allyBans.length < 5 && !lcu.isConnected && (
                 <ChampionPicker
                   onSelect={handleAllyBanSelect}
                   unavailableChampions={unavailableChampions}
@@ -161,10 +170,10 @@ function App() {
                 <ChampionCard
                   key={index}
                   championId={champion}
-                  onRemove={() => handleAllyRemove(index)}
+                  onRemove={!lcu.isConnected ? () => handleAllyRemove(index) : undefined}
                 />
               ))}
-              {allyPicks.length < 5 && (
+              {allyPicks.length < 5 && !lcu.isConnected && (
                 <ChampionPicker
                   onSelect={handleAllySelect}
                   unavailableChampions={unavailableChampions}
@@ -202,10 +211,10 @@ function App() {
                 <ChampionCard
                   key={index}
                   championId={champion}
-                  onRemove={() => handleEnemyBanRemove(index)}
+                  onRemove={!lcu.isConnected ? () => handleEnemyBanRemove(index) : undefined}
                 />
               ))}
-              {enemyBans.length < 5 && (
+              {enemyBans.length < 5 && !lcu.isConnected && (
                 <ChampionPicker
                   onSelect={handleEnemyBanSelect}
                   unavailableChampions={unavailableChampions}
@@ -220,10 +229,10 @@ function App() {
                 <ChampionCard
                   key={index}
                   championId={champion}
-                  onRemove={() => handleEnemyRemove(index)}
+                  onRemove={!lcu.isConnected ? () => handleEnemyRemove(index) : undefined}
                 />
               ))}
-              {enemyPicks.length < 5 && (
+              {enemyPicks.length < 5 && !lcu.isConnected && (
                 <ChampionPicker
                   onSelect={handleEnemySelect}
                   unavailableChampions={unavailableChampions}

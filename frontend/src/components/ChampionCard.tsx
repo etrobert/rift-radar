@@ -4,10 +4,23 @@ import { Button } from "@/components/ui/button";
 
 interface ChampionCardProps {
   championId: ChampionId;
-  onRemove: () => void;
+  onRemove?: () => void;
 }
 
 export function ChampionCard({ championId, onRemove }: ChampionCardProps) {
+  const isRemovable = onRemove !== undefined;
+
+  if (!isRemovable) {
+    return (
+      <div
+        className="relative h-12 w-12 rounded border border-gray-600"
+        title={championId}
+      >
+        <ChampionIcon championId={championId} />
+      </div>
+    );
+  }
+
   return (
     <Button
       onClick={onRemove}
