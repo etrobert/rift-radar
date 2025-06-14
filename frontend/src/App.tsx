@@ -2,7 +2,26 @@ import { BrowserRouter as Router, Routes, Route, Link, useLocation } from "react
 import { DraftPage } from "./components/DraftPage";
 import { StatsPage } from "./components/StatsPage";
 
-function Navigation() {
+interface NavigationProps {
+  onReset?: () => void;
+  onSwitchTeams?: () => void;
+  showButtons?: boolean;
+  // LCU props
+  lcuIsAvailable?: boolean;
+  lcuIsConnected?: boolean;
+  onLcuConnect?: () => void;
+  onLcuDisconnect?: () => void;
+}
+
+export function Navigation({ 
+  onReset, 
+  onSwitchTeams, 
+  showButtons, 
+  lcuIsAvailable, 
+  lcuIsConnected, 
+  onLcuConnect, 
+  onLcuDisconnect 
+}: NavigationProps) {
   const location = useLocation();
   
   const isActive = (path: string) => location.pathname === path;
@@ -35,6 +54,62 @@ function Navigation() {
             </Link>
           </div>
         </div>
+        
+        <div className="flex items-center gap-4">
+          {/* Live Mode Indicator */}
+          {lcuIsConnected && (
+            <span className="rounded-full bg-green-600 px-2 py-1 text-xs font-medium text-white">
+              LIVE MODE
+            </span>
+          )}
+          
+          {/* LCU Connection Status */}
+          {lcuIsAvailable && (
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2">
+                <div
+                  className={`h-2 w-2 rounded-full ${lcuIsConnected ? "bg-green-500" : "bg-red-500"}`}
+                />
+                <span className="text-sm text-gray-300">
+                  {lcuIsConnected ? "League Connected" : "League Disconnected"}
+                </span>
+              </div>
+              {!lcuIsConnected ? (
+                <button
+                  onClick={onLcuConnect}
+                  className="rounded bg-green-600 px-3 py-1 text-sm font-medium text-white hover:bg-green-700"
+                >
+                  Connect
+                </button>
+              ) : (
+                <button
+                  onClick={onLcuDisconnect}
+                  className="rounded bg-gray-600 px-3 py-1 text-sm font-medium text-white hover:bg-gray-700"
+                >
+                  Disconnect
+                </button>
+              )}
+            </div>
+          )}
+
+          {/* Draft Control Buttons */}
+          {showButtons && (
+            <div className="flex gap-2">
+              <button
+                onClick={onReset}
+                className="rounded bg-red-600 px-3 py-1 text-sm font-medium text-white hover:bg-red-700"
+              >
+                Reset
+              </button>
+              <button
+                onClick={onSwitchTeams}
+                className="rounded bg-blue-600 px-3 py-1 text-sm font-medium text-white hover:bg-blue-700"
+              >
+                Switch Teams
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </nav>
   );
@@ -44,10 +119,9 @@ function App() {
   return (
     <Router>
       <div className="min-h-screen bg-gray-900 text-white">
-        <Navigation />
         <Routes>
           <Route path="/" element={<DraftPage />} />
-          <Route path="/stats" element={<StatsPage />} />
+          <Route path="/stats" element={<><Navigation /><StatsPage /></>} />
         </Routes>
       </div>
     </Router>

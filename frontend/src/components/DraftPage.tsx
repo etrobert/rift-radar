@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useURLState } from "../hooks/useURLState";
 import { useLCU } from "../hooks/useLCU";
+import { Navigation } from "../App";
 import { ChampionPicker } from "./ChampionPicker";
 import { ChampionCard } from "./ChampionCard";
 import { DamageComposition } from "./DamageComposition";
@@ -79,68 +80,15 @@ export function DraftPage() {
 
   return (
     <>
-      {/* LCU Status Bar */}
-      <div className={`border-b p-4 ${lcu.isConnected ? 'border-green-600 bg-green-900/20' : 'border-gray-700 bg-gray-800'}`}>
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            {lcu.isConnected && (
-              <span className="rounded-full bg-green-600 px-2 py-1 text-xs font-medium text-white">
-                LIVE MODE
-              </span>
-            )}
-          </div>
-
-          {/* LCU Connection Status */}
-          <div className="flex items-center gap-4">
-            {lcu.isAvailable && (
-              <div className="flex items-center gap-2">
-                <div className="flex items-center gap-2">
-                  <div
-                    className={`h-2 w-2 rounded-full ${lcu.isConnected ? "bg-green-500" : "bg-red-500"}`}
-                  />
-                  <span className="text-sm text-gray-300">
-                    {lcu.isConnected
-                      ? "League Connected"
-                      : "League Disconnected"}
-                  </span>
-                </div>
-                {!lcu.isConnected ? (
-                  <button
-                    onClick={lcu.connect}
-                    className="rounded bg-green-600 px-3 py-1 text-sm font-medium text-white hover:bg-green-700"
-                  >
-                    Connect
-                  </button>
-                ) : (
-                  <button
-                    onClick={lcu.disconnect}
-                    className="rounded bg-gray-600 px-3 py-1 text-sm font-medium text-white hover:bg-gray-700"
-                  >
-                    Disconnect
-                  </button>
-                )}
-              </div>
-            )}
-
-            {!lcu.isConnected && (
-              <div className="flex gap-2">
-                <button
-                  onClick={handleReset}
-                  className="rounded bg-red-600 px-3 py-1 text-sm font-medium text-white hover:bg-red-700"
-                >
-                  Reset
-                </button>
-                <button
-                  onClick={handleSwitchTeams}
-                  className="rounded bg-blue-600 px-3 py-1 text-sm font-medium text-white hover:bg-blue-700"
-                >
-                  Switch Teams
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
+      <Navigation 
+        onReset={handleReset}
+        onSwitchTeams={handleSwitchTeams}
+        showButtons={!lcu.isConnected}
+        lcuIsAvailable={lcu.isAvailable}
+        lcuIsConnected={lcu.isConnected}
+        onLcuConnect={lcu.connect}
+        onLcuDisconnect={lcu.disconnect}
+      />
 
       <div className="flex gap-5 p-5">
         {/* Left Team */}
