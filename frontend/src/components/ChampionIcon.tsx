@@ -1,5 +1,7 @@
 import type { ChampionId } from "@/types/championTags";
+import { championTags } from "@/types/championTags";
 import { cn } from "@/lib/utils";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
 
 interface ChampionIconProps {
   championId: ChampionId;
@@ -7,6 +9,7 @@ interface ChampionIconProps {
   className?: string;
   onClick?: () => void;
   title?: string;
+  showTooltip?: boolean;
 }
 
 const sizeClasses = {
@@ -21,12 +24,22 @@ export function ChampionIcon({
   className,
   onClick,
   title,
+  showTooltip = false,
 }: ChampionIconProps) {
-  return (
+  const championData = championTags[championId];
+  
+  const formatTag = (tag: string) => {
+    return tag
+      .split('-')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  };
+
+  const championImage = (
     <img
       src={`https://ddragon.leagueoflegends.com/cdn/15.11.1/img/champion/${championId}.png`}
       alt={championId}
-      title={title || championId}
+      title={!showTooltip ? (title || championId) : undefined}
       className={cn(
         sizeClasses[size],
         "rounded border border-gray-500 object-cover",
@@ -35,5 +48,62 @@ export function ChampionIcon({
       )}
       onClick={onClick}
     />
+  );
+
+  if (!showTooltip || !championData) {
+    return championImage;
+  }
+
+  const tooltipContent = (
+    <div className="space-y-2">
+      <div className="font-semibold text-white">{championId}</div>
+      
+      {championData.roles && championData.roles.length > 0 && (
+        <div>
+          <span className="text-xs text-gray-400">Roles: </span>
+          <span className="text-xs">
+            {championData.roles.map(formatTag).join(', ')}
+          </span>
+        </div>
+      )}
+      
+      {championData.damageTypes && championData.damageTypes.length > 0 && (
+        <div>
+          <span className="text-xs text-gray-400">Damage: </span>
+          <span className="text-xs">
+            {championData.damageTypes.map(formatTag).join(', ')}
+          </span>
+        </div>
+      )}
+      
+      {championData.tags && championData.tags.length > 0 && (
+        <div>
+          <div className="text-xs text-gray-400 mb-1">Tags:</div>
+          <div className="flex flex-wrap gap-1">
+            {championData.tags.map((tag) => (
+              <span
+                key={tag}
+                className="inline-block px-2 py-0.5 text-xs bg-gray-700 text-gray-200 rounded-full border border-gray-600"
+              >
+                {formatTag(tag)}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+
+  return (
+    <TooltipProvider>
+      <Tooltip delayDuration={0}>
+        <TooltipTrigger asChild>
+          {championImage}
+        </TooltipTrigger>
+        <TooltipContent side="right" className="max-w-xs">
+          {tooltipContent}
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 }

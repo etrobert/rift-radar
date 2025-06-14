@@ -304,6 +304,7 @@ export function Suggestions({
                   <ChampionIcon
                     size="lg"
                     championId={championName}
+                    showTooltip={true}
                     className={cn(
                       isPickedByAllies && "[filter:sepia(1)_hue-rotate(90deg)]",
                       !isPickedByAllies && isUnavailable && "opacity-40",
