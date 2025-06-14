@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useURLState } from "../hooks/useURLState";
 import { useLCU } from "../hooks/useLCU";
+import { usePlayerStats } from "../hooks/usePlayerStats";
 import { Navigation } from "../App";
 import { ChampionPicker } from "./ChampionPicker";
 import { ChampionCard } from "./ChampionCard";
@@ -15,6 +16,16 @@ export function DraftPage() {
   const [allyBans, setAllyBans] = useURLState("allyBans");
   const [enemyBans, setEnemyBans] = useURLState("enemyBans");
   const [roleFilter, setRoleFilter] = useState<Role | null>(null);
+  
+  // Player stats context
+  const [playerInfo, setPlayerInfo] = useState<{ gameName: string; tagLine: string } | null>(null);
+  
+  // Fetch player stats when player info is available
+  const playerStatsQuery = usePlayerStats(
+    playerInfo?.gameName || "",
+    playerInfo?.tagLine || "",
+    { enabled: !!playerInfo }
+  );
 
   // LCU integration
   const lcu = useLCU((championSelectState) => {
@@ -88,6 +99,10 @@ export function DraftPage() {
         lcuIsConnected={lcu.isConnected}
         onLcuConnect={lcu.connect}
         onLcuDisconnect={lcu.disconnect}
+        playerInfo={playerInfo}
+        onPlayerChange={setPlayerInfo}
+        showPlayerInput={true}
+        playerStatsStatus={playerStatsQuery.status}
       />
 
       <div className="flex gap-5 p-5">
@@ -146,6 +161,7 @@ export function DraftPage() {
               enemyChampions={enemyPicks}
               unavailableChampions={unavailableChampions}
               roleFilter={roleFilter}
+              playerStats={playerStatsQuery.data}
             />
           </div>
         </div>

@@ -2,6 +2,8 @@ import type { ChampionId } from "@/types/championTags";
 import { championTags } from "@/types/championTags";
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip";
+import type { StatsResponse } from "../hooks/usePlayerStats";
+import { getChampionStats } from "../hooks/usePlayerStats";
 
 interface ChampionIconProps {
   championId: ChampionId;
@@ -10,6 +12,7 @@ interface ChampionIconProps {
   onClick?: () => void;
   title?: string;
   showTooltip?: boolean;
+  playerStats?: StatsResponse;
 }
 
 const sizeClasses = {
@@ -25,6 +28,7 @@ export function ChampionIcon({
   onClick,
   title,
   showTooltip = false,
+  playerStats,
 }: ChampionIconProps) {
   const championData = championTags[championId];
   
@@ -67,9 +71,23 @@ export function ChampionIcon({
     return championImage;
   }
 
+  // Get player stats for this champion
+  const playerChampionStats = playerStats ? getChampionStats(playerStats, championId) : null;
+
   const tooltipContent = (
     <div className="space-y-2">
       <div className="font-semibold text-white">{championId}</div>
+      
+      {/* Player Performance Stats */}
+      {playerChampionStats && (
+        <div>
+          <div className="text-xs text-gray-400 mb-1">Your Performance:</div>
+          <div className={`text-sm ${playerChampionStats.winRate < 0.5 ? "text-red-400" : "text-green-400"}`}>
+            {playerChampionStats.wins}-{playerChampionStats.losses} ({(playerChampionStats.winRate * 100).toFixed(0)}% WR) 
+            <span className="text-gray-300"> in {playerChampionStats.games} games</span>
+          </div>
+        </div>
+      )}
       
       {championData.roles && championData.roles.length > 0 && (
         <div>

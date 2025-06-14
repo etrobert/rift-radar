@@ -11,6 +11,11 @@ interface NavigationProps {
   lcuIsConnected?: boolean;
   onLcuConnect?: () => void;
   onLcuDisconnect?: () => void;
+  // Player props
+  playerInfo?: { gameName: string; tagLine: string } | null;
+  onPlayerChange?: (playerInfo: { gameName: string; tagLine: string } | null) => void;
+  showPlayerInput?: boolean;
+  playerStatsStatus?: "pending" | "error" | "success";
 }
 
 export function Navigation({ 
@@ -20,7 +25,11 @@ export function Navigation({
   lcuIsAvailable, 
   lcuIsConnected, 
   onLcuConnect, 
-  onLcuDisconnect 
+  onLcuDisconnect,
+  playerInfo,
+  onPlayerChange,
+  showPlayerInput = false,
+  playerStatsStatus
 }: NavigationProps) {
   const location = useLocation();
   
@@ -53,6 +62,55 @@ export function Navigation({
               Player Stats
             </Link>
           </div>
+          
+          {/* Player Input */}
+          {showPlayerInput && (
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-400">Player:</span>
+              <input
+                type="text"
+                placeholder="Game Name"
+                value={playerInfo?.gameName || ""}
+                onChange={(e) => {
+                  if (onPlayerChange) {
+                    const gameName = e.target.value;
+                    onPlayerChange(
+                      gameName || playerInfo?.tagLine
+                        ? { gameName, tagLine: playerInfo?.tagLine || "" }
+                        : null
+                    );
+                  }
+                }}
+                className="w-24 rounded border border-gray-600 bg-gray-700 px-2 py-1 text-xs text-white focus:border-blue-500 focus:outline-none"
+              />
+              <span className="text-xs text-gray-400">#</span>
+              <input
+                type="text"
+                placeholder="Tag"
+                value={playerInfo?.tagLine || ""}
+                onChange={(e) => {
+                  if (onPlayerChange) {
+                    const tagLine = e.target.value;
+                    onPlayerChange(
+                      playerInfo?.gameName || tagLine
+                        ? { gameName: playerInfo?.gameName || "", tagLine }
+                        : null
+                    );
+                  }
+                }}
+                className="w-16 rounded border border-gray-600 bg-gray-700 px-2 py-1 text-xs text-white focus:border-blue-500 focus:outline-none"
+              />
+              {playerInfo?.gameName && playerInfo?.tagLine && playerStatsStatus === "pending" && (
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-blue-600 border-t-transparent"></div>
+              )}
+              {playerInfo?.gameName && playerInfo?.tagLine && playerStatsStatus === "error" && (
+                <div className="h-4 w-4 text-red-400 font-bold flex items-center justify-center">✕</div>
+              )}
+              {playerInfo?.gameName && playerInfo?.tagLine && playerStatsStatus === "success" && (
+                <div className="h-4 w-4 text-green-400 font-bold flex items-center justify-center">✓</div>
+              )}
+            </div>
+          )}
         </div>
         
         <div className="flex items-center gap-4">

@@ -1,22 +1,7 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { Button } from "./ui/button";
 import { ChampionIcon } from "./ChampionIcon";
-
-interface StatsResponse {
-  totalWins: number;
-  totalGames: number;
-  championWinrates: Array<{
-    ChampionName: string;
-    Wins: number;
-    Games: number;
-  }>;
-  enemyWinrates: Array<{
-    ChampionName: string;
-    Wins: number;
-    Games: number;
-  }>;
-}
+import { usePlayerStats } from "../hooks/usePlayerStats";
 
 const queueTypes = [
   { value: "", label: "All Queues" },
@@ -49,22 +34,9 @@ export function StatsPage() {
     isLoading,
     error,
     refetch,
-  } = useQuery<StatsResponse>({
-    queryKey: ["playerStats", gameName, tagLine, queueType, games],
-    queryFn: async () => {
-      const params = new URLSearchParams({
-        gameName,
-        tagLine,
-        games,
-        ...(queueType && { queueType }),
-      });
-
-      const response = await fetch(`http://localhost:8080/api/stats?${params}`);
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
-      }
-      return response.json();
-    },
+  } = usePlayerStats(gameName, tagLine, {
+    queueType,
+    games,
     enabled: searchSubmitted && gameName.length > 0 && tagLine.length > 0,
   });
 
@@ -228,11 +200,9 @@ export function StatsPage() {
                           <td className="py-3 text-center">
                             <span
                               className={
-                                winrate >= 0.6
-                                  ? "text-green-400"
-                                  : winrate >= 0.5
-                                    ? "text-yellow-400"
-                                    : "text-red-400"
+                                winrate < 0.5
+                                  ? "text-red-400"
+                                  : "text-green-400"
                               }
                             >
                               {formatWinrate(winrate)}
@@ -280,11 +250,9 @@ export function StatsPage() {
                           <td className="py-3 text-center">
                             <span
                               className={
-                                winrate >= 0.6
-                                  ? "text-green-400"
-                                  : winrate >= 0.5
-                                    ? "text-yellow-400"
-                                    : "text-red-400"
+                                winrate < 0.5
+                                  ? "text-red-400"
+                                  : "text-green-400"
                               }
                             >
                               {formatWinrate(winrate)}

@@ -7,12 +7,14 @@ import {
 import { ChampionIcon } from "./ChampionIcon";
 import { getDamageComposition } from "../lib/damageComposition";
 import { cn } from "../lib/utils";
+import type { StatsResponse } from "../hooks/usePlayerStats";
 
 interface SuggestionsProps {
   allyChampions: ChampionId[];
   enemyChampions: ChampionId[];
   unavailableChampions: ChampionId[];
   roleFilter: Role | null;
+  playerStats?: StatsResponse;
 }
 
 interface Suggestion {
@@ -217,6 +219,7 @@ export function Suggestions({
   enemyChampions,
   unavailableChampions,
   roleFilter,
+  playerStats,
 }: SuggestionsProps) {
   const tagCounterSuggestions = generateTagCounterSuggestions(enemyChampions);
   const synergySuggestions = generateSynergySuggestions(allyChampions);
@@ -288,6 +291,7 @@ export function Suggestions({
                           championId={championId}
                           size="sm"
                           showTooltip={true}
+                          playerStats={playerStats}
                         />
                       ))}
                     </div>
@@ -306,6 +310,7 @@ export function Suggestions({
                     size="lg"
                     championId={championName}
                     showTooltip={true}
+                    playerStats={playerStats}
                     className={cn(
                       isPickedByAllies && "[filter:sepia(1)_hue-rotate(90deg)]",
                       !isPickedByAllies && isUnavailable && "opacity-40",
