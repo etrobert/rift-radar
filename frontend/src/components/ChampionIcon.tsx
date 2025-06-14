@@ -120,7 +120,7 @@ export function ChampionIcon({
         <TooltipTrigger asChild>
           {championImage}
         </TooltipTrigger>
-        <TooltipContent side="right" className="max-w-xs">
+        <TooltipContent side="bottom" className="max-w-xs">
           {tooltipContent}
         </TooltipContent>
       </Tooltip>
