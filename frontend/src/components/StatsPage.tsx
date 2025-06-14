@@ -27,10 +27,14 @@ const queueTypes = [
 ];
 
 const gameAmounts = [
+  { value: "10", label: "10 Games" },
   { value: "20", label: "20 Games" },
   { value: "50", label: "50 Games" },
   { value: "100", label: "100 Games" },
   { value: "200", label: "200 Games" },
+  { value: "300", label: "300 Games" },
+  { value: "500", label: "500 Games" },
+  { value: "1000", label: "1000 Games" },
 ];
 
 export function StatsPage() {
