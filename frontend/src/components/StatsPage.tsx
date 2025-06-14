@@ -7,20 +7,14 @@ interface StatsResponse {
   totalWins: number;
   totalGames: number;
   championWinrates: Array<{
-    championId: number;
-    championName: string;
-    wins: number;
-    losses: number;
-    games: number;
-    winrate: number;
+    ChampionName: string;
+    Wins: number;
+    Games: number;
   }>;
   enemyWinrates: Array<{
-    championId: number;
-    championName: string;
-    wins: number;
-    losses: number;
-    games: number;
-    winrate: number;
+    ChampionName: string;
+    Wins: number;
+    Games: number;
   }>;
 }
 
@@ -212,33 +206,37 @@ export function StatsPage() {
                 </thead>
                 <tbody>
                   {stats.championWinrates
-                    .sort((a, b) => b.games - a.games)
-                    .map((champion) => (
-                      <tr key={champion.championId} className="border-b border-gray-700">
-                        <td className="py-3">
-                          <div className="flex items-center gap-3">
-                            <ChampionIcon championId={champion.championName as any} size="sm" />
-                            <span className="text-white">{champion.championName}</span>
-                          </div>
-                        </td>
-                        <td className="py-3 text-center text-gray-300">{champion.games}</td>
-                        <td className="py-3 text-center text-green-400">{champion.wins}</td>
-                        <td className="py-3 text-center text-red-400">{champion.losses}</td>
-                        <td className="py-3 text-center">
-                          <span
-                            className={
-                              champion.winrate >= 0.6
-                                ? "text-green-400"
-                                : champion.winrate >= 0.5
-                                  ? "text-yellow-400"
-                                  : "text-red-400"
-                            }
-                          >
-                            {formatWinrate(champion.winrate)}
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
+                    .sort((a, b) => b.Games - a.Games)
+                    .map((champion, index) => {
+                      const losses = champion.Games - champion.Wins;
+                      const winrate = champion.Games > 0 ? champion.Wins / champion.Games : 0;
+                      return (
+                        <tr key={`${champion.ChampionName}-${index}`} className="border-b border-gray-700">
+                          <td className="py-3">
+                            <div className="flex items-center gap-3">
+                              <ChampionIcon championId={champion.ChampionName as any} size="sm" />
+                              <span className="text-white">{champion.ChampionName}</span>
+                            </div>
+                          </td>
+                          <td className="py-3 text-center text-gray-300">{champion.Games}</td>
+                          <td className="py-3 text-center text-green-400">{champion.Wins}</td>
+                          <td className="py-3 text-center text-red-400">{losses}</td>
+                          <td className="py-3 text-center">
+                            <span
+                              className={
+                                winrate >= 0.6
+                                  ? "text-green-400"
+                                  : winrate >= 0.5
+                                    ? "text-yellow-400"
+                                    : "text-red-400"
+                              }
+                            >
+                              {formatWinrate(winrate)}
+                            </span>
+                          </td>
+                        </tr>
+                      );
+                    })}
                 </tbody>
               </table>
             </div>
@@ -260,33 +258,37 @@ export function StatsPage() {
                 </thead>
                 <tbody>
                   {stats.enemyWinrates
-                    .sort((a, b) => b.games - a.games)
-                    .map((enemy) => (
-                      <tr key={enemy.championId} className="border-b border-gray-700">
-                        <td className="py-3">
-                          <div className="flex items-center gap-3">
-                            <ChampionIcon championId={enemy.championName as any} size="sm" />
-                            <span className="text-white">{enemy.championName}</span>
-                          </div>
-                        </td>
-                        <td className="py-3 text-center text-gray-300">{enemy.games}</td>
-                        <td className="py-3 text-center text-green-400">{enemy.wins}</td>
-                        <td className="py-3 text-center text-red-400">{enemy.losses}</td>
-                        <td className="py-3 text-center">
-                          <span
-                            className={
-                              enemy.winrate >= 0.6
-                                ? "text-green-400"
-                                : enemy.winrate >= 0.5
-                                  ? "text-yellow-400"
-                                  : "text-red-400"
-                            }
-                          >
-                            {formatWinrate(enemy.winrate)}
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
+                    .sort((a, b) => b.Games - a.Games)
+                    .map((enemy, index) => {
+                      const losses = enemy.Games - enemy.Wins;
+                      const winrate = enemy.Games > 0 ? enemy.Wins / enemy.Games : 0;
+                      return (
+                        <tr key={`${enemy.ChampionName}-${index}`} className="border-b border-gray-700">
+                          <td className="py-3">
+                            <div className="flex items-center gap-3">
+                              <ChampionIcon championId={enemy.ChampionName as any} size="sm" />
+                              <span className="text-white">{enemy.ChampionName}</span>
+                            </div>
+                          </td>
+                          <td className="py-3 text-center text-gray-300">{enemy.Games}</td>
+                          <td className="py-3 text-center text-green-400">{enemy.Wins}</td>
+                          <td className="py-3 text-center text-red-400">{losses}</td>
+                          <td className="py-3 text-center">
+                            <span
+                              className={
+                                winrate >= 0.6
+                                  ? "text-green-400"
+                                  : winrate >= 0.5
+                                    ? "text-yellow-400"
+                                    : "text-red-400"
+                              }
+                            >
+                              {formatWinrate(winrate)}
+                            </span>
+                          </td>
+                        </tr>
+                      );
+                    })}
                 </tbody>
               </table>
             </div>
