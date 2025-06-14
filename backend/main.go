@@ -18,6 +18,21 @@ func init() {
 	initRedis()
 }
 
+func corsMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		next.ServeHTTP(w, r)
+	})
+}
+
 func loggingMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		log.Printf("%s %s %s", r.Method, r.URL.String(), r.RemoteAddr)
@@ -107,7 +122,8 @@ func main() {
 	// API endpoints
 	mux.HandleFunc("/api/stats", statsHandler)
 
-	loggedMux := loggingMiddleware(mux)
+	corsHandler := corsMiddleware(mux)
+	loggedMux := loggingMiddleware(corsHandler)
 
 	log.Printf("Server starting on port 8080")
 	log.Fatal(http.ListenAndServe(":8080", loggedMux))
