@@ -287,6 +287,7 @@ export function Suggestions({
                           key={championId}
                           championId={championId}
                           size="sm"
+                          showTooltip={true}
                         />
                       ))}
                     </div>
