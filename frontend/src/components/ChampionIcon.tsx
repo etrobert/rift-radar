@@ -35,6 +35,19 @@ export function ChampionIcon({
       .join(' ');
   };
 
+  const getDamageTypeColor = (damageType: string) => {
+    switch (damageType) {
+      case 'physical-damage':
+        return 'bg-orange-600 text-orange-100 border-orange-500';
+      case 'magic-damage':
+        return 'bg-blue-600 text-blue-100 border-blue-500';
+      case 'true-damage':
+        return 'bg-white text-gray-900 border-gray-300';
+      default:
+        return 'bg-gray-700 text-gray-200 border-gray-600';
+    }
+  };
+
   const championImage = (
     <img
       src={`https://ddragon.leagueoflegends.com/cdn/15.11.1/img/champion/${championId}.png`}
@@ -69,10 +82,17 @@ export function ChampionIcon({
       
       {championData.damageTypes && championData.damageTypes.length > 0 && (
         <div>
-          <span className="text-xs text-gray-400">Damage: </span>
-          <span className="text-xs">
-            {championData.damageTypes.map(formatTag).join(', ')}
-          </span>
+          <div className="text-xs text-gray-400 mb-1">Damage:</div>
+          <div className="flex flex-wrap gap-1">
+            {championData.damageTypes.map((damageType) => (
+              <span
+                key={damageType}
+                className={`inline-block px-2 py-0.5 text-xs rounded-full border ${getDamageTypeColor(damageType)}`}
+              >
+                {formatTag(damageType)}
+              </span>
+            ))}
+          </div>
         </div>
       )}
       
