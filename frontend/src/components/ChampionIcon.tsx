@@ -73,10 +73,17 @@ export function ChampionIcon({
       
       {championData.roles && championData.roles.length > 0 && (
         <div>
-          <span className="text-xs text-gray-400">Roles: </span>
-          <span className="text-xs">
-            {championData.roles.map(formatTag).join(', ')}
-          </span>
+          <div className="text-xs text-gray-400 mb-1">Roles:</div>
+          <div className="flex flex-wrap gap-1">
+            {championData.roles.map((role) => (
+              <span
+                key={role}
+                className="inline-block px-2 py-0.5 text-xs bg-gray-700 text-gray-200 rounded-full border border-gray-600"
+              >
+                {formatTag(role)}
+              </span>
+            ))}
+          </div>
         </div>
       )}
       
