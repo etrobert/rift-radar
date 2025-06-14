@@ -638,7 +638,11 @@ export const championTags: Record<string, ChampionTags> = {
     tags: ["projectile"],
     roles: ["adc"],
   },
-  Skarner: { damageTypes: ["physical-damage"], roles: ["top", "jungle"] },
+  Skarner: {
+    damageTypes: ["physical-damage"],
+    roles: ["top", "jungle"],
+    strongWith: ["wall"],
+  },
   Smolder: {
     damageTypes: ["magic-damage", "physical-damage"],
     tags: ["projectile"],
