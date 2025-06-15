@@ -169,6 +169,8 @@ const generateAutoSynergySuggestions = (allyChampions: ChampionId[]) =>
 const strongWithRules = [
   { tag: "wall", reason: "Strong with wall champions" },
   { tag: "poison", reason: "Strong with poison champions" },
+  { tag: "healing", reason: "Strong with healing champions" },
+  { tag: "shield", reason: "Strong with shield champions" },
 ] as const;
 
 const generateStrongWithSuggestions = (
