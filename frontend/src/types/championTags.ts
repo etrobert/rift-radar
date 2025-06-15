@@ -13,7 +13,8 @@ export type Tag =
   | "poison"
   | "shield"
   | "pick-potential"
-  | "wombo-combo";
+  | "wombo-combo"
+  | "auto-attack";
 
 type ChampionTags = {
   damageTypes?: DamageType[];
@@ -53,7 +54,7 @@ export const championTags: Record<string, ChampionTags> = {
   },
   Akshan: {
     damageTypes: ["physical-damage"],
-    tags: ["dash", "assassin", "projectile"],
+    tags: ["dash", "assassin", "projectile", "auto-attack"],
     roles: ["mid", "top"],
   },
   Alistar: {
@@ -84,12 +85,12 @@ export const championTags: Record<string, ChampionTags> = {
   },
   Aphelios: {
     damageTypes: ["physical-damage"],
-    tags: ["projectile"],
+    tags: ["projectile", "auto-attack"],
     roles: ["adc"],
   },
   Ashe: {
     damageTypes: ["physical-damage"],
-    tags: ["strong-ultimate", "projectile", "pick-potential"],
+    tags: ["strong-ultimate", "projectile", "pick-potential", "auto-attack"],
     roles: ["adc", "support"],
   },
   AurelionSol: { damageTypes: ["magic-damage"], roles: ["mid", "adc"] },
@@ -100,17 +101,21 @@ export const championTags: Record<string, ChampionTags> = {
   },
   Azir: {
     damageTypes: ["magic-damage"],
-    tags: ["dash", "strong-ultimate", "wall"],
+    tags: ["dash", "strong-ultimate", "wall", "auto-attack"],
     roles: ["mid"],
   },
   Bard: {
-    tags: ["cc", "projectile", "wombo-combo"],
+    tags: ["cc", "projectile", "wombo-combo", "auto-attack"],
     strongWith: ["wall"],
     roles: ["support"],
   },
-  Belveth: { damageTypes: ["physical-damage"], roles: ["jungle"] },
+  Belveth: {
+    tags: ["dash", "auto-attack"],
+    damageTypes: ["physical-damage"],
+    roles: ["jungle"],
+  },
   Blitzcrank: {
-    tags: ["cc", "projectile", "pick-potential"],
+    tags: ["cc", "projectile", "pick-potential", "auto-attack"],
     strongAgainst: ["shield"],
     roles: ["support"],
   },
@@ -121,22 +126,22 @@ export const championTags: Record<string, ChampionTags> = {
   },
   Braum: {
     synergiesWith: ["Lucian"],
-    strongAgainst: ["projectile"],
+    strongAgainst: ["projectile", "auto-attack"],
     roles: ["support"],
   },
   Briar: {
     damageTypes: ["physical-damage"],
-    tags: ["projectile"],
+    tags: ["projectile", "auto-attack"],
     roles: ["jungle"],
   },
   Caitlyn: {
     damageTypes: ["physical-damage"],
-    tags: ["dash", "projectile"],
+    tags: ["dash", "projectile", "auto-attack"],
     roles: ["adc"],
   },
   Camille: {
     damageTypes: ["physical-damage", "true-damage"],
-    tags: ["dash"],
+    tags: ["dash", "auto-attack"],
     synergiesWith: ["Galio"],
     roles: ["top", "support"],
     strongWith: ["wall"],
@@ -155,32 +160,32 @@ export const championTags: Record<string, ChampionTags> = {
   },
   Corki: {
     damageTypes: ["magic-damage", "physical-damage"],
-    tags: ["dash", "projectile"],
+    tags: ["dash", "projectile", "auto-attack"],
     roles: ["mid", "adc"],
   },
   Darius: {
     damageTypes: ["physical-damage", "true-damage"],
-    tags: ["healing"],
+    tags: ["healing", "auto-attack"],
     roles: ["top"],
   },
   Diana: {
     damageTypes: ["magic-damage"],
-    tags: ["dash", "assassin", "projectile"],
+    tags: ["dash", "assassin", "projectile", "auto-attack"],
     roles: ["mid", "jungle"],
   },
   Draven: {
     damageTypes: ["physical-damage"],
-    tags: ["projectile"],
+    tags: ["projectile", "auto-attack"],
     roles: ["adc"],
   },
   DrMundo: {
     damageTypes: ["magic-damage"],
-    tags: ["healing", "strong-ultimate"],
+    tags: ["healing", "strong-ultimate", "auto-attack"],
     roles: ["top", "jungle"],
   },
   Ekko: {
     damageTypes: ["magic-damage"],
-    tags: ["dash", "healing", "assassin"],
+    tags: ["dash", "healing", "assassin", "auto-attack"],
     roles: ["mid", "jungle"],
   },
   Elise: {
@@ -195,7 +200,7 @@ export const championTags: Record<string, ChampionTags> = {
   },
   Ezreal: {
     damageTypes: ["magic-damage", "physical-damage"],
-    tags: ["projectile"],
+    tags: ["projectile", "auto-attack"],
     roles: ["adc"],
   },
   Fiddlesticks: {
@@ -205,12 +210,12 @@ export const championTags: Record<string, ChampionTags> = {
   },
   Fiora: {
     damageTypes: ["physical-damage", "true-damage"],
-    tags: ["dash", "healing"],
+    tags: ["dash", "healing", "auto-attack"],
     roles: ["top"],
   },
   Fizz: {
     damageTypes: ["magic-damage"],
-    tags: ["dash", "assassin", "projectile"],
+    tags: ["dash", "assassin", "projectile", "auto-attack"],
     roles: ["mid"],
   },
   Galio: {
@@ -223,14 +228,19 @@ export const championTags: Record<string, ChampionTags> = {
   Gangplank: {
     damageTypes: ["physical-damage", "true-damage"],
     strongAgainst: ["cc"],
-    tags: ["projectile"],
+    tags: ["projectile", "auto-attack"],
     roles: ["top", "mid"],
   },
   Garen: {
     damageTypes: ["physical-damage", "true-damage"],
+    tags: ["auto-attack"],
     roles: ["top", "mid"],
   },
-  Gnar: { damageTypes: ["physical-damage"], tags: ["dash"], roles: ["top"] },
+  Gnar: {
+    damageTypes: ["physical-damage"],
+    tags: ["dash", "auto-attack"],
+    roles: ["top"],
+  },
   Gragas: {
     damageTypes: ["magic-damage"],
     tags: ["dash", "healing", "projectile"],
@@ -238,17 +248,17 @@ export const championTags: Record<string, ChampionTags> = {
   },
   Graves: {
     damageTypes: ["physical-damage"],
-    tags: ["dash"],
+    tags: ["dash", "auto-attack"],
     roles: ["jungle"],
   },
   Gwen: {
     damageTypes: ["magic-damage", "true-damage"],
-    tags: ["dash"],
+    tags: ["dash", "auto-attack"],
     roles: ["top", "jungle"],
   },
   Hecarim: {
     damageTypes: ["physical-damage"],
-    tags: ["healing"],
+    tags: ["healing", "auto-attack"],
     roles: ["jungle"],
   },
   Heimerdinger: {
@@ -262,12 +272,12 @@ export const championTags: Record<string, ChampionTags> = {
   },
   Illaoi: {
     damageTypes: ["physical-damage"],
-    tags: ["healing"],
+    tags: ["healing", "auto-attack"],
     roles: ["top", "mid"],
   },
   Irelia: {
     damageTypes: ["physical-damage"],
-    tags: ["dash", "healing"],
+    tags: ["dash", "healing", "auto-attack"],
     roles: ["top", "mid"],
   },
   Ivern: {
@@ -284,38 +294,39 @@ export const championTags: Record<string, ChampionTags> = {
   },
   JarvanIV: {
     damageTypes: ["physical-damage"],
-    tags: ["dash", "wall"],
+    tags: ["dash", "wall", "auto-attack"],
     synergiesWith: ["Galio"],
     roles: ["jungle", "top", "support"],
   },
   Jax: {
     damageTypes: ["physical-damage", "magic-damage"],
-    tags: ["dash"],
+    tags: ["dash", "auto-attack"],
+    strongAgainst: ["auto-attack"],
     roles: ["top", "jungle"],
   },
   Jayce: {
     damageTypes: ["physical-damage"],
-    tags: ["projectile"],
+    tags: ["projectile", "auto-attack"],
     roles: ["top", "mid"],
   },
   Jhin: {
     damageTypes: ["physical-damage"],
-    tags: ["projectile", "pick-potential"],
+    tags: ["projectile", "pick-potential", "auto-attack"],
     roles: ["adc"],
   },
   Jinx: {
     damageTypes: ["physical-damage"],
-    tags: ["projectile"],
+    tags: ["projectile", "auto-attack"],
     roles: ["adc"],
   },
   Kaisa: {
     damageTypes: ["magic-damage", "physical-damage"],
-    tags: ["projectile"],
+    tags: ["projectile", "auto-attack"],
     roles: ["adc"],
   },
   Kalista: {
     damageTypes: ["physical-damage"],
-    tags: ["dash"],
+    tags: ["dash", "auto-attack"],
     synergiesWith: ["Alistar", "Neeko"],
     roles: ["top", "adc"],
   },
@@ -340,18 +351,18 @@ export const championTags: Record<string, ChampionTags> = {
   },
   Kayle: {
     damageTypes: ["magic-damage", "physical-damage"],
-    tags: ["strong-ultimate"],
+    tags: ["strong-ultimate", "auto-attack"],
     strongAgainst: ["assassin"],
     roles: ["top", "mid"],
   },
   Kayn: {
     damageTypes: ["physical-damage"],
-    tags: ["dash", "healing", "assassin"],
+    tags: ["dash", "healing", "assassin", "auto-attack"],
     roles: ["top", "jungle"],
   },
   Kennen: {
     damageTypes: ["magic-damage"],
-    tags: ["strong-ultimate", "projectile", "wombo-combo"],
+    tags: ["strong-ultimate", "projectile", "wombo-combo", "auto-attack"],
     roles: ["top", "mid"],
   },
   Khazix: {
@@ -361,16 +372,18 @@ export const championTags: Record<string, ChampionTags> = {
   },
   Kindred: {
     damageTypes: ["physical-damage"],
-    tags: ["dash"],
+    tags: ["dash", "auto-attack"],
     roles: ["jungle"],
   },
   Kled: {
     damageTypes: ["physical-damage"],
     strongAgainst: ["healing"],
     roles: ["top", "mid"],
+    tags: ["dash", "auto-attack"],
   },
   KogMaw: {
     damageTypes: ["magic-damage", "physical-damage"],
+    tags: ["auto-attack"],
     roles: ["adc", "mid"],
   },
   KSante: { damageTypes: ["physical-damage"], roles: ["top"] },
@@ -381,11 +394,11 @@ export const championTags: Record<string, ChampionTags> = {
   },
   LeeSin: {
     damageTypes: ["physical-damage"],
-    tags: ["dash", "projectile"],
+    tags: ["dash", "projectile", "auto-attack"],
     roles: ["jungle"],
   },
   Leona: {
-    tags: ["dash", "cc", "pick-potential"],
+    tags: ["dash", "cc", "pick-potential", "auto-attack"],
     roles: ["support"],
   },
   Lillia: {
@@ -401,7 +414,7 @@ export const championTags: Record<string, ChampionTags> = {
   },
   Lucian: {
     damageTypes: ["physical-damage"],
-    tags: ["dash", "projectile"],
+    tags: ["dash", "projectile", "auto-attack"],
     synergiesWith: ["Braum"],
     roles: ["adc", "mid"],
   },
@@ -418,6 +431,7 @@ export const championTags: Record<string, ChampionTags> = {
   Malphite: {
     damageTypes: ["magic-damage"],
     tags: ["strong-ultimate", "wombo-combo"],
+    strongAgainst: ["auto-attack"],
     strongAgainstDamageTypes: ["physical-damage"],
     synergiesWith: ["Yasuo", "Yone", "MissFortune", "Orianna"],
     roles: ["top", "mid", "jungle", "support"],
@@ -435,6 +449,7 @@ export const championTags: Record<string, ChampionTags> = {
   },
   MasterYi: {
     damageTypes: ["physical-damage", "true-damage"],
+    tags: ["auto-attack"],
     synergiesWith: ["Zilean"],
     weakAgainst: ["cc"],
     roles: ["top", "jungle"],
@@ -448,12 +463,12 @@ export const championTags: Record<string, ChampionTags> = {
   MissFortune: {
     damageTypes: ["physical-damage"],
     synergiesWith: ["Amumu", "Malphite"],
-    tags: ["projectile", "wombo-combo"],
+    tags: ["projectile", "wombo-combo", "auto-attack"],
     roles: ["adc"],
   },
   MonkeyKing: {
     damageTypes: ["physical-damage"],
-    tags: ["dash", "wombo-combo"],
+    tags: ["dash", "wombo-combo", "auto-attack"],
     strongAgainstDamageTypes: ["physical-damage"],
     roles: ["top", "jungle"],
   },
@@ -470,7 +485,7 @@ export const championTags: Record<string, ChampionTags> = {
   },
   Naafiri: {
     damageTypes: ["physical-damage"],
-    tags: ["dash", "assassin"],
+    tags: ["dash", "assassin", "auto-attack"],
     roles: ["jungle", "mid"],
   },
   Nami: {
@@ -480,11 +495,11 @@ export const championTags: Record<string, ChampionTags> = {
   },
   Nasus: {
     damageTypes: ["physical-damage"],
-    tags: ["healing"],
+    tags: ["healing", "auto-attack"],
     roles: ["jungle", "mid", "top"],
   },
   Nautilus: {
-    tags: ["cc", "projectile", "pick-potential"],
+    tags: ["cc", "projectile", "pick-potential", "auto-attack"],
     roles: ["support"],
   },
   Neeko: {
@@ -500,21 +515,22 @@ export const championTags: Record<string, ChampionTags> = {
   },
   Nilah: {
     damageTypes: ["physical-damage"],
-    tags: ["dash", "healing"],
+    tags: ["dash", "healing", "auto-attack"],
     roles: ["adc"],
     strongWith: ["healing", "shield"],
+    strongAgainst: ["auto-attack"],
   },
   Nocturne: {
     damageTypes: ["physical-damage"],
     synergiesWith: ["Orianna"],
-    tags: ["assassin"],
+    tags: ["assassin", "auto-attack", "strong-ultimate"],
     roles: ["jungle"],
   },
   Nunu: { damageTypes: ["magic-damage"], roles: ["jungle", "mid", "support"] },
   Olaf: {
     damageTypes: ["physical-damage", "true-damage"],
     strongAgainst: ["cc"],
-    tags: ["healing"],
+    tags: ["healing", "auto-attack"],
     roles: ["jungle", "top"],
   },
   Orianna: {
@@ -549,7 +565,11 @@ export const championTags: Record<string, ChampionTags> = {
     strongWith: ["wall"],
     roles: ["mid", "jungle"],
   },
-  Quinn: { damageTypes: ["physical-damage"], roles: ["top", "mid"] },
+  Quinn: {
+    damageTypes: ["physical-damage"],
+    roles: ["top", "mid"],
+    tags: ["auto-attack"],
+  },
   Rakan: {
     damageTypes: ["magic-damage"],
     tags: ["dash", "healing", "strong-ultimate"],
@@ -558,10 +578,15 @@ export const championTags: Record<string, ChampionTags> = {
   },
   Rammus: {
     damageTypes: ["magic-damage"],
+    strongAgainst: ["auto-attack"],
     strongAgainstDamageTypes: ["physical-damage"],
     roles: ["jungle", "top"],
   },
-  RekSai: { damageTypes: ["physical-damage"], roles: ["jungle", "top"] },
+  RekSai: {
+    damageTypes: ["physical-damage"],
+    roles: ["jungle", "top"],
+    tags: ["auto-attack"],
+  },
   Rell: { tags: ["shield"], roles: ["support"] },
   Renata: {
     damageTypes: ["magic-damage"],
@@ -576,7 +601,7 @@ export const championTags: Record<string, ChampionTags> = {
   },
   Rengar: {
     damageTypes: ["physical-damage"],
-    tags: ["dash", "assassin", "pick-potential"],
+    tags: ["dash", "assassin", "pick-potential", "auto-attack"],
     synergiesWith: ["Orianna", "Ivern", "Lulu"],
     roles: ["jungle", "top"],
   },
@@ -593,7 +618,7 @@ export const championTags: Record<string, ChampionTags> = {
   Ryze: { damageTypes: ["magic-damage"], roles: ["mid", "top"] },
   Samira: {
     damageTypes: ["physical-damage"],
-    tags: ["dash", "healing"],
+    tags: ["dash", "healing", "auto-attack"],
     roles: ["adc"],
   },
   Sejuani: {
@@ -603,7 +628,7 @@ export const championTags: Record<string, ChampionTags> = {
   },
   Senna: {
     damageTypes: ["physical-damage"],
-    tags: ["healing", "projectile"],
+    tags: ["healing", "projectile", "auto-attack"],
     roles: ["support", "adc"],
   },
   Seraphine: {
@@ -617,12 +642,13 @@ export const championTags: Record<string, ChampionTags> = {
   },
   Shaco: {
     damageTypes: ["physical-damage", "magic-damage"],
-    tags: ["assassin"],
+    tags: ["assassin", "auto-attack"],
     roles: ["jungle", "support"],
   },
   Shen: {
     damageTypes: ["magic-damage"],
     tags: ["dash", "strong-ultimate", "cc", "shield"],
+    strongAgainst: ["auto-attack"],
     roles: ["top", "jungle", "mid", "support"],
   },
   Shyvana: {
@@ -642,7 +668,7 @@ export const championTags: Record<string, ChampionTags> = {
   },
   Sivir: {
     damageTypes: ["physical-damage"],
-    tags: ["projectile"],
+    tags: ["projectile", "auto-attack"],
     roles: ["adc"],
   },
   Skarner: {
@@ -652,7 +678,7 @@ export const championTags: Record<string, ChampionTags> = {
   },
   Smolder: {
     damageTypes: ["magic-damage", "physical-damage"],
-    tags: ["projectile"],
+    tags: ["projectile", "auto-attack"],
     roles: ["top", "mid", "adc"],
   },
   Sona: {
@@ -705,8 +731,9 @@ export const championTags: Record<string, ChampionTags> = {
   },
   Teemo: {
     damageTypes: ["magic-damage"],
-    tags: ["strong-ultimate", "poison"],
+    tags: ["strong-ultimate", "poison", "auto-attack"],
     roles: ["top", "jungle", "mid", "support"],
+    strongAgainst: ["auto-attack"],
   },
   Thresh: {
     tags: ["cc", "projectile", "shield", "pick-potential"],
@@ -714,33 +741,33 @@ export const championTags: Record<string, ChampionTags> = {
   },
   Tristana: {
     damageTypes: ["physical-damage"],
-    tags: ["dash"],
+    tags: ["dash", "auto-attack"],
     roles: ["adc", "mid"],
   },
   Trundle: {
     damageTypes: ["physical-damage"],
-    tags: ["healing", "wall"],
+    tags: ["healing", "wall", "auto-attack"],
     roles: ["top", "jungle", "support"],
   },
   Tryndamere: {
     damageTypes: ["physical-damage"],
-    tags: ["dash", "healing"],
+    tags: ["dash", "healing", "auto-attack"],
     roles: ["top", "jungle", "mid"],
   },
   TwistedFate: {
     damageTypes: ["magic-damage"],
     counters: ["Shaco"],
-    tags: ["projectile", "pick-potential"],
+    tags: ["projectile", "pick-potential", "auto-attack"],
     roles: ["top", "mid"],
   },
   Twitch: {
     damageTypes: ["physical-damage"],
-    tags: ["poison"],
+    tags: ["poison", "auto-attack"],
     roles: ["adc", "mid", "jungle"],
   },
   Udyr: {
     damageTypes: ["physical-damage"],
-    tags: ["shield"],
+    tags: ["shield", "auto-attack"],
     roles: ["jungle", "top"],
   },
   Urgot: {
@@ -750,13 +777,13 @@ export const championTags: Record<string, ChampionTags> = {
   },
   Varus: {
     damageTypes: ["physical-damage", "magic-damage"],
-    tags: ["strong-ultimate", "cc", "projectile"],
+    tags: ["strong-ultimate", "cc", "projectile", "auto-attack"],
     strongAgainst: ["healing"],
     roles: ["adc", "mid", "top"],
   },
   Vayne: {
     damageTypes: ["physical-damage", "true-damage"],
-    tags: ["dash"],
+    tags: ["dash", "auto-attack"],
     strongWith: ["wall"],
     roles: ["adc", "top", "mid"],
   },
@@ -771,10 +798,14 @@ export const championTags: Record<string, ChampionTags> = {
     roles: ["support", "mid", "adc"],
   },
   Vex: { damageTypes: ["magic-damage"], tags: ["projectile"], roles: ["mid"] },
-  Vi: { damageTypes: ["physical-damage"], tags: ["dash"], roles: ["jungle"] },
+  Vi: {
+    damageTypes: ["physical-damage"],
+    tags: ["dash", "auto-attack"],
+    roles: ["jungle"],
+  },
   Viego: {
     damageTypes: ["physical-damage"],
-    tags: ["dash", "projectile", "assassin"],
+    tags: ["dash", "projectile", "assassin", "auto-attack"],
     roles: ["jungle"],
   },
   Viktor: {
@@ -789,16 +820,17 @@ export const championTags: Record<string, ChampionTags> = {
   },
   Volibear: {
     damageTypes: ["magic-damage", "physical-damage"],
-    tags: ["healing", "shield"],
+    tags: ["healing", "shield", "auto-attack"],
     roles: ["jungle", "top"],
   },
   Warwick: {
     damageTypes: ["physical-damage"],
-    tags: ["dash", "healing"],
+    tags: ["dash", "healing", "auto-attack"],
     roles: ["jungle", "top"],
   },
   Xayah: {
     damageTypes: ["physical-damage"],
+    tags: ["auto-attack"],
     synergiesWith: ["Rakan"],
     roles: ["adc"],
   },
@@ -809,22 +841,26 @@ export const championTags: Record<string, ChampionTags> = {
   },
   XinZhao: {
     damageTypes: ["physical-damage"],
-    tags: ["dash", "cc"],
+    tags: ["dash", "cc", "auto-attack"],
     roles: ["jungle", "top"],
   },
   Yasuo: {
     damageTypes: ["physical-damage"],
-    tags: ["dash", "projectile", "wombo-combo"],
+    tags: ["dash", "projectile", "wombo-combo", "auto-attack"],
     synergiesWith: ["Malphite", "Orianna", "Gragas"],
     strongAgainst: ["projectile"],
     roles: ["mid", "adc", "top"],
   },
   Yone: {
     damageTypes: ["physical-damage", "magic-damage"],
-    tags: ["dash", "strong-ultimate", "projectile", "shield"],
+    tags: ["dash", "strong-ultimate", "projectile", "shield", "auto-attack"],
     roles: ["mid", "top"],
   },
-  Yorick: { damageTypes: ["physical-damage"], roles: ["top", "jungle"] },
+  Yorick: {
+    tags: ["auto-attack"],
+    damageTypes: ["physical-damage"],
+    roles: ["top", "jungle"],
+  },
   Yuumi: {
     damageTypes: ["magic-damage"],
     tags: ["healing", "shield"],
@@ -840,7 +876,11 @@ export const championTags: Record<string, ChampionTags> = {
     tags: ["dash", "assassin", "pick-potential"],
     roles: ["mid", "jungle"],
   },
-  Zeri: { damageTypes: ["physical-damage"], roles: ["adc"] },
+  Zeri: {
+    damageTypes: ["physical-damage"],
+    tags: ["auto-attack"],
+    roles: ["adc"],
+  },
   Ziggs: {
     damageTypes: ["magic-damage"],
     tags: ["projectile"],
