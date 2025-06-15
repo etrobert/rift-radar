@@ -139,6 +139,7 @@ export const championTags: Record<string, ChampionTags> = {
     tags: ["dash"],
     synergiesWith: ["Galio"],
     roles: ["top", "support"],
+    strongWith: ["wall"],
   },
   Cassiopeia: {
     damageTypes: ["magic-damage"],
@@ -273,6 +274,7 @@ export const championTags: Record<string, ChampionTags> = {
     damageTypes: ["magic-damage"],
     tags: ["projectile", "shield"],
     roles: ["jungle", "support"],
+    synergiesWith: ["Rengar"],
   },
   Janna: {
     damageTypes: ["magic-damage"],
@@ -570,7 +572,7 @@ export const championTags: Record<string, ChampionTags> = {
   Rengar: {
     damageTypes: ["physical-damage"],
     tags: ["dash", "assassin", "pick-potential"],
-    synergiesWith: ["Orianna"],
+    synergiesWith: ["Orianna", "Ivern", "Lulu"],
     roles: ["jungle", "top"],
   },
   Riven: {
