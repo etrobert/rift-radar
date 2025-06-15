@@ -498,7 +498,12 @@ export const championTags: Record<string, ChampionTags> = {
     tags: ["dash", "healing", "projectile", "pick-potential"],
     roles: ["top", "jungle", "support"],
   },
-  Nilah: { damageTypes: ["physical-damage"], tags: ["dash"], roles: ["adc"] },
+  Nilah: {
+    damageTypes: ["physical-damage"],
+    tags: ["dash", "healing"],
+    roles: ["adc"],
+    strongWith: ["healing", "shield"],
+  },
   Nocturne: {
     damageTypes: ["physical-damage"],
     synergiesWith: ["Orianna"],
