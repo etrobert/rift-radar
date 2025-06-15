@@ -30,6 +30,9 @@ export function ChampionPicker({
     setOpen(false);
   };
 
+  const filter = (value: string, search: string) =>
+    value.toLowerCase().startsWith(search.toLowerCase()) ? 1 : 0;
+
   return (
     <>
       <Button
@@ -40,7 +43,7 @@ export function ChampionPicker({
         +
       </Button>
 
-      <CommandDialog open={open} onOpenChange={setOpen}>
+      <CommandDialog open={open} onOpenChange={setOpen} filter={filter}>
         <CommandInput placeholder="Search champions..." />
         <CommandList>
           {isLoading ? (
