@@ -619,6 +619,7 @@ export const championTags: Record<string, ChampionTags> = {
   Samira: {
     damageTypes: ["physical-damage"],
     tags: ["dash", "healing", "auto-attack"],
+    strongAgainst: ["projectile"],
     roles: ["adc"],
   },
   Sejuani: {
