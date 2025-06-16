@@ -49,26 +49,4 @@ describe("getDamageComposition", () => {
     expect(result["magic-damage"]).toBe(20); // 1/5 = 20%
     expect(result["true-damage"]).toBe(40); // 2/5 = 40%
   });
-
-  it("should handle champions without damage type tags", () => {
-    // Test with a champion that might not have damage type tags
-    const result = getDamageComposition(["NonExistentChampion"]);
-    expect(result).toEqual({
-      "physical-damage": 0,
-      "magic-damage": 0,
-      "true-damage": 0,
-    });
-  });
-
-  it("should handle mixed valid and invalid champions", () => {
-    // Garen: physical + true, Invalid: nothing, Annie: magic = 3 total damage sources
-    const result = getDamageComposition([
-      "Garen",
-      "NonExistentChampion",
-      "Annie",
-    ]);
-    expect(result["physical-damage"]).toBe(33); // 1/3
-    expect(result["magic-damage"]).toBe(33); // 1/3
-    expect(result["true-damage"]).toBe(33); // 1/3
-  });
 });

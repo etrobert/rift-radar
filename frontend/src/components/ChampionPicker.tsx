@@ -25,7 +25,7 @@ export function ChampionPicker({
 
   const { data: champions = [], isLoading } = useChampions();
 
-  const handleSelect = (championId: string) => {
+  const handleSelect = (championId: ChampionId) => {
     onSelect(championId);
     setOpen(false);
   };
@@ -57,18 +57,24 @@ export function ChampionPicker({
                 <div className="grid grid-cols-6 gap-2 p-4">
                   {champions
                     .filter(
-                      (champion) => !unavailableChampions.includes(champion.id),
+                      // TODO: Fix type assertion
+                      (champion) =>
+                        !unavailableChampions.includes(
+                          champion.id as ChampionId,
+                        ),
                     )
                     .map((champion) => (
                       <CommandItem
                         key={champion.id}
-                        onSelect={() => handleSelect(champion.id)}
+                        // TODO: Fix type assertion
+                        onSelect={() => handleSelect(champion.id as ChampionId)}
                         className="hover:bg-accent flex h-20 cursor-pointer flex-col items-center justify-center rounded-md p-2"
                         asChild
                       >
                         <div>
                           <ChampionIcon
-                            championId={champion.id}
+                            // TODO: Fix type assertion
+                            championId={champion.id as ChampionId}
                             className="mb-1"
                           />
                           <span className="text-center text-xs">

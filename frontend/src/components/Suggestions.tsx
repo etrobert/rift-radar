@@ -19,13 +19,16 @@ interface SuggestionsProps {
 
 interface Suggestion {
   reason: string;
-  champions: ChampionId[];
+  champions: readonly ChampionId[];
   triggeringEnemies?: ChampionId[];
   triggeringAllies?: ChampionId[];
 }
 
+const objectKeys = Object.keys as <T>(o: T) => (keyof T)[];
+const objectEntries = Object.entries as <T>(o: T) => [keyof T, T[keyof T]][];
+
 // Helper function to filter champions by role
-const filterChampionsByRole = (champions: string[], role: Role): string[] =>
+const filterChampionsByRole = (champions: readonly ChampionId[], role: Role) =>
   champions.filter((champion) => championTags[champion].roles.includes(role));
 
 const generateCounterSuggestion = (
@@ -41,8 +44,8 @@ const generateCounterSuggestion = (
   if (enemiesWithTag.length < minCount) return null;
 
   // Find champions that counter this tag
-  const counters = Object.keys(championTags).filter((champName) =>
-    championTags[champName]?.strongAgainst?.includes(targetTag),
+  const counters = objectKeys(championTags).filter((champName) =>
+    championTags[champName].strongAgainst?.includes(targetTag),
   );
 
   if (counters.length === 0) return null;
@@ -78,9 +81,7 @@ const generateTagCounterSuggestions = (
   return suggestions;
 };
 
-const generateSynergySuggestions = (
-  allyChampions: ChampionId[],
-): Suggestion[] =>
+const generateSynergySuggestions = (allyChampions: ChampionId[]) =>
   allyChampions
     .map((ally) => {
       const champion = championTags[ally];
@@ -93,10 +94,8 @@ const generateSynergySuggestions = (
     })
     .filter((s) => s !== null);
 
-const generateSpecificCounterSuggestions = (
-  enemyChampions: ChampionId[],
-): Suggestion[] =>
-  Object.entries(championTags)
+const generateSpecificCounterSuggestions = (enemyChampions: ChampionId[]) =>
+  objectEntries(championTags)
     .map(([championName, tags]) => {
       if (!tags.counters) return null;
       const counteredEnemies = enemyChampions.filter((enemy) =>
@@ -123,8 +122,8 @@ const generateStrongWithSuggestion = (
   if (alliesWithTag.length === 0) return null;
 
   // Find champions that are explicitly strong with this tag
-  const strongWithChampions = Object.keys(championTags).filter((champName) =>
-    championTags[champName]?.strongWith?.includes(targetTag),
+  const strongWithChampions = objectKeys(championTags).filter((champName) =>
+    championTags[champName].strongWith?.includes(targetTag),
   );
 
   if (strongWithChampions.length === 0) return null;
@@ -152,7 +151,7 @@ const generateAutoSynergySuggestions = (allyChampions: ChampionId[]) =>
       if (alliesWithTag.length === 0) return null;
 
       // Find all champions with the same tag
-      const sameTagChampions = Object.keys(championTags).filter((champName) =>
+      const sameTagChampions = objectKeys(championTags).filter((champName) =>
         championTags[champName]?.tags?.includes(tag),
       );
 
@@ -203,7 +202,7 @@ const generateDamageCounterSuggestions = (
         championTags[enemy]?.damageTypes?.includes(type),
       );
 
-      const counters = Object.keys(championTags).filter((championName) =>
+      const counters = objectKeys(championTags).filter((championName) =>
         championTags[championName]?.strongAgainstDamageTypes?.includes(type),
       );
       if (counters.length === 0) return null;

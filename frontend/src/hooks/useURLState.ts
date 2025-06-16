@@ -8,7 +8,9 @@ import type { ChampionId } from "../types/championTags";
  */
 export function useURLState(key: string) {
   const getURLState = useCallback(
-    () => new URLSearchParams(window.location.search).getAll(key),
+    // TODO: Add validation
+    () =>
+      new URLSearchParams(window.location.search).getAll(key) as ChampionId[],
     [key],
   );
 

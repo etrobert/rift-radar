@@ -56,7 +56,8 @@ export function useLCU(
   // Build mapping from numeric key to champion id
   const championKeyToId = champions.reduce<Record<number, ChampionId>>(
     (acc, champion) => {
-      acc[parseInt(champion.key)] = champion.id;
+      // TODO: Fix as
+      acc[parseInt(champion.key)] = champion.id as ChampionId;
       return acc;
     },
     {},

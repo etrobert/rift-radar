@@ -17,20 +17,18 @@ export type Tag =
   | "auto-attack";
 
 type ChampionTags = {
-  damageTypes?: DamageType[];
-  tags?: Tag[];
-  counters?: string[];
-  strongAgainst?: Tag[];
-  strongAgainstDamageTypes?: DamageType[];
-  strongWith?: Tag[];
-  weakAgainst?: string[];
-  synergiesWith?: string[];
-  roles: Role[];
+  damageTypes?: readonly DamageType[];
+  tags?: readonly Tag[];
+  counters?: readonly ChampionId[];
+  strongAgainst?: readonly Tag[];
+  strongAgainstDamageTypes?: readonly DamageType[];
+  strongWith?: readonly Tag[];
+  weakAgainst?: readonly Tag[];
+  synergiesWith?: readonly ChampionId[];
+  roles: readonly Role[];
 };
 
-export type ChampionId = keyof typeof championTags;
-
-export const championTags: Record<string, ChampionTags> = {
+const internalChampionTags = {
   Aatrox: {
     damageTypes: ["physical-damage"],
     tags: ["dash", "healing"],
@@ -912,4 +910,9 @@ export const championTags: Record<string, ChampionTags> = {
     strongAgainst: ["projectile"],
     roles: ["support", "mid", "adc"],
   },
-};
+} as const;
+
+export type ChampionId = keyof typeof internalChampionTags;
+
+export const championTags: Record<ChampionId, ChampionTags> =
+  internalChampionTags;
