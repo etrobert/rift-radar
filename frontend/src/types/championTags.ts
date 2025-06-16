@@ -14,7 +14,8 @@ export type Tag =
   | "shield"
   | "pick-potential"
   | "wombo-combo"
-  | "auto-attack";
+  | "auto-attack"
+  | "ally-ms-buff";
 
 type ChampionTags = {
   damageTypes?: readonly DamageType[];
@@ -33,6 +34,7 @@ const internalChampionTags = {
     damageTypes: ["physical-damage"],
     tags: ["dash", "healing"],
     roles: ["top"],
+    strongWith: ["ally-ms-buff"],
   },
   Ahri: {
     damageTypes: ["magic-damage"],
@@ -155,6 +157,7 @@ const internalChampionTags = {
     damageTypes: ["magic-damage"],
     tags: ["strong-ultimate"],
     roles: ["top", "mid", "jungle", "support"],
+    strongWith: ["ally-ms-buff"],
   },
   Corki: {
     damageTypes: ["magic-damage", "physical-damage"],
@@ -165,6 +168,7 @@ const internalChampionTags = {
     damageTypes: ["physical-damage", "true-damage"],
     tags: ["healing", "auto-attack"],
     roles: ["top"],
+    strongWith: ["ally-ms-buff"],
   },
   Diana: {
     damageTypes: ["magic-damage"],
@@ -175,11 +179,13 @@ const internalChampionTags = {
     damageTypes: ["physical-damage"],
     tags: ["projectile", "auto-attack"],
     roles: ["adc"],
+    strongWith: ["ally-ms-buff"],
   },
   DrMundo: {
     damageTypes: ["magic-damage"],
     tags: ["healing", "strong-ultimate", "auto-attack"],
     roles: ["top", "jungle"],
+    strongWith: ["ally-ms-buff"],
   },
   Ekko: {
     damageTypes: ["magic-damage"],
@@ -233,6 +239,7 @@ const internalChampionTags = {
     damageTypes: ["physical-damage", "true-damage"],
     tags: ["auto-attack"],
     roles: ["top", "mid"],
+    strongWith: ["ally-ms-buff"],
   },
   Gnar: {
     damageTypes: ["physical-damage"],
@@ -253,11 +260,13 @@ const internalChampionTags = {
     damageTypes: ["magic-damage", "true-damage"],
     tags: ["dash", "auto-attack"],
     roles: ["top", "jungle"],
+    strongWith: ["ally-ms-buff"],
   },
   Hecarim: {
     damageTypes: ["physical-damage"],
     tags: ["healing", "auto-attack"],
     roles: ["jungle"],
+    strongWith: ["ally-ms-buff"],
   },
   Heimerdinger: {
     damageTypes: ["magic-damage"],
@@ -265,7 +274,7 @@ const internalChampionTags = {
   },
   Hwei: {
     damageTypes: ["magic-damage"],
-    tags: ["projectile"],
+    tags: ["projectile", "ally-ms-buff"],
     roles: ["mid", "adc", "support"],
   },
   Illaoi: {
@@ -301,6 +310,7 @@ const internalChampionTags = {
     tags: ["dash", "auto-attack"],
     strongAgainst: ["auto-attack"],
     roles: ["top", "jungle"],
+    strongWith: ["ally-ms-buff"],
   },
   Jayce: {
     damageTypes: ["physical-damage"],
@@ -316,11 +326,13 @@ const internalChampionTags = {
     damageTypes: ["physical-damage"],
     tags: ["projectile", "auto-attack"],
     roles: ["adc"],
+    strongWith: ["ally-ms-buff"],
   },
   Kaisa: {
     damageTypes: ["magic-damage", "physical-damage"],
     tags: ["projectile", "auto-attack"],
     roles: ["adc"],
+    strongWith: ["ally-ms-buff"],
   },
   Kalista: {
     damageTypes: ["physical-damage"],
@@ -330,7 +342,7 @@ const internalChampionTags = {
   },
   Karma: {
     damageTypes: ["magic-damage"],
-    tags: ["projectile", "shield"],
+    tags: ["projectile", "shield", "ally-ms-buff"],
     roles: ["support", "mid"],
   },
   Karthus: { damageTypes: ["magic-damage"], roles: ["jungle", "mid", "adc"] },
@@ -349,7 +361,7 @@ const internalChampionTags = {
   },
   Kayle: {
     damageTypes: ["magic-damage", "physical-damage"],
-    tags: ["strong-ultimate", "auto-attack"],
+    tags: ["strong-ultimate", "auto-attack", "ally-ms-buff"],
     strongAgainst: ["assassin"],
     roles: ["top", "mid"],
   },
@@ -373,6 +385,7 @@ const internalChampionTags = {
     tags: ["dash", "auto-attack"],
     roles: ["jungle"],
     synergiesWith: ["Zilean"],
+    strongWith: ["ally-ms-buff"],
   },
   Kled: {
     damageTypes: ["physical-damage"],
@@ -404,6 +417,7 @@ const internalChampionTags = {
     damageTypes: ["magic-damage", "true-damage"],
     tags: ["projectile"],
     roles: ["jungle", "top"],
+    strongWith: ["ally-ms-buff"],
   },
   Lissandra: {
     damageTypes: ["magic-damage"],
@@ -421,6 +435,7 @@ const internalChampionTags = {
     damageTypes: ["magic-damage"],
     strongAgainst: ["assassin"],
     roles: ["support"],
+    tags: ["ally-ms-buff", "shield"],
   },
   Lux: {
     damageTypes: ["magic-damage"],
@@ -452,6 +467,7 @@ const internalChampionTags = {
     synergiesWith: ["Zilean"],
     weakAgainst: ["cc"],
     roles: ["top", "jungle"],
+    strongWith: ["ally-ms-buff"],
   },
   Milio: {
     damageTypes: ["magic-damage"],
@@ -489,13 +505,14 @@ const internalChampionTags = {
   },
   Nami: {
     damageTypes: ["magic-damage"],
-    tags: ["healing", "projectile"],
+    tags: ["healing", "projectile", "ally-ms-buff"],
     roles: ["support"],
   },
   Nasus: {
     damageTypes: ["physical-damage"],
     tags: ["healing", "auto-attack"],
     roles: ["jungle", "mid", "top"],
+    strongWith: ["ally-ms-buff"],
   },
   Nautilus: {
     tags: ["cc", "projectile", "pick-potential", "auto-attack"],
@@ -531,10 +548,11 @@ const internalChampionTags = {
     strongAgainst: ["cc"],
     tags: ["healing", "auto-attack"],
     roles: ["jungle", "top"],
+    strongWith: ["ally-ms-buff"],
   },
   Orianna: {
     damageTypes: ["magic-damage"],
-    tags: ["strong-ultimate", "shield", "wombo-combo"],
+    tags: ["strong-ultimate", "shield", "wombo-combo", "ally-ms-buff"],
     synergiesWith: ["Nocturne", "Malphite", "Yasuo", "Rakan", "Rengar"],
     roles: ["mid"],
   },
@@ -587,10 +605,10 @@ const internalChampionTags = {
     roles: ["jungle", "top"],
     tags: ["auto-attack"],
   },
-  Rell: { tags: ["shield"], roles: ["support"] },
+  Rell: { tags: ["shield", "ally-ms-buff"], roles: ["support"] },
   Renata: {
     damageTypes: ["magic-damage"],
-    tags: ["strong-ultimate", "projectile"],
+    tags: ["strong-ultimate", "projectile", "ally-ms-buff"],
     roles: ["support"],
   },
   Renekton: {
@@ -634,7 +652,13 @@ const internalChampionTags = {
   },
   Seraphine: {
     damageTypes: ["magic-damage"],
-    tags: ["healing", "strong-ultimate", "projectile", "shield"],
+    tags: [
+      "healing",
+      "strong-ultimate",
+      "projectile",
+      "shield",
+      "ally-ms-buff",
+    ],
     roles: ["support", "mid"],
   },
   Sett: {
@@ -655,12 +679,14 @@ const internalChampionTags = {
   Shyvana: {
     damageTypes: ["magic-damage", "physical-damage"],
     roles: ["top", "jungle"],
+    strongWith: ["ally-ms-buff"],
   },
   Singed: {
     damageTypes: ["magic-damage"],
     strongAgainst: ["healing"],
     tags: ["poison"],
     roles: ["top", "mid"],
+    strongWith: ["ally-ms-buff"],
   },
   Sion: {
     damageTypes: ["physical-damage"],
@@ -669,7 +695,7 @@ const internalChampionTags = {
   },
   Sivir: {
     damageTypes: ["physical-damage"],
-    tags: ["projectile", "auto-attack"],
+    tags: ["projectile", "auto-attack", "ally-ms-buff"],
     roles: ["adc"],
   },
   Skarner: {
@@ -684,7 +710,13 @@ const internalChampionTags = {
   },
   Sona: {
     damageTypes: ["magic-damage"],
-    tags: ["healing", "strong-ultimate", "projectile", "shield"],
+    tags: [
+      "healing",
+      "strong-ultimate",
+      "projectile",
+      "shield",
+      "ally-ms-buff",
+    ],
     roles: ["support"],
   },
   Soraka: {
@@ -696,6 +728,7 @@ const internalChampionTags = {
     damageTypes: ["magic-damage"],
     tags: ["healing", "strong-ultimate"],
     roles: ["support", "mid", "adc", "top"],
+    strongWith: ["ally-ms-buff"],
   },
   Sylas: {
     damageTypes: ["magic-damage"],
@@ -749,11 +782,13 @@ const internalChampionTags = {
     damageTypes: ["physical-damage"],
     tags: ["healing", "wall", "auto-attack"],
     roles: ["top", "jungle", "support"],
+    strongWith: ["ally-ms-buff"],
   },
   Tryndamere: {
     damageTypes: ["physical-damage"],
     tags: ["dash", "healing", "auto-attack"],
     roles: ["top", "jungle", "mid"],
+    strongWith: ["ally-ms-buff"],
   },
   TwistedFate: {
     damageTypes: ["magic-damage"],
@@ -765,11 +800,13 @@ const internalChampionTags = {
     damageTypes: ["physical-damage"],
     tags: ["poison", "auto-attack"],
     roles: ["adc", "mid", "jungle"],
+    strongWith: ["ally-ms-buff"],
   },
   Udyr: {
     damageTypes: ["physical-damage"],
     tags: ["shield", "auto-attack"],
     roles: ["jungle", "top"],
+    strongWith: ["ally-ms-buff"],
   },
   Urgot: {
     damageTypes: ["physical-damage"],
@@ -785,7 +822,7 @@ const internalChampionTags = {
   Vayne: {
     damageTypes: ["physical-damage", "true-damage"],
     tags: ["dash", "auto-attack"],
-    strongWith: ["wall"],
+    strongWith: ["wall", "ally-ms-buff"],
     roles: ["adc", "top", "mid"],
   },
   Veigar: {
@@ -808,6 +845,7 @@ const internalChampionTags = {
     damageTypes: ["physical-damage"],
     tags: ["dash", "projectile", "assassin", "auto-attack"],
     roles: ["jungle"],
+    strongWith: ["ally-ms-buff"],
   },
   Viktor: {
     damageTypes: ["magic-damage"],
@@ -818,22 +856,26 @@ const internalChampionTags = {
     damageTypes: ["magic-damage"],
     tags: ["healing"],
     roles: ["mid", "top"],
+    strongWith: ["ally-ms-buff"],
   },
   Volibear: {
     damageTypes: ["magic-damage", "physical-damage"],
     tags: ["healing", "shield", "auto-attack"],
     roles: ["jungle", "top"],
+    strongWith: ["ally-ms-buff"],
   },
   Warwick: {
     damageTypes: ["physical-damage"],
     tags: ["dash", "healing", "auto-attack"],
     roles: ["jungle", "top"],
+    strongWith: ["ally-ms-buff"],
   },
   Xayah: {
     damageTypes: ["physical-damage"],
     tags: ["auto-attack"],
     synergiesWith: ["Rakan"],
     roles: ["adc"],
+    strongAgainst: ["ally-ms-buff"],
   },
   Xerath: {
     damageTypes: ["magic-damage"],
@@ -861,10 +903,11 @@ const internalChampionTags = {
     tags: ["auto-attack"],
     damageTypes: ["physical-damage"],
     roles: ["top", "jungle"],
+    strongWith: ["ally-ms-buff"],
   },
   Yuumi: {
     damageTypes: ["magic-damage"],
-    tags: ["healing", "shield"],
+    tags: ["healing", "shield", "ally-ms-buff"],
     roles: ["support"],
   },
   Zac: {
@@ -881,6 +924,7 @@ const internalChampionTags = {
     damageTypes: ["physical-damage"],
     tags: ["auto-attack"],
     roles: ["adc"],
+    strongWith: ["ally-ms-buff"],
   },
   Ziggs: {
     damageTypes: ["magic-damage"],
@@ -889,7 +933,7 @@ const internalChampionTags = {
   },
   Zilean: {
     damageTypes: ["magic-damage"],
-    tags: ["strong-ultimate"],
+    tags: ["strong-ultimate", "ally-ms-buff"],
     strongAgainst: ["assassin"],
     counters: ["Galio"],
     synergiesWith: ["MasterYi", "Kindred"],
