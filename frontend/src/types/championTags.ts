@@ -574,6 +574,7 @@ export const championTags: Record<string, ChampionTags> = {
     damageTypes: ["magic-damage"],
     tags: ["dash", "healing", "strong-ultimate"],
     synergiesWith: ["Xayah", "Orianna"],
+    counters: ["Braum"],
     roles: ["support"],
   },
   Rammus: {
