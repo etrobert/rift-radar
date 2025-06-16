@@ -170,6 +170,7 @@ const strongWithRules = [
   { tag: "poison", reason: "Strong with poison champions" },
   { tag: "healing", reason: "Strong with healing champions" },
   { tag: "shield", reason: "Strong with shield champions" },
+  { tag: "ally-ms-buff", reason: "Strong with MS buff champions" },
 ] as const;
 
 const generateStrongWithSuggestions = (
