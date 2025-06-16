@@ -70,7 +70,6 @@ const internalChampionTags = {
   Amumu: {
     damageTypes: ["magic-damage"],
     tags: ["dash", "strong-ultimate", "projectile", "wombo-combo"],
-    synergiesWith: ["MissFortune"],
     roles: ["jungle", "support"],
   },
   Anivia: {
@@ -447,7 +446,7 @@ const internalChampionTags = {
     tags: ["strong-ultimate", "wombo-combo"],
     strongAgainst: ["auto-attack"],
     strongAgainstDamageTypes: ["physical-damage"],
-    synergiesWith: ["Yasuo", "Yone", "MissFortune", "Orianna"],
+    synergiesWith: ["Yasuo", "Yone", "Orianna"],
     roles: ["top", "mid", "jungle", "support"],
   },
   Malzahar: {
