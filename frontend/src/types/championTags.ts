@@ -372,6 +372,7 @@ const internalChampionTags = {
     damageTypes: ["physical-damage"],
     tags: ["dash", "auto-attack"],
     roles: ["jungle"],
+    synergiesWith: ["Zilean"],
   },
   Kled: {
     damageTypes: ["physical-damage"],
@@ -891,7 +892,7 @@ const internalChampionTags = {
     tags: ["strong-ultimate"],
     strongAgainst: ["assassin"],
     counters: ["Galio"],
-    synergiesWith: ["MasterYi"],
+    synergiesWith: ["MasterYi", "Kindred"],
     roles: ["support", "mid", "top"],
   },
   Zoe: {
