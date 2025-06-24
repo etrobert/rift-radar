@@ -115,12 +115,13 @@ const generateStrongWithSuggestion = (
   allyChampions: ChampionId[],
   targetTag: Tag,
   reason: string,
+  minCount: number,
 ): Suggestion | null => {
   const alliesWithTag = allyChampions.filter((id) =>
     championTags[id]?.tags?.includes(targetTag),
   );
 
-  if (alliesWithTag.length === 0) return null;
+  if (alliesWithTag.length < minCount) return null;
 
   // Find champions that are explicitly strong with this tag
   const strongWithChampions = objectKeys(championTags).filter((champName) =>
@@ -167,19 +168,19 @@ const generateAutoSynergySuggestions = (allyChampions: ChampionId[]) =>
     .filter((s) => s !== null);
 
 const strongWithRules = [
-  { tag: "wall", reason: "Strong with wall champions" },
-  { tag: "poison", reason: "Strong with poison champions" },
-  { tag: "healing", reason: "Strong with healing champions" },
-  { tag: "shield", reason: "Strong with shield champions" },
-  { tag: "ally-ms-buff", reason: "Strong with MS buff champions" },
+  { tag: "wall", reason: "Strong with wall champions", minCount: 1 },
+  { tag: "poison", reason: "Strong with poison champions", minCount: 1 },
+  { tag: "healing", reason: "Strong with healing champions", minCount: 2 },
+  { tag: "shield", reason: "Strong with shield champions", minCount: 1 },
+  { tag: "ally-ms-buff", reason: "Strong with MS buff champions", minCount: 1 },
 ] as const;
 
 const generateStrongWithSuggestions = (
   allyChampions: ChampionId[],
 ): Suggestion[] => {
   return strongWithRules
-    .map(({ tag, reason }) =>
-      generateStrongWithSuggestion(allyChampions, tag, reason),
+    .map(({ tag, reason, minCount }) =>
+      generateStrongWithSuggestion(allyChampions, tag, reason, minCount),
     )
     .filter((s) => s !== null);
 };
