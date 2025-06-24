@@ -173,6 +173,7 @@ const strongWithRules = [
   { tag: "healing", reason: "Strong with healing champions", minCount: 2 },
   { tag: "shield", reason: "Strong with shield champions", minCount: 1 },
   { tag: "ally-ms-buff", reason: "Strong with MS buff champions", minCount: 1 },
+  { tag: "melee", reason: "Strong with melee champions", minCount: 2 },
 ] as const;
 
 const generateStrongWithSuggestions = (

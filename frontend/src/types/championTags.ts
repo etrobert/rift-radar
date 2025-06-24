@@ -690,6 +690,7 @@ const internalChampionTags = {
     tags: ["dash", "strong-ultimate", "projectile", "pick-potential", "melee"],
     roles: ["jungle", "top"],
     strongAgainst: ["immobile"],
+    strongWith: ["melee"],
   },
   Senna: {
     damageTypes: ["physical-damage"],
