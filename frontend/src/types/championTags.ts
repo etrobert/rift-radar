@@ -253,7 +253,7 @@ const internalChampionTags = {
   },
   Gnar: {
     damageTypes: ["physical-damage"],
-    tags: ["dash", "auto-attack"],
+    tags: ["dash", "auto-attack", "wombo-combo"],
     roles: ["top"],
   },
   Gragas: {
