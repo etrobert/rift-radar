@@ -66,6 +66,7 @@ const counterRules = [
   { tag: "projectile", minCount: 2, reason: "Strong against projectiles" },
   { tag: "shield", minCount: 2, reason: "Strong against shields" },
   { tag: "auto-attack", minCount: 2, reason: "Strong against auto-attackers" },
+  { tag: "melee", minCount: 2, reason: "Strong against melee champions" },
 ] as const;
 
 const generateTagCounterSuggestions = (

@@ -16,7 +16,8 @@ export type Tag =
   | "wombo-combo"
   | "auto-attack"
   | "ally-ms-buff"
-  | "immobile";
+  | "immobile"
+  | "melee";
 
 type ChampionTags = {
   damageTypes?: readonly DamageType[];
@@ -33,7 +34,7 @@ type ChampionTags = {
 const internalChampionTags = {
   Aatrox: {
     damageTypes: ["physical-damage"],
-    tags: ["dash", "healing"],
+    tags: ["dash", "healing", "melee"],
     roles: ["top"],
     strongWith: ["ally-ms-buff"],
   },
@@ -50,7 +51,7 @@ const internalChampionTags = {
   },
   Akali: {
     damageTypes: ["magic-damage"],
-    tags: ["dash", "assassin"],
+    tags: ["dash", "assassin", "melee"],
     roles: ["mid", "top"],
   },
   Akshan: {
@@ -59,18 +60,18 @@ const internalChampionTags = {
     roles: ["mid", "top"],
   },
   Alistar: {
-    tags: ["dash", "cc", "strong-ultimate", "wombo-combo"],
+    tags: ["dash", "cc", "strong-ultimate", "wombo-combo", "melee"],
     synergiesWith: ["Kalista"],
     roles: ["support"],
   },
   Ambessa: {
     damageTypes: ["physical-damage"],
-    tags: ["dash"],
+    tags: ["dash", "melee"],
     roles: ["top", "jungle", "mid"],
   },
   Amumu: {
     damageTypes: ["magic-damage"],
-    tags: ["dash", "strong-ultimate", "projectile", "wombo-combo"],
+    tags: ["dash", "strong-ultimate", "projectile", "wombo-combo", "melee"],
     roles: ["jungle", "support"],
   },
   Anivia: {
@@ -117,12 +118,12 @@ const internalChampionTags = {
     roles: ["support"],
   },
   Belveth: {
-    tags: ["dash", "auto-attack"],
+    tags: ["dash", "auto-attack", "melee"],
     damageTypes: ["physical-damage"],
     roles: ["jungle"],
   },
   Blitzcrank: {
-    tags: ["cc", "projectile", "pick-potential", "auto-attack"],
+    tags: ["cc", "projectile", "pick-potential", "auto-attack", "melee"],
     strongAgainst: ["shield"],
     roles: ["support"],
   },
@@ -133,12 +134,13 @@ const internalChampionTags = {
   },
   Braum: {
     synergiesWith: ["Lucian"],
-    strongAgainst: ["projectile", "auto-attack"],
+    strongAgainst: ["projectile", "auto-attack", "melee"],
     roles: ["support"],
+    tags: ["melee"],
   },
   Briar: {
     damageTypes: ["physical-damage"],
-    tags: ["projectile", "auto-attack"],
+    tags: ["projectile", "auto-attack", "melee"],
     roles: ["jungle"],
   },
   Caitlyn: {
@@ -148,7 +150,7 @@ const internalChampionTags = {
   },
   Camille: {
     damageTypes: ["physical-damage", "true-damage"],
-    tags: ["dash", "auto-attack"],
+    tags: ["dash", "auto-attack", "melee"],
     synergiesWith: ["Galio"],
     roles: ["top", "support"],
     strongWith: ["wall"],
@@ -162,7 +164,7 @@ const internalChampionTags = {
   },
   Chogath: {
     damageTypes: ["magic-damage"],
-    tags: ["strong-ultimate"],
+    tags: ["strong-ultimate", "melee"],
     roles: ["top", "mid", "jungle", "support"],
     strongWith: ["ally-ms-buff"],
   },
@@ -173,13 +175,13 @@ const internalChampionTags = {
   },
   Darius: {
     damageTypes: ["physical-damage", "true-damage"],
-    tags: ["healing", "auto-attack"],
+    tags: ["healing", "auto-attack", "melee"],
     roles: ["top"],
     strongWith: ["ally-ms-buff"],
   },
   Diana: {
     damageTypes: ["magic-damage"],
-    tags: ["dash", "assassin", "projectile", "auto-attack"],
+    tags: ["dash", "assassin", "projectile", "auto-attack", "melee"],
     roles: ["mid", "jungle"],
   },
   Draven: {
@@ -190,13 +192,13 @@ const internalChampionTags = {
   },
   DrMundo: {
     damageTypes: ["magic-damage"],
-    tags: ["healing", "strong-ultimate", "auto-attack"],
+    tags: ["healing", "strong-ultimate", "auto-attack", "melee"],
     roles: ["top", "jungle"],
     strongWith: ["ally-ms-buff"],
   },
   Ekko: {
     damageTypes: ["magic-damage"],
-    tags: ["dash", "healing", "assassin", "auto-attack"],
+    tags: ["dash", "healing", "assassin", "auto-attack", "melee"],
     roles: ["mid", "jungle"],
   },
   Elise: {
@@ -207,7 +209,7 @@ const internalChampionTags = {
   },
   Evelynn: {
     damageTypes: ["magic-damage"],
-    tags: ["assassin"],
+    tags: ["assassin", "melee"],
     roles: ["jungle"],
   },
   Ezreal: {
@@ -222,17 +224,17 @@ const internalChampionTags = {
   },
   Fiora: {
     damageTypes: ["physical-damage", "true-damage"],
-    tags: ["dash", "healing", "auto-attack"],
+    tags: ["dash", "healing", "auto-attack", "melee"],
     roles: ["top"],
   },
   Fizz: {
     damageTypes: ["magic-damage"],
-    tags: ["dash", "assassin", "projectile", "auto-attack"],
+    tags: ["dash", "assassin", "projectile", "auto-attack", "melee"],
     roles: ["mid"],
   },
   Galio: {
     damageTypes: ["magic-damage"],
-    tags: ["dash", "cc", "strong-ultimate"],
+    tags: ["dash", "cc", "strong-ultimate", "melee"],
     strongAgainstDamageTypes: ["magic-damage"],
     synergiesWith: ["Camille", "JarvanIV"],
     roles: ["top", "mid", "support"],
@@ -245,7 +247,7 @@ const internalChampionTags = {
   },
   Garen: {
     damageTypes: ["physical-damage", "true-damage"],
-    tags: ["auto-attack"],
+    tags: ["auto-attack", "melee"],
     roles: ["top", "mid"],
     strongWith: ["ally-ms-buff"],
   },
@@ -256,7 +258,7 @@ const internalChampionTags = {
   },
   Gragas: {
     damageTypes: ["magic-damage"],
-    tags: ["dash", "healing", "projectile"],
+    tags: ["dash", "healing", "projectile", "melee"],
     roles: ["jungle", "top", "mid", "support"],
   },
   Graves: {
@@ -266,13 +268,13 @@ const internalChampionTags = {
   },
   Gwen: {
     damageTypes: ["magic-damage", "true-damage"],
-    tags: ["dash", "auto-attack"],
+    tags: ["dash", "auto-attack", "melee"],
     roles: ["top", "jungle"],
     strongWith: ["ally-ms-buff"],
   },
   Hecarim: {
     damageTypes: ["physical-damage"],
-    tags: ["healing", "auto-attack"],
+    tags: ["healing", "auto-attack", "melee"],
     roles: ["jungle"],
     strongWith: ["ally-ms-buff"],
   },
@@ -288,12 +290,12 @@ const internalChampionTags = {
   },
   Illaoi: {
     damageTypes: ["physical-damage"],
-    tags: ["healing", "auto-attack", "immobile"],
+    tags: ["healing", "auto-attack", "immobile", "melee"],
     roles: ["top", "mid"],
   },
   Irelia: {
     damageTypes: ["physical-damage"],
-    tags: ["dash", "healing", "auto-attack"],
+    tags: ["dash", "healing", "auto-attack", "melee"],
     roles: ["top", "mid"],
   },
   Ivern: {
@@ -310,14 +312,14 @@ const internalChampionTags = {
   },
   JarvanIV: {
     damageTypes: ["physical-damage"],
-    tags: ["dash", "wall", "auto-attack"],
+    tags: ["dash", "wall", "auto-attack", "melee"],
     synergiesWith: ["Galio"],
     roles: ["jungle", "top", "support"],
     strongAgainst: ["immobile"],
   },
   Jax: {
     damageTypes: ["physical-damage", "magic-damage"],
-    tags: ["dash", "auto-attack"],
+    tags: ["dash", "auto-attack", "melee"],
     strongAgainst: ["auto-attack"],
     roles: ["top", "jungle"],
     strongWith: ["ally-ms-buff"],
@@ -358,13 +360,13 @@ const internalChampionTags = {
   Karthus: { damageTypes: ["magic-damage"], roles: ["jungle", "mid", "adc"] },
   Kassadin: {
     damageTypes: ["magic-damage"],
-    tags: ["assassin"],
+    tags: ["assassin", "melee"],
     strongAgainstDamageTypes: ["magic-damage"],
     roles: ["mid"],
   },
   Katarina: {
     damageTypes: ["magic-damage"],
-    tags: ["assassin"],
+    tags: ["assassin", "melee"],
     strongAgainst: ["healing"],
     weakAgainst: ["cc"],
     roles: ["mid"],
@@ -377,7 +379,7 @@ const internalChampionTags = {
   },
   Kayn: {
     damageTypes: ["physical-damage"],
-    tags: ["dash", "healing", "assassin", "auto-attack"],
+    tags: ["dash", "healing", "assassin", "auto-attack", "melee"],
     roles: ["top", "jungle"],
   },
   Kennen: {
@@ -393,7 +395,7 @@ const internalChampionTags = {
   },
   Khazix: {
     damageTypes: ["physical-damage"],
-    tags: ["dash", "assassin", "pick-potential"],
+    tags: ["dash", "assassin", "pick-potential", "melee"],
     roles: ["jungle"],
   },
   Kindred: {
@@ -407,26 +409,26 @@ const internalChampionTags = {
     damageTypes: ["physical-damage"],
     strongAgainst: ["healing"],
     roles: ["top", "mid"],
-    tags: ["dash", "auto-attack"],
+    tags: ["dash", "auto-attack", "melee"],
   },
   KogMaw: {
     damageTypes: ["magic-damage", "physical-damage"],
     tags: ["auto-attack", "immobile"],
     roles: ["adc", "mid"],
   },
-  KSante: { damageTypes: ["physical-damage"], roles: ["top"] },
+  KSante: { damageTypes: ["physical-damage"], roles: ["top"], tags: ["melee"] },
   Leblanc: {
     damageTypes: ["magic-damage"],
-    tags: ["dash", "assassin"],
+    tags: ["dash", "assassin", "melee"],
     roles: ["mid", "support"],
   },
   LeeSin: {
     damageTypes: ["physical-damage"],
-    tags: ["dash", "projectile", "auto-attack"],
+    tags: ["dash", "projectile", "auto-attack", "melee"],
     roles: ["jungle"],
   },
   Leona: {
-    tags: ["dash", "cc", "pick-potential", "auto-attack"],
+    tags: ["dash", "cc", "pick-potential", "auto-attack", "melee"],
     roles: ["support"],
     strongAgainst: ["immobile"],
   },
@@ -462,7 +464,7 @@ const internalChampionTags = {
   },
   Malphite: {
     damageTypes: ["magic-damage"],
-    tags: ["strong-ultimate", "wombo-combo"],
+    tags: ["strong-ultimate", "wombo-combo", "melee"],
     strongAgainst: ["auto-attack"],
     strongAgainstDamageTypes: ["physical-damage"],
     synergiesWith: ["Yasuo", "Yone", "Orianna"],
@@ -476,13 +478,13 @@ const internalChampionTags = {
   },
   Maokai: {
     damageTypes: ["magic-damage"],
-    tags: ["healing", "strong-ultimate", "cc", "projectile"],
+    tags: ["healing", "strong-ultimate", "cc", "projectile", "melee"],
     roles: ["top", "jungle", "support"],
     strongAgainst: ["immobile"],
   },
   MasterYi: {
     damageTypes: ["physical-damage", "true-damage"],
-    tags: ["auto-attack"],
+    tags: ["auto-attack", "melee"],
     synergiesWith: ["Zilean"],
     weakAgainst: ["cc"],
     roles: ["top", "jungle"],
@@ -502,13 +504,13 @@ const internalChampionTags = {
   },
   MonkeyKing: {
     damageTypes: ["physical-damage"],
-    tags: ["dash", "wombo-combo", "auto-attack"],
+    tags: ["dash", "wombo-combo", "auto-attack", "melee"],
     strongAgainstDamageTypes: ["physical-damage"],
     roles: ["top", "jungle"],
   },
   Mordekaiser: {
     damageTypes: ["magic-damage"],
-    tags: ["healing"],
+    tags: ["healing", "melee"],
     roles: ["top", "jungle", "mid"],
   },
   Morgana: {
@@ -519,7 +521,7 @@ const internalChampionTags = {
   },
   Naafiri: {
     damageTypes: ["physical-damage"],
-    tags: ["dash", "assassin", "auto-attack"],
+    tags: ["dash", "assassin", "auto-attack", "melee"],
     roles: ["jungle", "mid"],
   },
   Nami: {
@@ -529,12 +531,12 @@ const internalChampionTags = {
   },
   Nasus: {
     damageTypes: ["physical-damage"],
-    tags: ["healing", "auto-attack"],
+    tags: ["healing", "auto-attack", "melee"],
     roles: ["jungle", "mid", "top"],
     strongWith: ["ally-ms-buff"],
   },
   Nautilus: {
-    tags: ["cc", "projectile", "pick-potential", "auto-attack"],
+    tags: ["cc", "projectile", "pick-potential", "auto-attack", "melee"],
     roles: ["support"],
     strongAgainst: ["immobile", "dash"],
   },
@@ -560,15 +562,19 @@ const internalChampionTags = {
   Nocturne: {
     damageTypes: ["physical-damage"],
     synergiesWith: ["Orianna"],
-    tags: ["assassin", "auto-attack", "strong-ultimate"],
+    tags: ["assassin", "auto-attack", "strong-ultimate", "melee"],
     roles: ["jungle"],
     strongAgainst: ["immobile"],
   },
-  Nunu: { damageTypes: ["magic-damage"], roles: ["jungle", "mid", "support"] },
+  Nunu: {
+    damageTypes: ["magic-damage"],
+    roles: ["jungle", "mid", "support"],
+    tags: ["melee"],
+  },
   Olaf: {
     damageTypes: ["physical-damage", "true-damage"],
     strongAgainst: ["cc"],
-    tags: ["healing", "auto-attack"],
+    tags: ["healing", "auto-attack", "melee"],
     roles: ["jungle", "top"],
     strongWith: ["ally-ms-buff"],
   },
@@ -586,28 +592,30 @@ const internalChampionTags = {
   },
   Ornn: {
     damageTypes: ["magic-damage"],
-    tags: ["projectile", "wall"],
+    tags: ["projectile", "wall", "melee"],
     roles: ["top"],
   },
   Pantheon: {
     damageTypes: ["physical-damage"],
     roles: ["jungle", "mid", "top", "support"],
+    tags: ["melee"],
   },
   Poppy: {
     damageTypes: ["physical-damage"],
     strongAgainst: ["dash"],
     strongWith: ["wall"],
     roles: ["top", "jungle", "support"],
+    tags: ["melee"],
   },
   Pyke: {
     damageTypes: ["physical-damage"],
-    tags: ["dash", "assassin", "projectile", "pick-potential"],
+    tags: ["dash", "assassin", "projectile", "pick-potential", "melee"],
     roles: ["support"],
     strongAgainst: ["immobile"],
   },
   Qiyana: {
     damageTypes: ["physical-damage"],
-    tags: ["dash", "assassin"],
+    tags: ["dash", "assassin", "melee"],
     strongWith: ["wall"],
     roles: ["mid", "jungle"],
   },
@@ -629,13 +637,14 @@ const internalChampionTags = {
     strongAgainst: ["auto-attack"],
     strongAgainstDamageTypes: ["physical-damage"],
     roles: ["jungle", "top"],
+    tags: ["melee"],
   },
   RekSai: {
     damageTypes: ["physical-damage"],
     roles: ["jungle", "top"],
-    tags: ["auto-attack"],
+    tags: ["auto-attack", "melee"],
   },
-  Rell: { tags: ["shield", "ally-ms-buff"], roles: ["support"] },
+  Rell: { tags: ["shield", "ally-ms-buff", "melee"], roles: ["support"] },
   Renata: {
     damageTypes: ["magic-damage"],
     tags: ["strong-ultimate", "projectile", "ally-ms-buff", "immobile"],
@@ -643,19 +652,19 @@ const internalChampionTags = {
   },
   Renekton: {
     damageTypes: ["physical-damage"],
-    tags: ["dash"],
+    tags: ["dash", "melee"],
     strongAgainst: ["shield"],
     roles: ["top", "mid"],
   },
   Rengar: {
     damageTypes: ["physical-damage"],
-    tags: ["dash", "assassin", "pick-potential", "auto-attack"],
+    tags: ["dash", "assassin", "pick-potential", "auto-attack", "melee"],
     synergiesWith: ["Orianna", "Ivern", "Lulu"],
     roles: ["jungle", "top"],
   },
   Riven: {
     damageTypes: ["physical-damage"],
-    tags: ["dash", "shield"],
+    tags: ["dash", "shield", "melee"],
     roles: ["top", "mid"],
   },
   Rumble: {
@@ -678,7 +687,7 @@ const internalChampionTags = {
   },
   Sejuani: {
     damageTypes: ["magic-damage"],
-    tags: ["dash", "strong-ultimate", "projectile", "pick-potential"],
+    tags: ["dash", "strong-ultimate", "projectile", "pick-potential", "melee"],
     roles: ["jungle", "top"],
     strongAgainst: ["immobile"],
   },
@@ -702,15 +711,16 @@ const internalChampionTags = {
   Sett: {
     damageTypes: ["physical-damage", "true-damage"],
     roles: ["top", "mid", "support"],
+    tags: ["melee"],
   },
   Shaco: {
     damageTypes: ["physical-damage", "magic-damage"],
-    tags: ["assassin", "auto-attack"],
+    tags: ["assassin", "auto-attack", "melee"],
     roles: ["jungle", "support"],
   },
   Shen: {
     damageTypes: ["magic-damage"],
-    tags: ["dash", "strong-ultimate", "cc", "shield"],
+    tags: ["dash", "strong-ultimate", "cc", "shield", "melee"],
     strongAgainst: ["auto-attack"],
     roles: ["top", "jungle", "mid", "support"],
   },
@@ -718,17 +728,18 @@ const internalChampionTags = {
     damageTypes: ["magic-damage", "physical-damage"],
     roles: ["top", "jungle"],
     strongWith: ["ally-ms-buff"],
+    tag: ["melee"],
   },
   Singed: {
     damageTypes: ["magic-damage"],
     strongAgainst: ["healing"],
-    tags: ["poison"],
+    tags: ["poison", "melee"],
     roles: ["top", "mid"],
     strongWith: ["ally-ms-buff"],
   },
   Sion: {
     damageTypes: ["physical-damage"],
-    tags: ["cc", "immobile", "wombo-combo"],
+    tags: ["cc", "immobile", "wombo-combo", "melee"],
     roles: ["top", "jungle", "mid", "support"],
   },
   Sivir: {
@@ -740,6 +751,7 @@ const internalChampionTags = {
     damageTypes: ["physical-damage"],
     roles: ["top", "jungle"],
     strongWith: ["wall"],
+    tags: ["melee"],
   },
   Smolder: {
     damageTypes: ["magic-damage", "physical-damage"],
@@ -771,7 +783,7 @@ const internalChampionTags = {
   },
   Sylas: {
     damageTypes: ["magic-damage"],
-    tags: ["dash", "healing", "projectile"],
+    tags: ["dash", "healing", "projectile", "melee"],
     strongAgainst: ["strong-ultimate"],
     roles: ["mid", "jungle", "top", "support"],
   },
@@ -783,7 +795,7 @@ const internalChampionTags = {
   TahmKench: {
     damageTypes: ["magic-damage"],
     strongAgainst: ["assassin"],
-    tags: ["shield"],
+    tags: ["shield", "melee"],
     roles: ["support", "top"],
   },
   Taliyah: {
@@ -794,12 +806,12 @@ const internalChampionTags = {
   },
   Talon: {
     damageTypes: ["physical-damage"],
-    tags: ["dash", "assassin", "pick-potential"],
+    tags: ["dash", "assassin", "pick-potential", "melee"],
     roles: ["mid", "jungle"],
   },
   Taric: {
     damageTypes: ["magic-damage"],
-    tags: ["healing", "shield", "immobile"],
+    tags: ["healing", "shield", "immobile", "melee"],
     roles: ["support"],
   },
   Teemo: {
@@ -820,14 +832,14 @@ const internalChampionTags = {
   },
   Trundle: {
     damageTypes: ["physical-damage"],
-    tags: ["healing", "wall", "auto-attack"],
+    tags: ["healing", "wall", "auto-attack", "melee"],
     roles: ["top", "jungle", "support"],
     strongWith: ["ally-ms-buff"],
     strongAgainst: ["immobile"],
   },
   Tryndamere: {
     damageTypes: ["physical-damage"],
-    tags: ["dash", "healing", "auto-attack"],
+    tags: ["dash", "healing", "auto-attack", "melee"],
     roles: ["top", "jungle", "mid"],
     strongWith: ["ally-ms-buff"],
   },
@@ -845,7 +857,7 @@ const internalChampionTags = {
   },
   Udyr: {
     damageTypes: ["physical-damage"],
-    tags: ["shield", "auto-attack"],
+    tags: ["shield", "auto-attack", "melee"],
     roles: ["jungle", "top"],
     strongWith: ["ally-ms-buff"],
   },
@@ -880,12 +892,12 @@ const internalChampionTags = {
   Vex: { damageTypes: ["magic-damage"], tags: ["projectile"], roles: ["mid"] },
   Vi: {
     damageTypes: ["physical-damage"],
-    tags: ["dash", "auto-attack"],
+    tags: ["dash", "auto-attack", "melee"],
     roles: ["jungle"],
   },
   Viego: {
     damageTypes: ["physical-damage"],
-    tags: ["dash", "projectile", "assassin", "auto-attack"],
+    tags: ["dash", "projectile", "assassin", "auto-attack", "melee"],
     roles: ["jungle"],
     strongWith: ["ally-ms-buff"],
   },
@@ -902,13 +914,13 @@ const internalChampionTags = {
   },
   Volibear: {
     damageTypes: ["magic-damage", "physical-damage"],
-    tags: ["healing", "shield", "auto-attack"],
+    tags: ["healing", "shield", "auto-attack", "melee"],
     roles: ["jungle", "top"],
     strongWith: ["ally-ms-buff"],
   },
   Warwick: {
     damageTypes: ["physical-damage"],
-    tags: ["dash", "healing", "auto-attack"],
+    tags: ["dash", "healing", "auto-attack", "melee"],
     roles: ["jungle", "top"],
     strongWith: ["ally-ms-buff"],
     strongAgainst: ["immobile"],
@@ -928,23 +940,30 @@ const internalChampionTags = {
   },
   XinZhao: {
     damageTypes: ["physical-damage"],
-    tags: ["dash", "cc", "auto-attack"],
+    tags: ["dash", "cc", "auto-attack", "melee"],
     roles: ["jungle", "top"],
   },
   Yasuo: {
     damageTypes: ["physical-damage"],
-    tags: ["dash", "projectile", "wombo-combo", "auto-attack"],
+    tags: ["dash", "projectile", "wombo-combo", "auto-attack", "melee"],
     synergiesWith: ["Malphite", "Orianna", "Gragas"],
     strongAgainst: ["projectile"],
     roles: ["mid", "adc", "top"],
   },
   Yone: {
     damageTypes: ["physical-damage", "magic-damage"],
-    tags: ["dash", "strong-ultimate", "projectile", "shield", "auto-attack"],
+    tags: [
+      "dash",
+      "strong-ultimate",
+      "projectile",
+      "shield",
+      "auto-attack",
+      "melee",
+    ],
     roles: ["mid", "top"],
   },
   Yorick: {
-    tags: ["auto-attack"],
+    tags: ["auto-attack", "melee"],
     damageTypes: ["physical-damage"],
     roles: ["top", "jungle"],
     strongWith: ["ally-ms-buff"],
@@ -956,13 +975,13 @@ const internalChampionTags = {
   },
   Zac: {
     damageTypes: ["magic-damage"],
-    tags: ["dash", "healing"],
+    tags: ["dash", "healing", "melee"],
     roles: ["jungle", "top", "support"],
     strongAgainst: ["immobile"],
   },
   Zed: {
     damageTypes: ["physical-damage"],
-    tags: ["dash", "assassin", "pick-potential"],
+    tags: ["dash", "assassin", "pick-potential", "melee"],
     roles: ["mid", "jungle"],
   },
   Zeri: {
