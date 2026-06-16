@@ -38,7 +38,7 @@ export function usePlayerStats(
         ...(queueType && { queueType }),
       });
 
-      const response = await fetch(`http://localhost:8080/api/stats?${params}`);
+      const response = await fetch(`/api/stats?${params}`);
       if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
       }
