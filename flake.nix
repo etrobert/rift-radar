@@ -6,7 +6,7 @@
   };
 
   outputs =
-    { nixpkgs, ... }:
+    { self, nixpkgs, ... }:
     let
       systems = [
         "x86_64-linux"
@@ -40,6 +40,91 @@
           '';
         };
       });
+
+      # Self-contained deployment: serves the frontend and proxies /api/* to the
+      # backend on a single origin via Caddy, with a local Redis match cache.
+      # Host-specific concerns (the domain, the Riot API key secret, DNS) are
+      # left to the consumer via the options below.
+      nixosModules.default =
+        {
+          config,
+          lib,
+          pkgs,
+          ...
+        }:
+        let
+          inherit (pkgs.stdenv.hostPlatform) system;
+          cfg = config.services.rift-radar;
+        in
+        {
+          options.services.rift-radar = {
+            enable = lib.mkEnableOption "rift-radar League of Legends draft analysis";
+
+            hostName = lib.mkOption {
+              type = lib.types.str;
+              example = "rift.example.com";
+              description = "Domain Caddy serves the rift-radar frontend and API on.";
+            };
+
+            riotKeyFile = lib.mkOption {
+              type = lib.types.path;
+              description = ''
+                Path to a systemd EnvironmentFile containing a single line
+                `RIOT_API_KEY=<key>`. Use a persistent Riot Personal/Production
+                key — development keys expire every 24h.
+              '';
+            };
+
+            redisPort = lib.mkOption {
+              type = lib.types.port;
+              default = 6379;
+              description = "Port for the local Redis match cache.";
+            };
+          };
+
+          config = lib.mkIf cfg.enable {
+            services.redis.servers.rift-radar = {
+              enable = true;
+              port = cfg.redisPort;
+            };
+
+            systemd.services.rift-radar = {
+              description = "rift-radar backend";
+              wantedBy = [ "multi-user.target" ];
+              after = [
+                "network.target"
+                "redis-rift-radar.service"
+              ];
+              environment = {
+                REDISHOST = "127.0.0.1";
+                REDISPORT = toString cfg.redisPort;
+                REDISPASSWORD = "";
+              };
+              serviceConfig = {
+                # The Go backend listens on a fixed :8080.
+                ExecStart = "${self.packages.${system}.backend}/bin/rift-radar";
+                EnvironmentFile = cfg.riotKeyFile;
+                Restart = "on-failure";
+                DynamicUser = true;
+              };
+            };
+
+            services.caddy = {
+              enable = true;
+              virtualHosts.${cfg.hostName}.extraConfig = ''
+                handle /api/* {
+                  reverse_proxy localhost:8080
+                }
+                handle {
+                  root * ${self.packages.${system}.frontend}
+                  encode zstd gzip
+                  try_files {path} /index.html
+                  file_server
+                }
+              '';
+            };
+          };
+        };
 
       formatter = forEachSystem (pkgs: pkgs.nixfmt);
     };
