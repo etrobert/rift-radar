@@ -66,12 +66,17 @@
               description = "Domain Caddy serves the rift-radar frontend and API on.";
             };
 
-            riotKeyFile = lib.mkOption {
-              type = lib.types.path;
+            riotKey = lib.mkOption {
+              type = lib.types.raw;
               description = ''
-                Path to a systemd EnvironmentFile containing a single line
-                `RIOT_API_KEY=<key>`. Use a persistent Riot Personal/Production
-                key — development keys expire every 24h.
+                The agenix secret holding the Riot API key — i.e.
+                `config.age.secrets.<name>`, whose decrypted file is a single
+                line `RIOT_API_KEY=<key>` (use a persistent Personal/Production
+                key; development keys expire every 24h).
+
+                Its `.path` is used as the systemd EnvironmentFile, and its
+                `.file` (the encrypted source) as a restartTrigger so the
+                backend restarts automatically when the key is rotated.
               '';
             };
 
@@ -100,10 +105,15 @@
                 REDISPORT = toString cfg.redisPort;
                 REDISPASSWORD = "";
               };
+              # EnvironmentFile is read once at start from a fixed runtime path,
+              # so the unit is otherwise blind to key rotations; trigger a
+              # restart on the encrypted secret's store path (agenix re-encrypts
+              # on every edit, changing it) so `switch` picks up a new key.
+              restartTriggers = [ cfg.riotKey.file ];
               serviceConfig = {
                 # The Go backend listens on a fixed :8080.
                 ExecStart = "${self.packages.${system}.backend}/bin/rift-radar";
-                EnvironmentFile = cfg.riotKeyFile;
+                EnvironmentFile = cfg.riotKey.path;
                 Restart = "on-failure";
                 DynamicUser = true;
               };
