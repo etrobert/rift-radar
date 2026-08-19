@@ -56,12 +56,13 @@ The backend requires a `.env` file in the `backend/` directory with:
 - `RIOT_API_KEY`: Your Riot Games API key
 - `REDIS_URL`: Redis server URL for caching
 - `REDISPASSWORD`: Redis authentication password
+- `PORT`: Port the server listens on (optional, defaults to 8080)
 
 ### Common Commands
 ```bash
 cd backend
 go build .
-go run .  # Starts server on port 8080
+go run .  # Starts server on port 8080 (override with PORT)
 ```
 
 ### API Endpoints

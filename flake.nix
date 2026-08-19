@@ -80,6 +80,12 @@
               '';
             };
 
+            port = lib.mkOption {
+              type = lib.types.port;
+              default = 8080;
+              description = "Port the backend listens on.";
+            };
+
             redisPort = lib.mkOption {
               type = lib.types.port;
               default = 6379;
@@ -101,6 +107,7 @@
                 "redis-rift-radar.service"
               ];
               environment = {
+                PORT = toString cfg.port;
                 REDISHOST = "127.0.0.1";
                 REDISPORT = toString cfg.redisPort;
                 REDISPASSWORD = "";
@@ -111,7 +118,6 @@
               # on every edit, changing it) so `switch` picks up a new key.
               restartTriggers = [ cfg.riotKey.file ];
               serviceConfig = {
-                # The Go backend listens on a fixed :8080.
                 ExecStart = "${self.packages.${system}.backend}/bin/rift-radar";
                 EnvironmentFile = cfg.riotKey.path;
                 Restart = "on-failure";
@@ -123,7 +129,7 @@
               enable = true;
               virtualHosts.${cfg.hostName}.extraConfig = ''
                 handle /api/* {
-                  reverse_proxy localhost:8080
+                  reverse_proxy localhost:${toString cfg.port}
                 }
                 handle {
                   root * ${self.packages.${system}.frontend}
