@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 
 	"github.com/joho/godotenv"
@@ -125,6 +126,11 @@ func main() {
 	corsHandler := corsMiddleware(mux)
 	loggedMux := loggingMiddleware(corsHandler)
 
-	log.Printf("Server starting on port 8080")
-	log.Fatal(http.ListenAndServe(":8080", loggedMux))
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
+	log.Printf("Server starting on port %s", port)
+	log.Fatal(http.ListenAndServe(":"+port, loggedMux))
 }
